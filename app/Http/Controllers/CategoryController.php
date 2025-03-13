@@ -9,6 +9,6 @@ class CategoryController extends Controller
 {
     function createCategory(){
         $category = Category::all();
-        return view('createcategory', compact('category'));
+        return view('createcategory', compact('Category'));
     }
 }
