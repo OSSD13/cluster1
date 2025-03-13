@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  apache-php:
+    build: .
+    container_name: CLUSTER_1
+    ports:
+      - "1301:80"
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+    env_file:
+      - .env
