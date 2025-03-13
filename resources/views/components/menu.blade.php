@@ -8,32 +8,18 @@
 
     <ul class="sidebar-menu">
       <li class="active">
-        <a href="#">
-          <i class="bi bi-pie-chart-fill"></i> ภาพรวม
+        <a href="{{url('/createcategory')}}">
+          <i class="bi bi-pie-chart-fill"></i> สร้างหมวดหมู่
         </a>
       </li>
       <li>
-        <a href="#">
-          <i class="bi bi-journal-text"></i> กำหนดหมวดหมู่
+        <a href="{{url('/Activity')}}">
+          <i class="bi bi-journal-text"></i> สร้างกิจกรรม
         </a>
       </li>
-      <li>
-        <a href="#">
-          <i class="bi bi-check-square"></i> อนุมัติงาน
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <i class="bi bi-clock-history"></i> รายงาน
-        </a>
-      </li>
-    </ul>
 
-    <div class="logout">
-      <a href="#">
-        <i class="bi bi-box-arrow-right"></i> ออกจากระบบ
-      </a>
-    </div>
+
+    
   </div>
   <style>
     /* Layout หลักของ Sidebar */

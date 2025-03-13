@@ -9,9 +9,10 @@ Route::get('/Category/create', [categoryController::class, 'createCategory']);
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/de', function () {
-    return view('layout.default');
+Route::get('/createcategory', function () {
+    return view('createCategory');
 });
+Route::get('/Category/create', [categoryController::class, 'createCategory']);
 
 Route::post('/Category/create', [categoryController::class, 'store']);
 
