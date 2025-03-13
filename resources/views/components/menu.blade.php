@@ -1,4 +1,7 @@
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Sidebar Brand (โลโก้และชื่อแบรนด์) -->
     <div class="sidebar-brand bg-white">
         <a href="../index.html" class="brand-link">
@@ -16,7 +19,8 @@
                 <!-- ของผู้ใช้งาน -->
 
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link" style="border: none; background: none; color: black;">
+                    <a href="{{ url('/') }}" class="nav-link"
+                        style="border: none; background: none; color: black;">
                         <i class="bi bi-file-earmark-bar-graph"></i>
                         <p>สร้างกิจกรรม</p>
                     </a>

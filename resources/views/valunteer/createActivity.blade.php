@@ -21,9 +21,9 @@
                     <label for="category_id" class="form-label">หมวดหมู่</label>
                     <select name="category_id" id="category_id" class="form-select" required>
                         <option value="" disabled selected>เลือกหมวดหมู่</option>
-                        {{-- @foreach($categories as $category)
+                        @foreach($categories as $category)
                             <option value="{{ $category->cat_id }}">{{ $category->cat_name }}</option>
-                        @endforeach --}}
+                        @endforeach
                     </select>
                 </div>
 

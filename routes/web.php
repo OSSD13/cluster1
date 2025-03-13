@@ -1,11 +1,7 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\categoryController;
 
-Route::get('/', function () {
-    return view('valunteer.createActivity');
-});
-Route::get('/de', function () {
-    return view('layout.default');
-});
-
+Route::get('/', [categoryController::class, 'createCategory']);
