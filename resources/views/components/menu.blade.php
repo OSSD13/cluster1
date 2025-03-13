@@ -8,13 +8,13 @@
 
     <ul class="sidebar-menu">
       <li class="active">
-        <a href="#">
-          <i class="bi bi-pie-chart-fill"></i> ภาพรวม
+        <a href="{{url('/createcategory')}}">
+          <i class="bi bi-pie-chart-fill"></i> สร้างหมวดหมู่
         </a>
       </li>
       <li>
-        <a href="#">
-          <i class="bi bi-journal-text"></i> กำหนดหมวดหมู่
+        <a href="{{url('/')}}">
+          <i class="bi bi-journal-text"></i> สร้างกิจกรรม
         </a>
       </li>
       <li>
