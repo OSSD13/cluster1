@@ -4,8 +4,6 @@ services:
   apache-php:
     build: .
     container_name: CLUSTER_1
-    volumes:
-      - .:/var/www/html
     ports:
       - "1301:80"
     env_file:
