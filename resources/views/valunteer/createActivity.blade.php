@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container mt-4">
+
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
             <h4>สร้างกิจกรรมใหม่</h4>
@@ -41,6 +41,13 @@
             </form>
         </div>
     </div>
-</div>
+    <style>
+        .card{
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+    </style>
+
 
 @endsection
