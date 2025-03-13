@@ -13,27 +13,13 @@
         </a>
       </li>
       <li>
-        <a href="{{url('/')}}">
+        <a href="{{url('/Activity')}}">
           <i class="bi bi-journal-text"></i> สร้างกิจกรรม
         </a>
       </li>
-      <li>
-        <a href="#">
-          <i class="bi bi-check-square"></i> อนุมัติงาน
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <i class="bi bi-clock-history"></i> รายงาน
-        </a>
-      </li>
-    </ul>
 
-    <div class="logout">
-      <a href="#">
-        <i class="bi bi-box-arrow-right"></i> ออกจากระบบ
-      </a>
-    </div>
+
+    
   </div>
   <style>
     /* Layout หลักของ Sidebar */

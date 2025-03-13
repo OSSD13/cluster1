@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.default_with_menu')
 @section('content')
 
 <style>
