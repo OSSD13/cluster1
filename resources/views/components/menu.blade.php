@@ -1,33 +1,147 @@
-<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Sidebar Brand (โลโก้และชื่อแบรนด์) -->
-    <div class="sidebar-brand bg-white">
-        <a href="../index.html" class="brand-link">
-            <img src="{{ url('public/assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                class="brand-image opacity-75 shadow" />
-            <span class="brand-text fw-light" style="border: none; background: none; color: black;">VAR Service</span>
+<div class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <img src="/resources/views/img/Component 33.png" alt="Logo">
+      </div>
+      <h2>VAR</h2>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="active">
+        <a href="#">
+          <i class="bi bi-pie-chart-fill"></i> ภาพรวม
         </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bi bi-journal-text"></i> กำหนดหมวดหมู่
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bi bi-check-square"></i> อนุมัติงาน
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bi bi-clock-history"></i> รายงาน
+        </a>
+      </li>
+    </ul>
+
+    <div class="logout">
+      <a href="#">
+        <i class="bi bi-box-arrow-right"></i> ออกจากระบบ
+      </a>
     </div>
+  </div>
+  <style>
+    /* Layout หลักของ Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: all 0.3s ease;
+}
 
-    <!-- Sidebar Wrapper -->
-    <div class="sidebar-wrapper bg-white">
-        <nav class="mt-2">
-            <!-- Sidebar Menu -->
-            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <!-- ของผู้ใช้งาน -->
+/* ส่วนหัวของ Sidebar */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
 
-                <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link"
-                        style="border: none; background: none; color: black;">
-                        <i class="bi bi-file-earmark-bar-graph"></i>
-                        <p>สร้างกิจกรรม</p>
-                    </a>
-                </li>
+.logo-container {
+  background-color: #e5c0a1;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.logo-container img {
+  width: 50px;
+  height: 50px;
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #121212;
+  margin: 0;
+}
+
+/* เมนูด้านข้าง */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  flex-grow: 1;
+}
+
+.sidebar-menu li {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.sidebar-menu li a {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 8px;
+}
 
 
-            </ul>
-        </nav>
-    </div>
-</aside>
+
+/* ปุ่มออกจากระบบ */
+.logout {
+  margin-top: auto;
+  padding-bottom: 20px;
+}
+
+.logout a {
+  text-decoration: none;
+  color: red;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Responsive: ซ่อน Sidebar บนหน้าจอขนาดเล็ก */
+@media (max-width: 292px) {
+  .sidebar {
+    width: 60px;
+    overflow: hidden;
+    padding: 10px;
+  }
+
+  .sidebar h2 {
+    display: none;
+  }
+
+  .sidebar-menu li a {
+    justify-content: center;
+  }
+
+  .sidebar-menu li a span {
+    display: none;
+  }
+
+  .logout a {
+    justify-content: center;
+  }
+}
+  </style>
