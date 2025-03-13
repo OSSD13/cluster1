@@ -28,6 +28,6 @@ class categoryController extends Controller
             'due_date' => $request->due_date,
         ]);
 
-        return redirect()->route('categoriy.create')->with('success', 'Category created successfully, pending approval.');
+        return redirect()->route('createCategory')->with('success', 'Category created successfully, pending approval.');
     }
 }
