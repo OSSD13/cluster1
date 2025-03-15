@@ -1,121 +1,118 @@
 @extends('layouts.default_with_menu')
+@section('page-title', 'สร้างหมวดหมู่')
 @section('content')
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
-
     .container {
+        margin-top:10vh ;
+        margin-left: 90%; /* เว้นระยะห่างจาก Sidebar */
         background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        width: 600px;
+        padding: 30px;  /* เพิ่มพื้นที่ภายในของกล่อง */
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        width: 70vh;  /* เพิ่มความกว้างของกล่องทั้งหมด */
+        height: 45vh;  /* ปล่อยให้ความสูงปรับตามเนื้อหา */
     }
-
     label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
+        display: inline-block;
+        margin-top: 10px;
+        font-weight: semi-bold;
     }
-
     input, textarea {
         width: 100%;
-        padding: 10px;
+        padding: 8px;
+        margin-top: 5px;
         border: 1px solid #ccc;
-        border-radius: 6px;
-        margin-bottom: 15px;
+        border-radius: 4px;
     }
-
     textarea {
-        height: 100px;
-        resize: none;
+        height: 150px;  /* เพิ่มความสูงของกล่องรายละเอียด */
+        resize: none;  /* ป้องกันการปรับขนาดของกล่องข้อความ */
     }
-
-    .radio-group {
-        display: flex;
+    .radio-group-inline {
+        display: inline-flex;
+        gap: 15px; /* ระยะห่างระหว่างตัวเลือก */
         align-items: center;
-        gap: 15px;
-        margin-bottom: 20px;
+        margin-top: 10px;
     }
-
     .radio-item {
         display: flex;
         align-items: center;
-        gap: 8px;
     }
-
+    .radio-item label {
+        min-width: 120px; /* เพิ่มความกว้างให้กับ label */
+    }
+    .radio-item label[for="optional"] {
+        margin-left: 10px; /* เพิ่มระยะห่างทางด้านซ้ายของ 'ไม่บังคับ' */
+        font-weight: normal; /* ปรับเป็นตัวอักษรธรรมดา */
+    }
+    .radio-item label[for="required"] {
+        margin-left: 10px; /* เพิ่มระยะห่างทางด้านซ้ายของ 'บังคับ' */
+        font-weight: normal; /* ปรับเป็นตัวอักษรธรรมดา */
+    }
     .buttons {
+        margin-top: 20px;
         display: flex;
         justify-content: space-between;
-        margin-top: 20px;
     }
-
     .btn {
-        padding: 12px 20px;
-        font-size: 16px;
-        font-weight: bold;
+        padding: 10px 20px;
         border: none;
-        border-radius: 8px;
+        border-radius: 4px;
         cursor: pointer;
     }
-
     .btn-cancel {
+        border-radius:1vh;
         background-color: red;
         color: white;
     }
-
     .btn-save {
-        background-color: #007bff;
+        border-radius: 1vh;
+        background-color: #2079FF;
         color: white;
     }
-    .radio-group {
-    display: flex;
-    align-items: center;
-    gap: 30px; /* ปรับระยะห่างระหว่าง radio button */
-    flex-wrap: nowrap;
-}
+    .btn-cancel:hover {
+        color: white;
+        background-color: rgb(255, 78, 78); /* เปลี่ยนเป็นสีแดงเข้มขึ้น */
+        opacity: 0.9;
+    }
 
-.radio-item {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* ปรับระยะห่างระหว่าง radio และ label */
-}
+    .btn-save:hover {
+        color: white;
+        background-color: hsl(211, 100%, 72%); /* เปลี่ยนเป็นสีน้ำเงินเข้มขึ้น */
+        opacity: 0.9;
+    }
 
 </style>
+
 
 <div class="container">
     <form>
         <label for="category">หมวดหมู่ <span style="color: red;">*</span></label>
         <input type="text" id="category" placeholder="ชื่อหมวดหมู่" required>
 
+
         <label for="details">รายละเอียด (ถ้ามี)</label>
         <textarea id="details" placeholder="รายละเอียดของหมวดหมู่"></textarea>
 
-        <label>ประเภทหมวดหมู่ <span style="color: red;">*</span></label>
-<div class="radio-group">
-    <div class="radio-item">
-        <input type="radio" id="optional" name="categoryType" value="optional" checked>
-        <label for="optional"  style="width: 100px">ไม่บังคับ</label>
-    </div>
-    <div class="radio-item">
-        <input type="radio" id="required" name="categoryType" value="required">
-        <label for="required">บังคับ</label>
-    </div>
-</div>
+        <label style="margin-right: 10px;">ประเภทหมวดหมู่ <span style="color: red;">*</span></label>
+        <div class="radio-group-inline">
+            <div class="radio-item">
+                <input type="radio" id="optional" name="categoryType" value="optional" checked>
+                <label for="optional">ไม่บังคับ</label>
+            </div>
+            <div class="radio-item">
+                <input type="radio" id="required" name="categoryType" value="required">
+                <label for="required">บังคับ</label>
+            </div>
+        </div>
 
         <div class="buttons">
             <button type="button" class="btn btn-cancel">ยกเลิก</button>
-            <button type="submit" class="btn btn-save">บันทึกการแก้ไข</button>
+            <button type="submit" class="btn btn-save">บันทึก</button>
         </div>
     </form>
 </div>
+
 
 @endsection

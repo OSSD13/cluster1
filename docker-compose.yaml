@@ -6,5 +6,7 @@ services:
     container_name: CLUSTER_1
     ports:
       - "1301:80"
+    volumes:
+      - .:/var/www/html
     env_file:
       - .env

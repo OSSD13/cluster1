@@ -6,7 +6,7 @@ use App\Http\Controllers\categoryController;
 use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('overview');
 });
 Route::get('/createcategory', function () {
     return view('createCategory');
@@ -16,4 +16,4 @@ Route::get('/Category/create', [categoryController::class, 'createCategory']);
 Route::post('/Category/create', [categoryController::class, 'store']);
 
 Route::get('/Activity', [ActivityController::class, 'Activity']);
-Route::get('/', [ActivityController::class, 'Activity']);
+// Route::get('/', [ActivityController::class, 'Activity']);

@@ -1,133 +1,224 @@
-<div class="sidebar">
-    <div class="sidebar-header">
-      <div class="logo-container">
-        <img src="/resources/views/img/Component 33.png" alt="Logo">
-      </div>
-      <h2>VAR</h2>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="resources/views/img/logo.png" style="width: 50px ; height: 50px;" alt="">
+                    <a href="{{url("/")}}">VAR</a>
+                </div>
+            </div>
+
+            <hr class="sidebar-divider">
+
+            <ul class="sidebar-nav">
+
+                <li class="sidebar-item">
+                    <a href="{{ url('/') }}" class="sidebar-link {{ Request::is('/') ? 'active' : '' }}">
+                        <i class="bi bi-pie-chart-fill"></i>
+                        <span>ภาพรวม</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{{ url('/createcategory') }}" class="sidebar-link {{ Request::is('createcategory') ? 'active' : '' }}">
+                        <i class="bi bi-clipboard-plus-fill"></i>
+                        <span>กำหนดหมวดหมู่</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link {{ Request::is('approvework') ? 'active' : '' }}">
+                        <i class="bi bi-clipboard-check-fill"></i>
+                        <span>อนุมัติงาน</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link {{ Request::is('report') ? 'active' : '' }}">
+                        <i class="bi bi-clock-fill"></i>
+                        <span>รายงาน</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{{ url('/Activity') }}" class="sidebar-link {{ Request::is('Activity') ? 'active' : '' }}">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>เขียนงาน</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link {{ Request::is('rejectedactivities') ? 'active' : '' }}">
+                        <i class="bi bi-clipboard2-x-fill"></i>
+                        <span>กิจกรรมที่ไม่ผ่าน</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link {{ Request::is('pastactivities') ? 'active' : '' }}">
+                        <i class="bi bi-clipboard2-pulse-fill"></i>
+                        <span>กิจกรรมที่เคยทำ</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Logout Button (อยู่ด้านล่างสุด) -->
+            <div class="sidebar-footer">
+                <a href="#" class="sidebar-link logout">
+                    <i class="lni lni-exit"></i>
+                    <span>ออกจากระบบ</span>
+                </a>
+            </div>
+        </aside>
     </div>
+</body>
 
-    <ul class="sidebar-menu">
-      <li class="active">
-        <a href="{{url('/createcategory')}}">
-          <i class="bi bi-pie-chart-fill"></i> สร้างหมวดหมู่
-        </a>
-      </li>
-      <li>
-        <a href="{{url('/Activity')}}">
-          <i class="bi bi-journal-text"></i> สร้างกิจกรรม
-        </a>
-      </li>
+</html>
 
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-    
-  </div>
-  <style>
-    /* Layout หลักของ Sidebar */
-.sidebar {
-  width: 250px;
-  height: 100vh;
-  background-color: #fff;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-right: 1px solid #ddd;
-  position: fixed;
-  top: 0;
-  left: 0;
-  transition: all 0.3s ease;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-/* ส่วนหัวของ Sidebar */
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
-}
+    body {
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+    }
 
-.logo-container {
-  background-color: #e5c0a1;
-  padding: 10px;
-  border-radius: 10px;
-}
+    /* ====== Sidebar ====== */
+    #sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 250px;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        padding-top: 0px;
+        z-index: 1000;
+        border-right: 2px solid #ddd;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.logo-container img {
-  width: 50px;
-  height: 50px;
-}
+    .sidebar-header {
+        text-align: start;
+        padding: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
 
-.sidebar h2 {
-  font-size: 18px;
-  font-weight: bold;
-  color: #121212;
-  margin: 0;
-}
+    .sidebar-logo a {
+        color: rgb(0, 0, 0);
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-decoration: none;
+    }
 
-/* เมนูด้านข้าง */
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-  flex-grow: 1;
-}
+    .sidebar-nav {
+        flex: 1;
+        padding: 10px;
+    }
 
-.sidebar-menu li {
-  padding: 10px;
-  font-size: 16px;
-}
+    .sidebar-item {
+        list-style: none;
+        margin-bottom: 10px;
+    }
 
-.sidebar-menu li a {
-  text-decoration: none;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 500;
-  padding: 10px;
-  border-radius: 8px;
-}
+    .sidebar-link {
+        color: #365A72;
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        font-size: 16px;
+        text-decoration: none;
+        transition: 0.3s;
+        border-radius: 8px;
+    }
 
+    .sidebar-link i {
+        font-size: 20px;
+        margin-right: 10px;
+    }
 
+    /* ✅ เพิ่มเอฟเฟกต์ Hover ให้เหมือนภาพที่ส่งมา */
+    .sidebar-link:hover {
+        background-color: #d6eaff;
+    }
 
-/* ปุ่มออกจากระบบ */
-.logout {
-  margin-top: auto;
-  padding-bottom: 20px;
-}
+    .sidebar-link.active {
+        background-color: #81B7D8; /* สีฟ้า */
+        color: white;
+        font-weight: semi-bold;
+    }
 
-.logout a {
-  text-decoration: none;
-  color: red;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+    /* ✅ ให้ไอคอนเปลี่ยนเป็นสีขาวเมื่อ Hover */
+    .sidebar-link:hover i {
 
-/* Responsive: ซ่อน Sidebar บนหน้าจอขนาดเล็ก */
-@media (max-width: 292px) {
-  .sidebar {
-    width: 60px;
-    overflow: hidden;
-    padding: 10px;
-  }
+    }
 
-  .sidebar h2 {
-    display: none;
-  }
+    .sidebar-link.active i {
+        color: white;
+    }
 
-  .sidebar-menu li a {
-    justify-content: center;
-  }
+    /* ====== Logout Button (อยู่ด้านล่างสุด) ====== */
+    .sidebar-footer {
+        margin-top: auto;
+        padding: 15px;
+    }
 
-  .sidebar-menu li a span {
-    display: none;
-  }
+    .logout {
+        background-color: transparent;
+        color: red;
+        font-weight: semi-bold;
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
 
-  .logout a {
-    justify-content: center;
-  }
-}
-  </style>
+    .logout i {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    .logout:hover {
+        background-color: rgba(255, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    /* Responsive (ทำให้ Sidebar ลดขนาดลงในจอเล็ก) */
+    @media (max-width: 768px) {
+        #sidebar {
+            width: 200px;
+        }
+
+        .sidebar-link {
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+
+        .logout {
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+    }
+    .sidebar-divider {
+            width: 90%;
+            border-top: 2px solid #767676; /* สีเทาเข้มขึ้น */
+            margin: 0 auto;
+            }
+</style>
