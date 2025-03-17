@@ -5,7 +5,7 @@
 
 <style>
     .content-container {
-        margin-left: 50%; /* เว้นระยะห่างจาก Sidebar */
+        margin-left: 30%; /* เว้นระยะห่างจาก Sidebar */
         margin-top: 8vh; /* เว้นระยะห่างจาก Header */
         padding: 20px;
         transition: all 0.3s ease-in-out;
@@ -124,16 +124,24 @@
         <h4 class="mt-4 fw-bold">หมวดหมู่</h4>
 
         <!-- ✅ การ์ดหมวดหมู่ -->
-        {{-- <div class="row">
+        <div class="row g-3">
             @foreach ($categories as $category)
-                <div class="col-sm-6 col-md-4">
-                    <div class="card p-3">
-                        <h5>{{ $category->cat_name }}</h5>
-                        <p>{{ $category->description }}</p>
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <div class="card p-3 shadow-sm rounded-4" style="max-width: 25rem;">
+                        <h5 class="fw-bold d-flex align-items-center">
+                            {{ $category->cat_name }}
+                            @if ($category->cat_ismandatory)
+                                <span class="text-danger ms-2">*</span> <!-- แสดง * เฉพาะหมวดหมู่บังคับ -->
+                            @endif
+                        </h5>
+                        <p class="text-muted">รายละเอียด</p>
+                        <p class="card-text">{{ $category->description }}</p>
+
+
                     </div>
                 </div>
             @endforeach
-        </div> --}}
+        </div>
     </div>
 </div>
 

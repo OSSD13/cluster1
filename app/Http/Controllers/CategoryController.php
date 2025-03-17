@@ -9,16 +9,13 @@ class categoryController extends Controller
 {
     function createCategory(){
         $categories = Category::all();
-        return view('valunteer.createActivity',compact('categories'));
+        return view('createCategory',compact('categories'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'cat_name' => 'required|unique:categories|max:100',
-            'description' => 'nullable|string',
-            'cat_ismandatory' => 'required|boolean',
-            'due_date' => 'nullable|date|after:today', // ต้องเป็นวันที่อนาคต
         ]);
 
         Category::create([

@@ -30,7 +30,7 @@
 
 /* ======= ข้อความ Page Title ======= */
 .page-title {
-    font-weight: bold;
+    font-weight: semi-bold;
     margin: 0;
 }
 

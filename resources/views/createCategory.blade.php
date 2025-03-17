@@ -4,18 +4,16 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            background-color: #ffffff;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: start;
             height: 100vh;
             margin: 0;
         }
-
-<style>
     .container {
-        margin-top:10vh ;
-        margin-left: 90%; /* เว้นระยะห่างจาก Sidebar */
+        margin-top: 8vh; /* เว้นระยะห่างจาก Header */
+        margin-left: 20%; /* เว้นระยะห่างจาก Sidebar */
         background: white;
         padding: 30px;  /* เพิ่มพื้นที่ภายในของกล่อง */
         border-radius: 8px;
@@ -92,30 +90,27 @@
         background-color: hsl(211, 100%, 72%); /* เปลี่ยนเป็นสีน้ำเงินเข้มขึ้น */
         opacity: 0.9;
     }
-
-    <div class="container">
-        <form action="{{ route('categories.store') }}" method="POST">
-            <label for="cat_name">หมวดหมู่ <span style="color: red;">*</span></label>
-            <input type="text" id="cat_name" placeholder="ชื่อหมวดหมู่" required>
+</style>
 
 
 <div class="container">
-    <form>
-        <label for="category">หมวดหมู่ <span style="color: red;">*</span></label>
-        <input type="text" id="category" placeholder="ชื่อหมวดหมู่" required>
+    <form action="{{route('categories.store')}}" method="POST">
+        @csrf
+        <label for="cat_name">หมวดหมู่ <span style="color: red;">*</span></label>
+        <input type="text" id="cat_name" name="cat_name" placeholder="ชื่อหมวดหมู่" required>
 
 
-        <label for="details">รายละเอียด (ถ้ามี)</label>
-        <textarea id="details" placeholder="รายละเอียดของหมวดหมู่"></textarea>
+        <label for="description">รายละเอียด (ถ้ามี)</label>
+        <textarea id="description" name="description" placeholder="รายละเอียดของหมวดหมู่"></textarea>
 
         <label style="margin-right: 10px;">ประเภทหมวดหมู่ <span style="color: red;">*</span></label>
-        <div class="radio-group-inline">
-            <div class="radio-item">
-                <input type="radio" id="optional" name="categoryType" value="optional" checked>
+        <div class="radio-group-inline" id="cat_ismandatory" name="cat_ismandatory">
+            <div class="radio-item" >
+                <input type="radio" id="optional" name="categoryType" value="0" checked>
                 <label for="optional">ไม่บังคับ</label>
             </div>
-            <div class="radio-item">
-                <input type="radio" id="required" name="categoryType" value="required">
+            <div class="radio-item" >
+                <input type="radio" id="required" name="categoryType" value="1">
                 <label for="required">บังคับ</label>
             </div>
         </div>

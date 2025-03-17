@@ -1,7 +1,7 @@
 @extends('layouts.default_with_menu')
 @section('page-title', 'เขียนงาน')
 @section('content')
-
+<body>
     <div class="content-container">
         <div class="container">
             <div class="card shadow">
@@ -23,7 +23,15 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="mb-3">
+                            <label for="category_id" class="form-label">หมวดหมู่</label>
+                            <select name="category_id" id="category_id" class="form-select" required>
+                                <option value="" disabled selected>เลือกหมวดหมู่</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->cat_id }}">{{ $category->cat_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <!-- เนื้อหา -->
                         <div class="mb-3">
                             <label for="description" class="form-label">เนื้อหา</label>
@@ -50,12 +58,19 @@
             </div>
         </div>
     </div>
-
+</body>
 <style>
+    body {
+        background-color: #ffffff;
+        display: flex;
+        margin-left: 10vh;
+        align-items: center;
+    }
     /* ตั้งค่าหน้าฟอร์ม */
     .content-container {
-        width: 70vh;
-        margin-left: 100vh; /*  เว้นระยะห่างจาก Sidebar */
+        width: 80vh;
+
+        margin-left: 50vh; /*  เว้นระยะห่างจาก Sidebar */
         margin-top: 10vh; /*  เว้นระยะห่างจาก Header */
         padding: 20px;
         transition: all 0.3s ease-in-out;
@@ -110,7 +125,7 @@
     }
 
     .upload-label:hover {
-        background: #c0d6ff;
+        background: #c6daff;
     }
 
     /*  รูปแบบการแสดงภาพที่อัปโหลด */
