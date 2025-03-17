@@ -1,6 +1,16 @@
 @extends('layouts.default_with_menu')
 @section('page-title', 'กำหนดหมวดหมู่')
 @section('content')
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
 <style>
     .container {
@@ -83,7 +93,10 @@
         opacity: 0.9;
     }
 
-</style>
+    <div class="container">
+        <form action="{{ route('categories.store') }}" method="POST">
+            <label for="cat_name">หมวดหมู่ <span style="color: red;">*</span></label>
+            <input type="text" id="cat_name" placeholder="ชื่อหมวดหมู่" required>
 
 
 <div class="container">
