@@ -110,7 +110,7 @@
     }
 
     .upload-label:hover {
-        background: #5a8dee;
+        background: #c0d6ff;
     }
 
     /*  รูปแบบการแสดงภาพที่อัปโหลด */

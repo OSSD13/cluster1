@@ -5,14 +5,14 @@
 
 <style>
     .content-container {
-        margin-left: 38vh; /* เว้นระยะห่างจาก Sidebar */
+        margin-left: 50%; /* เว้นระยะห่างจาก Sidebar */
         margin-top: 8vh; /* เว้นระยะห่างจาก Header */
         padding: 20px;
         transition: all 0.3s ease-in-out;
     }
 
     .container {
-        width: 100%; /* ทำให้ container กว้างพอดีกับหน้าจอ */
+        width: 200%; /* ทำให้ container กว้างพอดีกับหน้าจอ */
         background: rgb(255, 255, 255);
 
 

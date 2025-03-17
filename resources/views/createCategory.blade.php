@@ -1,5 +1,5 @@
 @extends('layouts.default_with_menu')
-@section('page-title', 'สร้างหมวดหมู่')
+@section('page-title', 'กำหนดหมวดหมู่')
 @section('content')
 
 <style>
