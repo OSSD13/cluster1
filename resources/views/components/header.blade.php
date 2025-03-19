@@ -19,12 +19,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     padding: 0 20px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;
     z-index: 1000;
     transition: all 0.3s ease-in-out;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap; /* ป้องกันการล้นจอ */
 }
 
