@@ -4,27 +4,81 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Year;
 
-class categoryController extends Controller
+class CategoryController extends Controller
 {
-    function createCategory(){
-        $categories = Category::all();
-        return view('createCategory',compact('categories'));
-    }
-
-    public function store(Request $request)
+    public function index()
     {
-        $request->validate([
-            'cat_name' => 'required|unique:categories|max:100',
-        ]);
-
-        Category::create([
-            'cat_name' => $request->cat_name,
-            'description' => $request->description,
-            'cat_ismandatory' => $request->cat_ismandatory,
-            'due_date' => $request->due_date,
-        ]);
-
-        return redirect()->route('createCategory')->with('success', 'Category created successfully, pending approval.');
+        //$this->checkCategoryExpiration();
+        $categories = Category::all();
+        return view('categories.index', compact('categories'));
     }
+
+    public function create()
+{
+
+        $categories = Category::all();
+        $years = Year::all(); // ดึงข้อมูลปีจากตาราง years
+
+        return view('categories.create', compact('years', 'categories'));
+    }
+
+    // public function checkCategoryExpiration()
+    // {
+    //     Category::where('expiration_date', '<', now())
+    //         ->where('status', 'published')
+    //         ->update(['status' => 'expired']);
+    // }
+
+    public function publishAll()
+    {
+        // อัปเดตทุกหมวดหมู่ที่ยังไม่เผยแพร่ให้เป็น published
+        Category::where('status', 'pending')->update(['status' => 'published']);
+
+        return redirect()->route('categories.index')->with('success', 'เผยแพร่หมวดหมู่ทั้งหมดเรียบร้อยแล้ว!');
+    }
+
+    
+        /**
+         * Store a newly created category in database.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
+         */
+        public function store(Request $request)
+        {
+            // ตรวจสอบความถูกต้องของข้อมูล
+            $request->validate([
+                'cat_name' => 'required|string|max:100|unique:categories,cat_name',
+                'description' => 'nullable|string',
+                'cat_ismandatory' => 'required|boolean',
+                'cat_year_id' => 'required|exists:years,year_id',
+                'expiration_date' => 'nullable|date',
+            ]);
+
+            try {
+                // สร้าง category ใหม่
+                $category = new Category();
+                $category->cat_name = $request->cat_name;
+                $category->description = $request->description;
+                $category->cat_ismandatory = $request->cat_ismandatory;
+                $category->cat_year_id = $request->cat_year_id;
+                $category->expiration_date = $request->expiration_date;
+                $category->created_by = Auth::id(); // ใช้ ID ของผู้ใช้ที่ล็อกอินอยู่
+                $category->status = 'pending'; // ค่าเริ่มต้นเป็น pending
+
+                $category->save();
+
+                return redirect()->route('categories.index')
+                    ->with('success', 'เพิ่มหมวดหมู่ ' . $category->cat_name . ' สำเร็จแล้ว');
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->with('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage())
+                    ->withInput();
+            }
+        }
+
 }
