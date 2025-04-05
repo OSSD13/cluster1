@@ -98,12 +98,15 @@
     </div>
 
 
-
-    <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
-        @csrf
-        @method("delete")
-        <button type="submit" class="btn btn-danger btn-sm">ลบกิจกรรม </button>
-    </form>
+    <div class="d-flex justify-content-end mt-3" style="margin-left: 70vw; margin-top: -5vh; padding: 0px;">
+        <form action="http://localhost:1301/activity/8" onsubmit="clickme(event)" method="post">
+            <input type="hidden" name="_token" value="s8PolA0EYQEVUG7WuL08J7idIjnsFsld11V0jH84" autocomplete="off">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="btn btn-danger btn-lg">ลบกิจกรรม</button>
+        </form>
+    </div>
+    
+    
 
 
 
@@ -115,10 +118,10 @@
         }
 
         .content-container {
-            width: 80vh;
+            width: 100vh;
             margin-left: 30vh;
-            margin-top: 10vh;
-            padding: 20px;
+            margin-top: -5vh;
+            padding: 0px;
             transition: all 0.3s ease-in-out;
         }
 
