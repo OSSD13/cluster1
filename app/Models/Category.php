@@ -39,4 +39,7 @@ class Category extends Model
     {
         return $this->hasMany(Activity::class, 'act_cat_id', 'cat_id');
     }
+    public function year() {
+        return $this->belongsTo(Year::class, 'cat_year_id', 'year_id');
+    }
 }

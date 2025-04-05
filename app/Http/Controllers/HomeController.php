@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Activity;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -23,46 +24,40 @@ class HomeController extends Controller
 
 
         if ($user->hasRole('Central Officer')) {
+            $years = Category::with('year')
+            ->select('cat_year_id')
+            ->distinct()
+            ->get()
+            ->pluck('year.year_name');
+            $expiration_date = Category::value('expiration_date');
+            $category_due_date = $expiration_date
+                ? Carbon::parse($expiration_date)->subDays(15)->format('Y-m-d')
+                : null;
 
-            // ใช้ count ของ Category
             $categoryCount = Category::count();
+            $activityCount = Activity::count();
 
-            // การคำนวณจำนวน Activity ทั้งหมด (เฉพาะสถานะ approved)
-            $activityCount = Activity::whereIn('status', ['Approve_by_central', 'Approve_by_province'])->count();
-
-            // ดึงข้อมูล Categories พร้อมจำนวน Activity ที่ได้รับการอนุมัติ
             $categories = Category::withCount([
-                'activities',
                 'activities as approved_activities_count' => function ($q) {
-                    $q->where('status', 'Approve_by_central'); // หรือสถานะอื่นที่ต้องการ
-                }
+                    $q->where('status', 'Approve_by_central');
+                },
+                'activities as unapproved_activities_count' => function ($q) {
+                    $q->whereNot('status', 'Approve_by_central');
+                },
             ])->get();
 
-            $labels = [];
-            $successRates = [];
-            $activityCounts = [];
+            $labels = $categories->pluck('cat_name');
+            $approvedCounts = $categories->pluck('approved_activities_count');
+            $unapprovedCounts = $categories->pluck('unapproved_activities_count');
 
-            foreach ($categories as $cat) {
-                $labels[] = $cat->cat_name;  // ชื่อ Category
-                $activityCounts[] = $cat->activities_count; // จำนวน Activities ทั้งหมด
-
-                if ($cat->activities_count > 0) {
-                    // คำนวณอัตราความสำเร็จ (approved)
-                    $rate = ($cat->approved_activities_count / $cat->activities_count) * 100;
-                } else {
-                    $rate = 0;
-                }
-
-                $successRates[] = round($rate, 2); // เก็บอัตราความสำเร็จที่ได้
-            }
-
-            // ส่งค่าผ่าน view
             return view('central.overview', compact(
+                'labels',
+                'approvedCounts',
+                'unapprovedCounts',
                 'categoryCount',
                 'activityCount',
-                'labels',
-                'successRates',
-                'activityCounts'
+                'category_due_date',
+                'years'
             ));
         } elseif ($user->hasRole('Province Officer')) {
 
