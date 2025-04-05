@@ -45,8 +45,8 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('activities/review') }}"
-                    class="nav-link sidebar-link {{ Request::is('activities/review') ? 'active' : '' }}">
+                <a href="{{ url('/province/approve') }}"
+                    class="nav-link sidebar-link {{ Request::is('province/approve') ? 'active' : '' }}">
                     <i class="bi bi-check2-square sidebar-icon"></i>
                     <span>อนุมัติงาน</span>
                 </a>
