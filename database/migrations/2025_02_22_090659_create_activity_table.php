@@ -45,14 +45,18 @@ return new class extends Migration
             $table->foreign('img_act_id')->references('act_id')->on('activities')->onDelete('cascade');
         });
 
-        Schema::create('activity_categories', function (Blueprint $table) {
-            $table->id('cat_id');
-            $table->string('cat_name');
-            $table->unsignedBigInteger('cat_year_id');
-            $table->timestamps();
+        Schema::create('var_approvals', function (Blueprint $table) {
+            $table->id('apv_id')->primary();
+            $table->integer('apv_act_id');
+            $table->integer('apv_approver');
+            $table->enum('apv_level', ['Province Officer','Central Officer']);
+            $table->text('apv_comment');
+            $table->date('apv_date');
 
             // Foreign Keys
-            $table->foreign('cat_year_id')->references('year_id')->on('years')->onDelete('cascade');
+            $table->foreign('apv_act_id')->references('act_id')->on('activities')->onDelete('cascade');
+            $table->foreign('apv_approver')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('apv_level')->references('user_role')->on('users')->onDelete('cascade');
         });
     }
 
