@@ -44,6 +44,16 @@ return new class extends Migration
             // Foreign Keys
             $table->foreign('img_act_id')->references('act_id')->on('activities')->onDelete('cascade');
         });
+
+        Schema::create('activity_categories', function (Blueprint $table) {
+            $table->id('cat_id');
+            $table->string('cat_name');
+            $table->unsignedBigInteger('cat_year_id');
+            $table->timestamps();
+
+            // Foreign Keys
+            $table->foreign('cat_year_id')->references('year_id')->on('years')->onDelete('cascade');
+        });
     }
 
     /**

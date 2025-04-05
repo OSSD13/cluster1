@@ -64,7 +64,7 @@ class User extends Authenticatable
         $this->save();
     }
     public function provinceData()
-{
-    return $this->belongsTo(Provinces::class, 'province', 'pvc_id');
-}
+    {
+        return $this->belongsTo(Provinces::class, 'province', 'pvc_id');
+    }
 }

@@ -1,6 +1,13 @@
 # ใช้ PHP 8.2 พร้อม Apache เป็น base image
 FROM php:8.2-apache
 
+RUN apt-get update && apt-get install -y \
+    unzip \
+    zip \
+    git \
+    libzip-dev \
+    && docker-php-ext-install zip pdo pdo_mysql
+
 # เปิดใช้งาน mod_rewrite ของ Apache เพื่อให้ Laravel สามารถใช้ Pretty URLs ได้
 RUN a2enmod rewrite
 

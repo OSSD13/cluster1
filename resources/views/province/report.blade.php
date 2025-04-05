@@ -129,7 +129,7 @@
                                 @endif
 
                                 <td class="text-start">{{ $activity->act_title }}</td>
-                                <td>{{ \Carbon\Carbon::parse($activity->created_at)->format('d/m/Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($activity->act_date)->format('d/m/Y') }}</td>
                             </tr>
                         @endforeach
                     @endforeach

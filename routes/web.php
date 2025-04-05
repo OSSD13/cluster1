@@ -36,6 +36,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
 
     // หน้าแรก
 
+    Route::get('/', [HomeController::class, 'overview']);
 
     Route::get('/overview', [HomeController::class, 'overview'])->name('overview.index');
 
@@ -106,8 +107,9 @@ Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->nam
     // --------------------------------
     // Route for Province
     // --------------------------------
-    Route::get('/activities/review', [ActivityController::class, 'reviewList'])->name('activities.reviewList');
-    Route::get('/activities/review/{id}', [ActivityController::class, 'review'])->name('activities.review');
+    Route::get('/province/approve', [ProvinceController::class, 'reviewList'])->name('province.index');
+    Route::get('/province/approve/category/{id}', [provinceController::class, 'review'])->name('province.approve.category');
+    Route::get('/consider-event/activity-data', [ProvinceController::class, 'considerData'])->name('province.considerData');
     Route::get('/report', [provinceController::class, 'report'])->name('province.report');
     Route::get('/report/activity-data', [ProvinceController::class, 'activityData'])->name('province.activityData');
 });

@@ -72,8 +72,6 @@
                 </li>
 
 
-
-
                 @endrole
 
 
@@ -88,7 +86,7 @@
                     </form>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/activities/review') }}" class="nav-link" style="border: none; background: none; color: black;">
+                    <a href="{{ route('province.index') }}" class="nav-link" style="border: none; background: none; color: black;">
                         <i class="bi bi-file-earmark-bar-graph"></i>
                         <p>อนุมัติงาน</p>
                     </a>
