@@ -66,7 +66,10 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!-- ปุ่มแสดงความคิดเห็น -->
+                        <div class="text-center mt-3">
+                            <button type="button" id="openCommentModal" class="btn btn-primary">คอมเมนต์</button>
+                        </div>
                         <!-- ปุ่มบันทึกการแก้ไข -->
 
                     </form>
@@ -228,6 +231,48 @@
                 });
             }
         }
+
+        document.getElementById('openCommentModal').addEventListener('click', function () {
+            Swal.fire({
+                title: 'แสดงความคิดเห็น',
+                input: 'textarea',
+                inputLabel: 'ความคิดเห็น',
+                inputPlaceholder: 'พิมพ์ความคิดเห็นของคุณที่นี่...',
+                inputAttributes: {
+                    'aria-label': 'ความคิดเห็น'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'บันทึก',
+                cancelButtonText: 'ยกเลิก',
+                preConfirm: (comment) => {
+                    if (!comment) {
+                        Swal.showValidationMessage('กรุณากรอกความคิดเห็น');
+                        return false;
+                    }
+
+                    return fetch("{{ route('province.comment.store', $activity->act_id) }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({ comment })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('ไม่สามารถบันทึกความคิดเห็นได้');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        Swal.fire('สำเร็จ', 'ความคิดเห็นของคุณถูกบันทึกแล้ว', 'success');
+                    })
+                    .catch(error => {
+                        Swal.fire('เกิดข้อผิดพลาด', error.message, 'error');
+                    });
+                }
+            });
+        });
     </script>
 
 @endsection

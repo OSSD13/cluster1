@@ -14,8 +14,6 @@ use App\Http\Controllers\centralController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\imageController;
 
-
-
 /**
  * ------------------------------
  * Routes สำหรับการ Login / Logout
@@ -44,9 +42,6 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::resource('activity', ActivityController::class);
     //Route::resource('activities', ActivityController::class);
 
-
-
-
     // จัดการผู้ใช้
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{id}', [UserController::class, 'edit']);
@@ -69,9 +64,6 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::put('/activities/{id}', [ActivityController::class, 'update'])->name('activities.update');
     Route::get('/activities/{id}/detail', [ActivityController::class, 'detail'])->name('activities.detail');
     //Route::delete('/activity/{id}', [ActivityController::class, 'destroy'])->name('activities.delete');
-
-
-
 
     // Route สำหรับลบภาพ
     // ตรวจสอบให้แน่ใจว่า route นี้เป็น method DELETE
@@ -110,10 +102,19 @@ Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->nam
     Route::get('/province/approve', [ProvinceController::class, 'reviewList'])->name('province.index');
     Route::get('/province/approve/category/{user_id}', [ProvinceController::class, 'showCategoryToSelect'])->name('province.approve.category');
     Route::get('/province/approve/category/{user_id}/activities/{cat_id}', [ProvinceController::class, 'showActivities'])->name('province.approve.category.activities');
-Route::get('/province/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [ProvinceController::class, 'showActivityDetail'])->name('province.approve.category.activities.detail');
+    Route::get('/province/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [ProvinceController::class, 'showActivityDetail'])->name('province.approve.category.activities.detail');
     Route::get('/consider-event/activity-data', [ProvinceController::class, 'considerData'])->name('province.considerData');
     Route::get('/report', [ProvinceController::class, 'report'])->name('province.report');
     Route::get('/report/activity-data', [ProvinceController::class, 'activityData'])->name('province.activityData');
     Route::post('/province/approve/{id}', [ProvinceController::class, 'approveActivity'])->name('province.approve');
     Route::post('/province/reject/{id}', [ProvinceController::class, 'rejectActivity'])->name('province.reject');
+
+    // Route สำหรับความคิดเห็น
+    Route::post('/province/comment/{activityId}', [ProvinceController::class, 'storeComment'])->name('province.comment.store');
+
+    // ปุ่มแสดงความคิดเห็น
+    Route::get('/province/approve_activity_activity_detail', function () {
+        return view('province.approve_activity_activity_detail');
+    });
 });
+

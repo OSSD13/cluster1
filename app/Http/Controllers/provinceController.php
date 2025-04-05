@@ -167,9 +167,9 @@ class ProvinceController extends Controller
 
         $categories = \App\Models\Category::whereHas('activities', function ($query) use ($user) {
             $query->where('act_submit_by', $user->user_id)
-                  ->where('status', 'Sent');
+                ->where('status', 'Sent');
         })
-        ->get();
+            ->get();
 
         return view('province.approve_activity_category', compact('user', 'categories'));
     }
@@ -215,5 +215,22 @@ class ProvinceController extends Controller
         $activity = \App\Models\Activity::findOrFail($act_id);
 
         return view('province.approve_activity_activity_detail', compact('user', 'activity', 'category'));
+    }
+
+    public function storeComment(Request $request, $activityId)
+    {
+        $request->validate([
+            'comment' => 'required|string',
+        ]);
+
+        \App\Models\Approval::create([
+            'apv_act_id' => $activityId,
+            'apv_approver' => auth()->id(),
+            'apv_level' => auth()->user()->user_role,
+            'apv_comment' => $request->input('comment'),
+            'apv_date' => now(),
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'บันทึกความคิดเห็นเรียบร้อยแล้ว']);
     }
 }
