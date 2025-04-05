@@ -127,17 +127,12 @@ class ActivityController extends Controller
     {
         $userId = Auth::id();
        // dd($userId);
-        // อัปเดตทุกกิจกรรมของ User3 ให้เป็น "pending_review"
+        // อัปเดตทุกกิจกรรม ให้เป็น "Sent"
         Activity::where('act_submit_by', $userId)
             ->where('status', 'Saved') // เฉพาะกิจกรรมที่ยังไม่ถูกส่ง
             ->update(['status' => 'Sent']);
 
         return redirect()->route('activities.history')->with('success', 'ส่งกิจกรรมทั้งหมดให้ User2 ตรวจสอบแล้ว!');
-    }
-    public function reviewList()
-    {
-        $activities = Activity::where('status', 'pending_review')->get();
-        return view('province.considerEvent', compact('activities'));
     }
 
 
