@@ -57,46 +57,58 @@
                                 <td colspan="7" class="text-center text-muted">ไม่มีข้อมูลกิจกรรม</td>
                             </tr>
                         @else
-                            @foreach ($activities as $index => $activity)
-                                <tr>
-                                    <td>{{
-                                       $index + 1
+                                    @foreach ($activities as $index => $activity)
+                                                <tr>
+                                                    <td>{{
+                                        $index + 1
 
-                                        }}</td>
-                                    <td>{{ $activity->category->cat_name ?? 'ไม่ระบุหมวดหมู่' }}</td>
-                                    <td>{{ $activity->act_title ?? 'ไม่มีชื่อกิจกรรม' }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($activity->act_date)->format('d/m/Y') ?? '-' }}</td>
-                                    <td>
-                                        @if ($activity->category->cat_ismandatory ?? false)
-                                            <span class="badge bg-danger">บังคับ</span>
-                                        @else
-                                            <span class="badge bg-secondary">ไม่บังคับ</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($activity->status == 'Saved')
-                                            <span class="badge bg-info">บันทึกแล้ว</span>
-                                        @endif
-                                        @if ($activity->status == 'Sent')
-                                            <span class="badge bg-success text-white">ส่งแล้ว</span>
-                                        @endif
+                                                                    }}</td>
+                                                    <td>{{ $activity->category->cat_name ?? 'ไม่ระบุหมวดหมู่' }}</td>
+                                                    <td>{{ $activity->act_title ?? 'ไม่มีชื่อกิจกรรม' }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($activity->act_date)->format('d/m/Y') ?? '-' }}</td>
+                                                    <td>
+                                                        @if ($activity->category->cat_ismandatory ?? false)
+                                                            <span class="badge bg-danger">บังคับ</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($activity->status == 'Saved')
+                                                            <span class="badge bg-primary">บันทึกแล้ว</span>
+                                                        @endif
+                                                        @if ($activity->status == 'Sent'||$activity->status == 'Approve_by_province')
+                                                            <span class="badge bg-success text-white">ส่งแล้ว</span>
+                                                        @endif
 
-                                    </td>
-                                    <td class="text-center">
-                                        @if ($activity->status == 'Saved')
-                                            <a href="{{ route('activities.edit', $activity->act_id) }}">
-                                                <button type="button" class="btn btn-warning">แก้ไข</button>
-                                            </a>
-                                        @else
-                                        @endif
-                                        @if ($activity->status == 'Sent')
-                                            <a href="{{ route('activities.detail', $activity->act_id) }}">
-                                            <button class="btn bg-primary text-white btn-sm">รายละเอียด</button>
-                                            </a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
+                                                        @if ($activity->status == 'Edit'||$activity->status == 'unapproved_by_central')
+                                                            <span class="badge bg-warning text-black">แก้ไข</span>
+                                                        @endif
+
+                                                        @if ($activity->status == 'Approve_by_central')
+                                                            <span class="badge bg-secondary text-white">เสร็จสิ้น</span>
+                                                        @endif
+
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @if ($activity->status == 'Saved'||$activity->status == 'Edit'||$activity->status == 'unapproved_by_central')
+                                                            <a href="{{ route('activities.edit', $activity->act_id) }}">
+                                                                <button type="button" class="btn btn-warning btn-sm">แก้ไข</button>
+                                                            </a>
+                                                        @endif
+
+                                                        {{-- @if ($activity->status == 'Edit')
+                                                            <a href="{{ route('activities.edit', $activity->act_id) }}">
+                                                                <button type="button" class="btn btn-warning">แก้ไข</button>
+                                                            </a>
+                                                        @endif --}}
+
+                                                        @if ($activity->status == 'Sent'||$activity->status == 'Edit'||$activity->status == 'Approve_by_central'||$activity->status == 'unapproved_by_central'||$activity->status == 'Approve_by_province')
+                                                            <a href="{{ route('activities.detail', $activity->act_id) }}">
+                                                                <button class="btn bg-primary text-white btn-sm">รายละเอียด</button>
+                                                            </a>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                    @endforeach
                         @endif
                     </tbody>
                 </table>
