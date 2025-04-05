@@ -128,11 +128,11 @@
         height: 8px;
         border-radius: 50%;
     }
-    
+
     .custom-btn {
-        font-size: 0.75rem; 
-        color: white; 
+        font-size: 0.75rem;
+        color: white;
     }
 </style>
-                      
+
 @endsection

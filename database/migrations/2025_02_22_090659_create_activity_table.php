@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('act_date');  // เพิ่มคอลัมน์ act_date เพื่อเก็บวันที่ทำกิจกรรม
 
             // สถานะกิจกรรมรองรับการส่งกลับเป็นขั้นตอน
-            $table->enum('status', ['Saved','Edit','Sent','Approve_by_province','Approve_by_central'])->default('Saved');
+            $table->enum('status', ['Saved','Edit','Sent','Approve_by_province','unapproved_by_central','Approve_by_central'])->default('Saved');
             $table->unsignedBigInteger('act_submit_by');
             $table->unsignedBigInteger('act_save_by');
             $table->timestamp('created_at');

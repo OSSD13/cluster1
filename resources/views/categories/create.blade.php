@@ -54,8 +54,10 @@
 
                     <div class="mb-3">
                         <label for="expiration_date" class="form-label">วันหมดอายุ</label>
-                        <input type="date" name="expiration_date" id="expiration_date" class="form-control @error('expiration_date') is-invalid @enderror"
-                               value="{{ old('expiration_date', \Carbon\Carbon::now()->addYear()->month(1)->day(31)->format('Y-m-d')) }}" disabled>
+                        <input type="date" name="expiration_date" id="expiration_date"
+                        class="form-control @error('expiration_date') is-invalid @enderror"
+                        value="{{ old('expiration_date', \Carbon\Carbon::now()->addYear()->month(1)->day(31)->format('Y-m-d')) }}"
+                        readonly>
                         @error('expiration_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

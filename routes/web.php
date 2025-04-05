@@ -49,7 +49,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::delete('/user/{id}', [UserController::class, 'delete'])->name('user.delete');
 
     // Error Pages
-    //Route::get('/central/overview', [centralController::class, 'overview']);
+    Route::get('/central/overview', [centralController::class, 'overview']);
 
     /**
      * ------------------------------
