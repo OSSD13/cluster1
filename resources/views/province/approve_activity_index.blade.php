@@ -83,8 +83,8 @@
                                     <span class="badge bg-warning text-dark">รอตรวจสอบ</span>
                                 </td>
                                 <td class="text-center">
-                                    {{-- <a href="{{ route('activities.review', $first->activity_id) }}" --}}
-                                      <a class="btn btn-sm btn-outline-primary">รายละเอียด</a>
+                                    <a href="{{ route('province.approve.category', $creator->user_id) }}"
+                                       class="btn btn-sm btn-outline-primary">รายละเอียด</a>
                                 </td>
                             </tr>
                         @empty

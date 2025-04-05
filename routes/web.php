@@ -108,8 +108,12 @@ Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->nam
     // Route for Province
     // --------------------------------
     Route::get('/province/approve', [ProvinceController::class, 'reviewList'])->name('province.index');
-    Route::get('/province/approve/category/{id}', [provinceController::class, 'review'])->name('province.approve.category');
+    Route::get('/province/approve/category/{user_id}', [ProvinceController::class, 'showCategoryToSelect'])->name('province.approve.category');
+    Route::get('/province/approve/category/{user_id}/activities/{cat_id}', [ProvinceController::class, 'showActivities'])->name('province.approve.category.activities');
+Route::get('/province/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [ProvinceController::class, 'showActivityDetail'])->name('province.approve.category.activities.detail');
     Route::get('/consider-event/activity-data', [ProvinceController::class, 'considerData'])->name('province.considerData');
-    Route::get('/report', [provinceController::class, 'report'])->name('province.report');
+    Route::get('/report', [ProvinceController::class, 'report'])->name('province.report');
     Route::get('/report/activity-data', [ProvinceController::class, 'activityData'])->name('province.activityData');
+    Route::post('/province/approve/{id}', [ProvinceController::class, 'approveActivity'])->name('province.approve');
+    Route::post('/province/reject/{id}', [ProvinceController::class, 'rejectActivity'])->name('province.reject');
 });

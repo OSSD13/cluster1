@@ -20,11 +20,11 @@ class Approval extends Model
 
     public function activity()
     {
-        return $this->belongsTo(Activity::class, 'act_id', 'act_id');
+        return $this->belongsTo(Activity::class, 'apv_act_id', 'act_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
+        return $this->belongsTo(User::class, 'apv_approver', 'user_id');
     }
 }

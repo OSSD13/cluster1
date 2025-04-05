@@ -47,16 +47,15 @@ return new class extends Migration
 
         Schema::create('var_approvals', function (Blueprint $table) {
             $table->id('apv_id')->primary();
-            $table->integer('apv_act_id');
-            $table->integer('apv_approver');
-            $table->enum('apv_level', ['Province Officer','Central Officer']);
+            $table->unsignedBigInteger('apv_act_id');
+            $table->unsignedBigInteger('apv_approver');
+            $table->enum('apv_level', ['Province Officer','Central Officer'])->default('Province Officer');
             $table->text('apv_comment');
             $table->date('apv_date');
 
             // Foreign Keys
             $table->foreign('apv_act_id')->references('act_id')->on('activities')->onDelete('cascade');
             $table->foreign('apv_approver')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('apv_level')->references('user_role')->on('users')->onDelete('cascade');
         });
     }
 
@@ -65,6 +64,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activity'); // ใช้ชื่อตารางให้ตรงกัน
+        Schema::dropIfExists('var_approvals');
+        Schema::dropIfExists('var_images');
+        Schema::dropIfExists('activities');
     }
 };

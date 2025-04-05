@@ -54,12 +54,6 @@ class ProvinceController extends Controller
             ->with(['creator', 'category'])
             ->get();
 
-        // $activities = Activity::where('status', 'Sent')
-        //     ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
-        //     ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
-        //     ->with(['creator', 'category'])
-        //     ->get();
-
         $groupedActivities = $activities
             ->groupBy(fn($activity) => $activity->creator->user_fullname)
             ->sortKeys();
@@ -68,7 +62,7 @@ class ProvinceController extends Controller
         $userCount = $groupedActivities->count();
         $activityCount = $activities->count();
 
-        return view('province.considerEvent', compact(
+        return view('province.approve_activity_index', compact(
             'groupedActivities',
             'years',
             'selectedYearId',
@@ -165,5 +159,61 @@ class ProvinceController extends Controller
         $html = view('partials._consider_table_body', compact('groupedActivities'))->render();
 
         return response()->json(['html' => $html]);
+    }
+
+    public function showCategoryToSelect($id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+
+        $categories = \App\Models\Category::whereHas('activities', function ($query) use ($user) {
+            $query->where('act_submit_by', $user->user_id)
+                  ->where('status', 'Sent');
+        })
+        ->get();
+
+        return view('province.approve_activity_category', compact('user', 'categories'));
+    }
+    public function approveActivity(Request $request, $id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+
+        // Update all 'Sent' activities of the user to 'Edit'
+        Activity::where('act_submit_by', $user->user_id)
+            ->where('status', 'Sent')
+            ->update(['status' => 'Approve_by_province']);
+
+        return redirect()->route('province.index')->with('success', 'กิจกรรมของผู้ใช้นี้ถูกส่งกลับเรียบร้อยแล้ว');
+    }
+    public function rejectActivity(Request $request, $id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+
+        // Update all 'Sent' activities of the user to 'Edit'
+        Activity::where('act_submit_by', $user->user_id)
+            ->where('status', 'Sent')
+            ->update(['status' => 'Edit']);
+
+        return redirect()->route('province.index')->with('success', 'กิจกรรมของผู้ใช้นี้ถูกส่งกลับเรียบร้อยแล้ว');
+    }
+    public function showActivities($id, $cat_id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $category = \App\Models\Category::findOrFail($cat_id);
+
+        $activities = \App\Models\Activity::where('act_submit_by', $user->user_id)
+            ->where('act_cat_id', $cat_id)
+            ->where('status', 'Sent')
+            ->with(['creator', 'category'])
+            ->get();
+
+        return view('province.approve_activity_activity', compact('user', 'activities', 'category'));
+    }
+    public function showActivityDetail($id, $cat_id, $act_id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $category = \App\Models\Category::findOrFail($cat_id);
+        $activity = \App\Models\Activity::findOrFail($act_id);
+
+        return view('province.approve_activity_activity_detail', compact('user', 'activity', 'category'));
     }
 }
