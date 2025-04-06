@@ -87,9 +87,10 @@
                     ยังไม่ตรวจสอบ
                 </span>
                                 </td>
-                                <td class="text-center">
-                                    <a href="{{ route('province.approve.category', $creator->user_id) }}"
-                                       class="btn btn-primary btn-sm px-4 rounded-pill">รายละเอียด</a>
+                                <td class="text-center">                                  
+                                       <a href="{{ route('province.approve.category', $creator->user_id) }}">
+                            <button class="btn bg-primary text-white btn-sm action-btn">รายละเอียด</button>
+                        </a>
                                 </td>
                             </tr>
                         @empty
