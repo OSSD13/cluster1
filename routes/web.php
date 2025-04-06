@@ -71,10 +71,9 @@ Route::middleware([UserMiddleware::class])->group(function () {
    // แก้จาก /images/{id}
 Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->name('images.destroy');
     // Routes สำหรับให้ User2 ตรวจสอบกิจกรรม
-    Route::post('/activity/{id}/review', [ActivityController::class, 'review'])->name('activity.review');
 
     // Routes สำหรับให้ User1 ตรวจสอบและอนุมัติขั้นสุดท้าย
-    Route::post('/activity/{id}/final-review', [ActivityController::class, 'finalReview'])->name('activity.finalReview');
+
 
     /**
      * ------------------------------
@@ -107,7 +106,11 @@ Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->nam
     Route::get('/report', [ProvinceController::class, 'report'])->name('province.report');
     Route::get('/report/activity-data', [ProvinceController::class, 'activityData'])->name('province.activityData');
     Route::post('/province/approve/{id}', [ProvinceController::class, 'approveActivity'])->name('province.approve');
+    Route::post('/province/reject/all', [ProvinceController::class, 'rejectAllInProvince'])->name('province.rejectAllInProvince');
     Route::post('/province/reject/{id}', [ProvinceController::class, 'rejectActivity'])->name('province.reject');
+    Route::post('/province/reject/{id}', [ProvinceController::class, 'unapproveByCentral'])->name('province.unapprove.click');
+    Route::post('/province/reject/all', [ProvinceController::class, 'rejectAllInProvince'])->name('province.rejectAllInProvince');
+    Route::get('/province/unapprove',[ProvinceController::class, 'showUnapprovedActivities'])->name('province.unapprove');
 
     // Route สำหรับความคิดเห็น
     Route::post('/province/comment/{activityId}', [ProvinceController::class, 'storeComment'])->name('province.comment.store');

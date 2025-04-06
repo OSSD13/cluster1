@@ -45,15 +45,15 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('activities/review') }}"
-                    class="nav-link sidebar-link {{ Request::is('activities/review') ? 'active' : '' }}">
+                <a href="{{ url('province/approve') }}"
+                    class="nav-link sidebar-link {{ Request::is('province/approve') ? 'active' : '' }}">
                     <i class="bi bi-check2-square sidebar-icon"></i>
                     <span>อนุมัติงาน</span>
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="#"
-                    class="nav-link sidebar-link text-muted {{ Request::is('activities/rejected') ? 'active' : '' }}">
+                <a href="{{ url('province/unapprove') }}"
+                    class="nav-link sidebar-link text-muted {{ Request::is('province/unapprove') ? 'active' : '' }}">
                     <i class="bi bi-x-circle sidebar-icon"></i>
                     <span>กิจกรรมที่ไม่ผ่าน</span>
                 </a>
