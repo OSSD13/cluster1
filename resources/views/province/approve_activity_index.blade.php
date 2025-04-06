@@ -87,10 +87,9 @@
                     ยังไม่ตรวจสอบ
                 </span>
                                 </td>
-                                <td class="text-center">                                  
-                                       <a href="{{ route('province.approve.category', $creator->user_id) }}">
-                            <button class="btn bg-primary text-white btn-sm action-btn">รายละเอียด</button>
-                        </a>
+                                <td class="text-center">
+                                    <a href="{{ route('province.approve.category', ['user_id' => $creator->user_id, 'year_id' => $selectedYearId]) }}"
+                                       class="btn btn-sm btn-outline-primary">รายละเอียด</a>
                                 </td>
                             </tr>
                         @empty
@@ -122,7 +121,7 @@
                     let index = 1;
                     response.data.forEach((item) => {
                         if (item.category && item.category.cat_year_id == selectedYear) {
-                            rows += 
+                            rows +=
                             <tr>
                                 <td>${index++}</td>
                                 <td class="text-start">${item.fullname}</td>

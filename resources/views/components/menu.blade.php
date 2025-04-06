@@ -52,8 +52,8 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="#"
-                    class="nav-link sidebar-link text-muted {{ Request::is('activities/rejected') ? 'active' : '' }}">
+                <a href="{{ url('province/unapprove') }}"
+                    class="nav-link sidebar-link text-muted {{ Request::is('province/unapprove') ? 'active' : '' }}">
                     <i class="bi bi-x-circle sidebar-icon"></i>
                     <span>กิจกรรมที่ไม่ผ่าน</span>
                 </a>

@@ -17,13 +17,14 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
         $categories = Category::all();
         $years = Year::all(); // ดึงข้อมูลปีจากตาราง years
 
-        return view('categories.create', compact('years', 'categories'));
+        return view('categories.create', compact('years', 'categories','selectedYearId'));
     }
 
     // public function checkCategoryExpiration()

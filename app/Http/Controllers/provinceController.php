@@ -48,7 +48,7 @@ class ProvinceController extends Controller
         $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
         $selectedYearId = $request->input('year_id', $latestYear->year_id);
         $provinceId = auth()->user()->province;
-        $activities = Activity::where('status', 'Sent')
+        $activities = Activity::where('status', ['Sent', 'Edit', 'Approve_by_province'])
             ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
             ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
             ->with(['creator', 'category'])
@@ -161,40 +161,49 @@ class ProvinceController extends Controller
         return response()->json(['html' => $html]);
     }
 
-    public function showCategoryToSelect($id)
+    public function showCategoryToSelect(Request $request, $id)
     {
         $user = \App\Models\User::findOrFail($id);
+        $selectedYearId = $request->input('year_id');
 
-        $categories = \App\Models\Category::whereHas('activities', function ($query) use ($user) {
-            $query->where('act_submit_by', $user->user_id)
-                ->where('status', 'Sent');
-        })
+        $categories = \App\Models\Category::where('cat_year_id', $selectedYearId)
+            ->whereHas('activities', function ($query) use ($user) {
+                $query->where('act_submit_by', $user->user_id)
+                      ->where('status', 'Sent');
+            })
             ->get();
 
-        return view('province.approve_activity_category', compact('user', 'categories'));
+        return view('province.approve_activity_category', compact('user', 'categories', 'selectedYearId'));
     }
     public function approveActivity(Request $request, $id)
     {
         $user = \App\Models\User::findOrFail($id);
+        $selectedYearId = $request->input('year_id');
 
-        // Update all 'Sent' activities of the user to 'Edit'
-        Activity::where('act_submit_by', $user->user_id)
-            ->where('status', 'Sent')
-            ->update(['status' => 'Approve_by_province']);
+        Category::where('cat_year_id', $selectedYearId)
+            ->whereHas('activities', function ($query) use ($user) {
+                $query->where('act_submit_by', $user->user_id)
+                      ->where('status', 'Sent');
+            })->update(['status' => 'Approve_by_province']);
 
         return redirect()->route('province.index')->with('success', 'กิจกรรมของผู้ใช้นี้ถูกส่งกลับเรียบร้อยแล้ว');
     }
     public function rejectActivity(Request $request, $id)
     {
         $user = \App\Models\User::findOrFail($id);
+        $selectedYearId = $request->input('year_id');
 
-        // Update all 'Sent' activities of the user to 'Edit'
-        Activity::where('act_submit_by', $user->user_id)
-            ->where('status', 'Sent')
-            ->update(['status' => 'Edit']);
+    // อัปเดตเฉพาะกิจกรรมของผู้ใช้นี้ในปีที่เลือก และมีสถานะ Sent
+    Activity::where('act_submit_by', $user->user_id)
+        ->where('status', 'Sent')
+        ->whereHas('category', function ($query) use ($selectedYearId) {
+            $query->where('cat_year_id', $selectedYearId);
+        })
+        ->update(['status' => 'Edit']);
 
         return redirect()->route('province.index')->with('success', 'กิจกรรมของผู้ใช้นี้ถูกส่งกลับเรียบร้อยแล้ว');
     }
+
     public function showActivities($id, $cat_id)
     {
         $user = \App\Models\User::findOrFail($id);
@@ -232,5 +241,57 @@ class ProvinceController extends Controller
         ]);
 
         return response()->json(['success' => true, 'message' => 'บันทึกความคิดเห็นเรียบร้อยแล้ว']);
+    }
+    public function showUnapprovedActivities(Request $request)
+    {
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
+        $provinceId = auth()->user()->province;
+        $activities = Activity::where('status', 'Unapproved_by_central')
+            ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
+            ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
+            ->with(['creator', 'category'])
+            ->get();
+
+        $groupedActivities = $activities
+            ->groupBy(fn($activity) => $activity->creator->user_fullname)
+            ->sortKeys();
+
+        $years = \App\Models\Year::orderByDesc('year_name')->get();
+        $userCount = $groupedActivities->count();
+        $activityCount = $activities->count();
+
+        return view('province.unapprove_activity', compact(
+            'groupedActivities',
+            'years',
+            'selectedYearId',
+            'userCount',
+            'activityCount',
+            'activities'
+        ));
+    }
+    public function rejectAllInProvince(Request $request)
+    {
+        $provinceId = auth()->user()->province;
+
+        // อัปเดตเฉพาะกิจกรรมที่สถานะ Sent และผู้สร้างอยู่ในจังหวัดเดียวกัน
+        Activity::where('status', 'Unapproved_by_central')
+            ->whereHas('creator', function ($q) use ($provinceId) {
+                $q->where('province', $provinceId);
+            })
+            ->update(['status' => 'Edit']);
+
+        return redirect()->route('province.unapprove')->with('success', 'กิจกรรมของทุกคนในจังหวัดถูกส่งกลับเรียบร้อยแล้ว');
+    }
+    public function unapproveByCentral(Request $request, $id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+
+        // Update all 'Sent' activities of the user to 'Edit'
+        Activity::where('act_submit_by', $user->user_id)
+            ->where('status', 'Unapproved_by_central')
+            ->update(['status' => 'Edit']);
+
+        return redirect()->route('province.unapprove')->with('success', 'กิจกรรมของผู้ใช้นี้ถูกส่งกลับเรียบร้อยแล้ว');
     }
 }

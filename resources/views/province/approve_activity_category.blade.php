@@ -17,7 +17,7 @@
                 @csrf
                 <button class="btn btn-primary fw-light" type="submit">ส่งให้ส่วนกลาง</button>
             </form>
-            <form method="POST" action="{{ route('province.reject', $user->user_id) }}">
+            <form method="POST" action="{{ route('province.rejectActivity', $user->user_id) }}?year_id={{ $selectedYearId }}">
                 @csrf
                 <button class="btn btn-danger fw-light ms-3" type="submit">ส่งกลับให้เจ้าหน้าที่อาสา</button>
             </form>

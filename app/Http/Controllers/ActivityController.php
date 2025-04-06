@@ -45,17 +45,17 @@ class ActivityController extends Controller
         $checkAcSent = false;
         if ($activities->isEmpty()) {
             $activities = 0;
-        }else{
-        foreach ($activities as $activity) {
-            if($activity->status == 'Sent') {
-                $checkAcSent = true;
-                break;
-            } else {
-                $checkAcSent = false;
+        } else {
+            foreach ($activities as $activity) {
+                if ($activity->status == 'Sent') {
+                    $checkAcSent = true;
+                    break;
+                } else {
+                    $checkAcSent = false;
                 }
             }
         }
-        return view('volunteer.makedActivity', compact('activities', 'categories','checkAcSent'));
+        return view('volunteer.makedActivity', compact('activities', 'categories', 'checkAcSent'));
     }
 
 
@@ -70,66 +70,69 @@ class ActivityController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{
-    // ตรวจสอบความถูกต้องของข้อมูล
-    $request->validate([
-        'act_title' => 'required|string|max:100',
-        'act_description' => 'required|string',
-        'act_cat_id' => 'required|exists:categories,cat_id',
-        'act_date' => 'required|date', // ตรวจสอบวันที่
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-    ]);
+    {
+        // ตรวจสอบความถูกต้องของข้อมูล
+        $request->validate([
+            'act_title' => 'required|string|max:100',
+            'act_description' => 'required|string',
+            'act_cat_id' => 'required|exists:categories,cat_id',
+            'act_date' => 'required|date', // ตรวจสอบวันที่
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
 
-    try {
-        // สร้างกิจกรรมใหม่
-        $activity = new Activity();
-        $activity->act_title = $request->act_title;
-        $activity->act_description = $request->act_description;
-        $activity->act_cat_id = $request->act_cat_id;
-        $activity->act_date = $request->act_date; // รับค่าจากฟอร์ม
-        $activity->status = 'Saved'; // สถานะเริ่มต้น
-        $activity->act_submit_by = Auth::id(); // ใช้ ID ของผู้ใช้ที่ล็อกอินอยู่
-        $activity->act_save_by = Auth::id(); // ใช้ ID ของผู้ใช้ที่ล็อกอินอยู่
-        $activity->save(); // บันทึกข้อมูลกิจกรรม
+        try {
+            // สร้างกิจกรรมใหม่
+            $activity = new Activity();
+            $activity->act_title = $request->act_title;
+            $activity->act_description = $request->act_description;
+            $activity->act_cat_id = $request->act_cat_id;
+            $activity->act_date = $request->act_date; // รับค่าจากฟอร์ม
+            $activity->status = 'Saved'; // สถานะเริ่มต้น
+            $activity->act_submit_by = Auth::id(); // ใช้ ID ของผู้ใช้ที่ล็อกอินอยู่
+            $activity->act_save_by = Auth::id(); // ใช้ ID ของผู้ใช้ที่ล็อกอินอยู่
+            $activity->save(); // บันทึกข้อมูลกิจกรรม
 
-        // ตรวจสอบว่ากิจกรรมถูกบันทึกแล้ว
-        if (!$activity->act_id) {
-            dd('กิจกรรมไม่สามารถบันทึกได้', $activity);
-        }
-
-        // อัปโหลดรูปภาพ (ถ้ามี)
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $imagePath = $image->storeAs('activity_images', $imageName, 'public');
-
-                // บันทึกข้อมูลรูปภาพ
-                DB::table('var_images')->insert([
-                    'img_act_id' => $activity->act_id,
-                    'img_path' => 'storage/app/public/' . $imagePath,
-                    'img_name' => $imageName,
-                    'img_uploaded_at' => now(),
-                ]);
+            // ตรวจสอบว่ากิจกรรมถูกบันทึกแล้ว
+            if (!$activity->act_id) {
+                dd('กิจกรรมไม่สามารถบันทึกได้', $activity);
             }
-        }
 
-        return redirect()->route('activities.history')
-            ->with('success', 'สร้างกิจกรรม ' . $activity->act_title . ' สำเร็จแล้ว');
-    } catch (\Exception $e) {
-        // แสดงข้อผิดพลาดที่เกิดขึ้น
-        return redirect()->back()
-            ->with('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage())
-            ->withInput();
+            // อัปโหลดรูปภาพ (ถ้ามี)
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $imagePath = $image->storeAs('activity_images', $imageName, 'public');
+
+                    // บันทึกข้อมูลรูปภาพ
+                    DB::table('var_images')->insert([
+                        'img_act_id' => $activity->act_id,
+                        'img_path' => 'storage/app/public/' . $imagePath,
+                        'img_name' => $imageName,
+                        'img_uploaded_at' => now(),
+                    ]);
+                }
+            }
+
+            return redirect()->route('activities.history')
+                ->with('success', 'สร้างกิจกรรม ' . $activity->act_title . ' สำเร็จแล้ว');
+        } catch (\Exception $e) {
+            // แสดงข้อผิดพลาดที่เกิดขึ้น
+            return redirect()->back()
+                ->with('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage())
+                ->withInput();
+        }
     }
-}
 
     public function submitAll()
     {
         $userId = Auth::id();
-       // dd($userId);
+        // dd($userId);
         // อัปเดตทุกกิจกรรม ให้เป็น "Sent"
         Activity::where('act_submit_by', $userId)
             ->where('status', 'Saved') // เฉพาะกิจกรรมที่ยังไม่ถูกส่ง
+            ->update(['status' => 'Sent']);
+        Activity::where('act_submit_by', $userId)
+            ->where('status', 'Edit') // เฉพาะกิจกรรมที่ยังไม่ถูกส่ง
             ->update(['status' => 'Sent']);
 
             Activity::where('act_submit_by', $userId)
@@ -208,13 +211,15 @@ class ActivityController extends Controller
         // รีไดเรกต์ไปที่หน้าแสดงกิจกรรมที่ถูกอัปเดต และแสดงข้อความสำเร็จ
         return redirect()->route('activities.history')->with('success', 'กิจกรรมถูกอัปเดตสำเร็จ');
     }
-    public function detail($id){
+    public function detail($id)
+    {
         $activity = Activity::findOrFail($id); // ดึงข้อมูลกิจกรรม
         $categories = Category::where('status', 'published')->get(); // ดึงหมวดหมู่ที่เผยแพร่
 
         return view('volunteer.activity_detail', compact('activity', 'categories'));
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $activity = Activity::findOrFail($id); // ดึงข้อมูลกิจกรรม
         $activity->delete(); // ลบกิจกรรม
 
