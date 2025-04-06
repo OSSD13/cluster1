@@ -89,6 +89,8 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::post('/categories/publishAll', [CategoryController::class, 'publishAll'])->name('categories.publishAll');
     Route::post('/categories/{id}/publish', [CategoryController::class, 'publish'])->name('categories.publish');
     Route::post('/categories/{id}/unpublish', [CategoryController::class, 'unpublish'])->name('categories.unpublish');
+    Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
 
     /**
      * ------------------------------
@@ -117,4 +119,3 @@ Route::middleware([UserMiddleware::class])->group(function () {
         return view('province.approve_activity_activity_detail');
     });
 });
-

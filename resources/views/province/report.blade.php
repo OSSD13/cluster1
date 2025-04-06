@@ -36,7 +36,7 @@
 @section('content')
     {{-- 🔍 Search Bar --}}
     <div class="row mb-3">
-        <div class="col-4">
+        <div class="col-6">
             <input type="text" class="form-control shadow-sm" placeholder="🔍 ค้นหา..." />
         </div>
     </div>
@@ -49,7 +49,7 @@
             <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
             <form method="GET" action="{{ route('province.report') }}" id="yearForm">
                 <select name="year_id" class="form-select shadow-sm"
-                    onchange="document.getElementById('yearForm').submit()">
+                    onchange="document.getElementById('yearForm').submit()" style="height: 72px;">
                     @foreach ($years as $year)
                         <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
                             {{ $year->year_name }}
@@ -62,7 +62,8 @@
         {{-- จังหวัด --}}
         <div class="col-md-3">
             <label class="form-label fw-bold">จังหวัด</label>
-            <div class="form-control shadow-sm bg-white">
+            <div class="form-control shadow-sm bg-white d-flex align-items-center" style="height: 72px;">
+                {{-- แสดงชื่อจังหวัด --}}
                 {{ auth()->user()->provinceData->pvc_name ?? '-' }}
             </div>
         </div>
@@ -70,16 +71,18 @@
         {{-- จำนวนอาสา --}}
         <div class="col-md-3">
             <label class="form-label fw-bold">จำนวนอาสา</label>
-            <div class="form-control shadow-sm bg-white text-end">
-                {{ $userCount }} คน
+            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center" style="height: 72px;">
+                <div>{{ $userCount }}</div>
+                <div>คน</div>
             </div>
         </div>
 
         {{-- จำนวนกิจกรรม --}}
         <div class="col-md-3">
             <label class="form-label fw-bold">จำนวนกิจกรรม</label>
-            <div class="form-control shadow-sm bg-white text-end">
-                {{ $activityCount }} กิจกรรม
+            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center" style="height: 72px;">
+            <div>{{ $activityCount }}</div>
+            <div>กิจกรรม</div>
             </div>
         </div>
     </div>
