@@ -60,10 +60,8 @@
                                         <span class="badge bg-warning text-dark">ยังไม่ส่ง</span>
                                     @endif
                                 </td>
-                                <td class="text-center">
-                                    {{-- <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">แก้ไข</a>
-                            <a href="{{ route('categories.show', $category->id) }}" class="btn btn-primary btn-sm">รายละเอียด</a> --}}
-                                    <a href="#" class="btn btn-warning btn-sm">แก้ไข</a>
+                                <td class="text-center mt-4">
+                                   <a href="{{route('categories.edit', $category->cat_id)}}" class="btn btn-lg btn-warning btn-sm">แก้ไข</a>
                                     <a href="#" class="btn btn-primary btn-sm">รายละเอียด</a>
                                 </td>
                             </tr>

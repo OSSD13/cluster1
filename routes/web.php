@@ -68,8 +68,8 @@ Route::middleware([UserMiddleware::class])->group(function () {
     // Route สำหรับลบภาพ
     // ตรวจสอบให้แน่ใจว่า route นี้เป็น method DELETE
 
-   // แก้จาก /images/{id}
-Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->name('images.destroy');
+    // แก้จาก /images/{id}
+    Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->name('images.destroy');
     // Routes สำหรับให้ User2 ตรวจสอบกิจกรรม
     Route::post('/activity/{id}/review', [ActivityController::class, 'review'])->name('activity.review');
 
@@ -89,6 +89,8 @@ Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->nam
     Route::post('/categories/publishAll', [CategoryController::class, 'publishAll'])->name('categories.publishAll');
     Route::post('/categories/{id}/publish', [CategoryController::class, 'publish'])->name('categories.publish');
     Route::post('/categories/{id}/unpublish', [CategoryController::class, 'unpublish'])->name('categories.unpublish');
+    Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
 
     /**
      * ------------------------------
@@ -117,4 +119,3 @@ Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->nam
         return view('province.approve_activity_activity_detail');
     });
 });
-
