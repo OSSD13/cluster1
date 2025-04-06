@@ -6,35 +6,28 @@
     <div class="login-box">
         <div class="login-logo">
             <!--<b>CAMP - </b>66</a>-->
-            
         </div>
         <!-- /.login-logo -->
         <div class="card">
             <div class="card-body login-card-body">
-            <p class="login-box-msg text-center">
-                <b style="font-weight: 900; font-size: 28px;">Login</b>
+                <p class="login-box-msg text-center">
+                    <b style="font-weight: 900; font-size: 28px;">Login</b>
                 </p>
                 <form action="{{ url('/login') }}" method="POST">
                     @csrf
                     <div class="input-group mb-3">
-                    <label for="username" class="form-label">Username</label>
-                        <input type="text" name="user_username" class="form-control w-100" placeholder="Username" style="border-radius: 6px;"required />
-                        <div class="input-group-text bg-transparent border-0"></div>
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" name="user_username" class="form-control w-100" placeholder="Username" style="border-radius: 6px;" required />
                     </div>
-                    <!-- <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+
+                    <div class="input-group mb-3">
+                        <label for="password" class="form-label">Password</label><br>
                         <div class="input-group">
                             <input type="password" name="user_password" id="password" class="form-control" placeholder="Password" required />
-                            <div class="input-group-text ">
-                            <span class="bi bi-eye-slash"></span>
-                            </div>
+                            <span class="input-group-text bg-white border-start-0" onclick="togglePassword()" style="cursor: pointer; padding-left: 0.5rem; padding-right: 0.5rem;">
+                                    <i id="eyeIcon" class="bi bi-eye-slash"></i>
+                                </span>
                         </div>
-                    </div> -->
-                    <div class="input-group mb-3">
-                        <input type="password" name="user_password" id="password"  class="form-control" placeholder="Password" required />
-                        <span class="input-group-text bg-white border-start-0" onclick="togglePassword()" style="cursor: pointer;">
-                            <i id="eyeIcon" class="bi bi-eye-slash"></i>
-                        </span>
                     </div>
 
                     <script>
@@ -53,21 +46,33 @@
                             }
                         }
                     </script>
-                    
-                    <!--bi bi-lock-fill-->
+
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 px-6">
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn" style="background-color: #3459EF; color: white; font-weight: bold" >Log In</button>
+                                <button type="submit" class="btn" style="background-color: #3459EF; color: white; font-weight: bold;">Log In</button>
                             </div>
                         </div>
                     </div>
                 </form>
-                
                 <!-- /.social-auth-links -->
             </div>
             <!-- /.login-card-body -->
         </div>
     </div>
 </div>
+
+@if(session('error'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'ไม่สามารถเข้าสู่ระบบได้',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#3459EF'
+            });
+        });
+    </script>
+@endif
 @endsection

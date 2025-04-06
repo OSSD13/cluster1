@@ -89,7 +89,7 @@
             <main class="app-main">
                 @include('components.top_nav')
                 <!--begin::App Content-->
-                <div class="app-content" style = "margin-top : 100px">
+                <div class="app-content" style = "margin-top : 75px">
                     @yield('content')
                 </div>
                 <!--end::App Content-->
