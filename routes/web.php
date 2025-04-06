@@ -106,9 +106,8 @@ Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->nam
     Route::get('/report', [ProvinceController::class, 'report'])->name('province.report');
     Route::get('/report/activity-data', [ProvinceController::class, 'activityData'])->name('province.activityData');
     Route::post('/province/approve/{id}', [ProvinceController::class, 'approveActivity'])->name('province.approve');
-    Route::post('/province/reject/all', [ProvinceController::class, 'rejectAllInProvince'])->name('province.rejectAllInProvince');
-    Route::post('/province/reject/{id}', [ProvinceController::class, 'rejectActivity'])->name('province.reject');
-    Route::post('/province/reject/{id}', [ProvinceController::class, 'unapproveByCentral'])->name('province.unapprove.click');
+    Route::post('/province/reject/{id}', [ProvinceController::class, 'rejectActivity'])->name('province.rejectActivity');
+    Route::post('/province/reject/sentback{id}', [ProvinceController::class, 'unapproveByCentral'])->name('province.unapprove.click');
     Route::post('/province/reject/all', [ProvinceController::class, 'rejectAllInProvince'])->name('province.rejectAllInProvince');
     Route::get('/province/unapprove',[ProvinceController::class, 'showUnapprovedActivities'])->name('province.unapprove');
 
