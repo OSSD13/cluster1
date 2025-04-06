@@ -46,7 +46,7 @@
     <div class="card shadow-sm">
         <div class="card-body p-3">
             <h6 class="mb-3 fw-bold">ตารางการทำงาน</h6>
-            <table class="table table-sm table-striped text-center align-middle">
+            <table class="table table-sm text-center align-middle custom-table">
                 <thead class="table-light small">
                     <tr>
                         <th> </th>
@@ -64,56 +64,94 @@
                             <td colspan="7" class="text-center text-muted">ไม่มีข้อมูลกิจกรรม</td>
                         </tr>
                     @else
-                        @foreach ($activities as $index => $activity)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $activity->category->cat_name ?? 'ไม่ระบุหมวดหมู่' }}</td>
-                                <td>{{ $activity->act_title ?? 'ไม่มีชื่อกิจกรรม' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($activity->act_date)->format('d/m/Y') ?? '-' }}</td>
-                                <td>
-                                    @if ($activity->category->cat_ismandatory ?? false)
-                                        <span class="badge bg-danger-subtle text-danger fw-semibold">บังคับ</span>
-                                    @else
-                                        <span class="badge bg-secondary-subtle text-secondary">ไม่บังคับ</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($activity->status == 'Saved')
-                                        <span class="badge bg-primary-subtle text-primary fw-normal">
-                                            <span class="dot me-1" style="background-color: #0d6efd;"></span>
-                                            บันทึกแล้ว
-                                        </span>
-                                    @elseif ($activity->status == 'Sent' || $activity->status == 'Approve_by_province')
-                                        <span class="badge bg-success-subtle text-success fw-normal">
-                                            <span class="dot me-1" style="background-color: #1e9b1e;"></span>
-                                            ส่งแล้ว
-                                        </span>
-                                    @elseif ($activity->status == 'Edit' || $activity->status == 'unapproved_by_central')
-                                        <span class="badge bg-warning-subtle text-warning fw-normal">
-                                            <span class="dot me-1" style="background-color: #b8860b;"></span>
-                                            แก้ไข
-                                        </span>
-                                    @elseif ($activity->status == 'Approve_by_central')
-                                        <span class="badge bg-secondary-subtle text-muted fw-normal">
-                                            <span class="dot me-1" style="background-color: #6c757d;"></span>
-                                            เสร็จสิ้น
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if (in_array($activity->status, ['Saved','Edit','unapproved_by_central']))
-                                        <a href="{{ route('activities.edit', $activity->act_id) }}">
-                                            <button type="button" class="btn btn-warning btn-sm custom-btn">แก้ไข</button>
-                                        </a>
-                                    @endif
-                                    @if (in_array($activity->status, ['Sent','Edit','Approve_by_central','unapproved_by_central','Approve_by_province']))
-                                        <a href="{{ route('activities.detail', $activity->act_id) }}">
-                                            <button class="btn bg-primary text-white btn-sm custom-btn">รายละเอียด</button>
-                                        </a>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+                    @foreach ($activities as $index => $activity)
+    <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{ $activity->category->cat_name ?? 'ไม่ระบุหมวดหมู่' }}</td>
+        <td>{{ $activity->act_title ?? 'ไม่มีชื่อกิจกรรม' }}</td>
+        <td>{{ \Carbon\Carbon::parse($activity->act_date)->format('d/m/Y') ?? '-' }}</td>
+
+        {{-- ประเภท --}}
+        <td class="text-center">
+            @php
+                $mandatoryText = ($activity->category->cat_ismandatory ?? false) ? 'บังคับ' : 'ไม่บังคับ';
+                $mandatoryClass = ($activity->category->cat_ismandatory ?? false)
+                    ? 'bg-danger-subtle text-danger'
+                    : 'bg-secondary-subtle text-secondary';
+            @endphp
+
+            <span class="badge badge-status justify-content-center {{ $mandatoryClass }}">
+                <span class="status-text">{{ $mandatoryText }}</span>
+            </span>
+        </td>
+
+        {{-- สถานะ --}}
+        <td>
+            @php
+                $statusColor = [
+                    'Saved' => '#0d6efd',
+                    'Sent' => '#90ee90',
+                    'Approve_by_province' => '#90ee90',
+                    'Edit' => '#b8860b',
+                    'unapproved_by_central' => '#b8860b',
+                    'Approve_by_central' => '#6c757d',
+                ];
+
+                $statusText = [
+                    'Saved' => 'บันทึกแล้ว',
+                    'Sent' => 'ส่งแล้ว',
+                    'Approve_by_province' => 'ส่งแล้ว',
+                    'Edit' => 'แก้ไข',
+                    'unapproved_by_central' => 'แก้ไข',
+                    'Approve_by_central' => 'เสร็จสิ้น',
+                ];
+
+                $bgClass = match($activity->status) {
+                    'Saved' => 'bg-primary-subtle text-primary',
+                    'Sent', 'Approve_by_province' => '',
+                    'Edit', 'unapproved_by_central' => 'bg-warning-subtle text-warning',
+                    'Approve_by_central' => 'bg-secondary-subtle text-muted',
+                    default => 'bg-light text-dark'
+                };
+
+                $inlineBg = '';
+                if (in_array($activity->status, ['Sent', 'Approve_by_province'])) {
+                    $inlineBg = 'background-color: #e6f9e6; color: #207720;';
+                }
+            @endphp
+
+            <span class="badge badge-status {{ $bgClass }}" style="{{ $inlineBg }}">
+                <span class="dot-container">
+                    <span class="dot" style="background-color: {{ $statusColor[$activity->status] ?? '#000' }};"></span>
+                </span>
+                <span class="status-text">{{ $statusText[$activity->status] ?? 'ไม่ทราบสถานะ' }}</span>
+            </span>
+        </td>
+
+        {{-- การกระทำ --}}
+        <td class="text-center">
+            <div class="d-flex justify-content-center">
+                <div class="d-flex flex-column flex-md-row gap-1 align-items-center action-wrapper">
+                    @if (in_array($activity->status, ['Saved','Edit','unapproved_by_central']))
+                        <a href="{{ route('activities.edit', $activity->act_id) }}">
+                            <button type="button" class="btn btn-warning btn-sm action-btn">แก้ไข</button>
+                        </a>
+                    @else
+                        <div class="action-placeholder"></div>
+                    @endif
+
+                    @if (in_array($activity->status, ['Sent','Edit','Approve_by_central','unapproved_by_central','Approve_by_province']))
+                        <a href="{{ route('activities.detail', $activity->act_id) }}">
+                            <button class="btn bg-primary text-white btn-sm action-btn">รายละเอียด</button>
+                        </a>
+                    @else
+                        <div class="action-placeholder"></div>
+                    @endif
+                </div>
+            </div>
+        </td>
+    </tr>
+@endforeach
                     @endif
                 </tbody>
             </table>
@@ -122,16 +160,59 @@
 </div>
 
 <style>
+    .dot-container {
+        width: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .dot {
-        display: inline-block;
         width: 8px;
         height: 8px;
         border-radius: 50%;
+        flex-shrink: 0;
     }
 
-    .custom-btn {
+    .badge-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        min-width: 90px;
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: 0.5rem;
+        justify-content: flex-start;
+    }
+
+    .status-text {
+        white-space: nowrap;
+    }
+
+    .action-btn {
+        min-width: 85px;
         font-size: 0.75rem;
         color: white;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .action-wrapper {
+        min-width: 180px;
+        justify-content: center;
+    }
+
+    .action-placeholder {
+        width: 85px;
+        height: 30px;
+    }
+
+    /* ปรับแถว: สีขาวสำหรับเลขคี่, สีเทาอ่อนสำหรับเลขคู่ */
+    .custom-table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    .custom-table tbody tr:nth-child(even) {
+        background-color:rgb(2, 11, 21);
     }
 </style>
 

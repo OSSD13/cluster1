@@ -1,15 +1,15 @@
 @extends('layouts.default_with_menu')
 
 @section('content')
-    <div class="container mt-4">
-        {{-- 🔍 Search --}}
-        <div class="row mb-3">
-            <div class="col-3">
-                <input type="text" class="form-control shadow-sm" placeholder="🔍 ค้นหา..." />
-            </div>
-        </div>
+<div class="container" style="margin-top: -40px;">
+    <div class="row mb-3 align-items-end">
+<div class="container mt-4">
+    {{-- 🔍 Search --}}
+    <div class="mb-3">
+        <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
+    </div>
 
-        {{-- 📊 Summary Filters --}}
+    {{-- 📊 Summary Filters --}}
         <div class="row g-3 align-items-end mb-4">
             {{-- ปี --}}
             <div class="col-md-3">
@@ -50,14 +50,16 @@
             </div>
         </div>
 
-        {{-- 📋 ตารางกิจกรรม --}}
-        <div class="card shadow">
-            <div class="card-body">
-                <h5 class="mb-3 fw-bold">ตารางการทำงาน</h5>
-                <table class="table table-striped">
-                    <thead class="table-light">
+
+    {{-- 📋 ตารางกิจกรรม --}}
+    <div class="card shadow-sm">
+        <div class="card-body p-3">
+            <h6 class="mb-3 fw-bold">ตารางการทำงาน</h6>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead class="table-light small">
                         <tr>
-                            <th>ลำดับ</th>
+                            <th> </th>
                             <th>ชื่อเจ้าหน้าที่อาสา</th>
                             <th>จังหวัด</th>
                             <th>สถานะ</th>
@@ -80,11 +82,14 @@
                                 <td class="text-start">{{ $fullname }}</td>
                                 <td>{{ $province }}</td>
                                 <td>
-                                    <span class="badge bg-warning text-dark">รอตรวจสอบ</span>
+                                <span class="badge bg-light text-dark d-flex align-items-center gap-2 px-2 py-2 rounded-pill" style="font-weight: 500;">
+                    <span class="bg-secondary rounded-circle d-inline-block" style="width: 10px; height: 10px;"></span>
+                    ยังไม่ตรวจสอบ
+                </span>
                                 </td>
                                 <td class="text-center">
                                     <a href="{{ route('province.approve.category', $creator->user_id) }}"
-                                       class="btn btn-sm btn-outline-primary">รายละเอียด</a>
+                                       class="btn btn-primary btn-sm px-4 rounded-pill">รายละเอียด</a>
                                 </td>
                             </tr>
                         @empty
@@ -97,34 +102,35 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @section('javascript')
 <script>
-    $(document).ready(function() {
-        $('#yearFilter').on('change', function() {
+    $(document).ready(function () {
+        $('#yearFilter').on('change', function () {
             const yearId = $(this).val();
 
             $.ajax({
                 url: '{{ route("province.considerData") }}',
                 type: 'GET',
                 data: { year_id: yearId },
-                success: function(response) {
+                success: function (response) {
                     const selectedYear = $('#yearFilter').val();
                     let rows = '';
                     let index = 1;
                     response.data.forEach((item) => {
                         if (item.category && item.category.cat_year_id == selectedYear) {
-                            rows += `
+                            rows += 
                             <tr>
                                 <td>${index++}</td>
                                 <td class="text-start">${item.fullname}</td>
                                 <td>${item.province}</td>
-                                <td><span class="badge bg-warning text-dark">รอตรวจสอบ</span></td>
+                                <td><span class="badge bg-secondary text-white">ยังไม่ตรวจสอบ</span></td>
                                 <td class="text-center">
-                                    <a href="/activities/review/${item.activity_id}" class="btn btn-sm btn-outline-primary">รายละเอียด</a>
+                                    <a href="/activities/review/${item.activity_id}" class="btn btn-primary btn-sm px-4 rounded-pill">รายละเอียด</a>
                                 </td>
-                            </tr>`;
+                            </tr>;
                         }
                     });
 
@@ -132,7 +138,7 @@
                     $('#volunteerCount').text(response.userCount + ' คน');
                     $('#activityCount').text(response.activityCount + ' กิจกรรม');
                 },
-                error: function() {
+                error: function () {
                     alert('โหลดข้อมูลล้มเหลว กรุณาลองใหม่');
                 }
             });
