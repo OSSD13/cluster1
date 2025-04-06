@@ -48,7 +48,7 @@ class ProvinceController extends Controller
         $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
         $selectedYearId = $request->input('year_id', $latestYear->year_id);
         $provinceId = auth()->user()->province;
-        $activities = Activity::where('status', 'Sent')
+        $activities = Activity::where('status', ['Sent', 'Edit', 'Approve_by_province'])
             ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
             ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
             ->with(['creator', 'category'])
