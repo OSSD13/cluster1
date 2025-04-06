@@ -25,6 +25,10 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'create']);
 
+Route::get('/.env', function () {
+    return redirect('/');
+});
+
 /**
  * ------------------------------
  * Routes ที่ต้องมี Authentication
