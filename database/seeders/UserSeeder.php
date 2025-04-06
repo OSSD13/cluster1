@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
             'user_username' => 'volunteer2',
             'user_name_title' => 'Mr.',
             'user_fullname' => 'narich',
-            'province' => '1',
+            'province' => '2',
             'user_password' => Hash::make('Pass1234'),
         ]);
         $volunteer3 = User::create([
@@ -48,12 +48,20 @@ class UserSeeder extends Seeder
             'province' => '3',
             'user_password' => Hash::make('Pass1234'),
         ]);
+        $volunteer5 = User::create([
+            'user_username' => 'volunteer5',
+            'user_name_title' => 'Mr.',
+            'user_fullname' => 'yyyyy',
+            'province' => '3',
+            'user_password' => Hash::make('Pass1234'),
+        ]);
 
         $volunteer->assignRole('Volunteer');
         $volunteer1->assignRole('Volunteer');
         $volunteer2->assignRole('Volunteer');
         $volunteer3->assignRole('Volunteer');
         $volunteer4->assignRole('Volunteer');
+        $volunteer5->assignRole('Volunteer');
 
 
 
@@ -92,7 +100,7 @@ class UserSeeder extends Seeder
 
 
 
-        
+
 
 
 

@@ -69,7 +69,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     // ตรวจสอบให้แน่ใจว่า route นี้เป็น method DELETE
 
    // แก้จาก /images/{id}
-Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->name('images.destroy');
+   Route::post('/activity-images/{id}', [ImageController::class, 'destroy'])->name('images.destroy');
     // Routes สำหรับให้ User2 ตรวจสอบกิจกรรม
     Route::post('/activity/{id}/review', [ActivityController::class, 'review'])->name('activity.review');
 

@@ -18,6 +18,5 @@ class YearSeeder extends Seeder
         Year::create(['year_name' => '2023']);
         Year::create(['year_name' => '2024']);
         Year::create(['year_name' => '2025']);
-        Year::create(['year_name' => '2026']);
     }
 }

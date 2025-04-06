@@ -67,46 +67,39 @@
                             <div class="image-preview mt-3" id="imagePreviewContainer" style="display: block;">
                                 <div class="image-preview-grid" id="imagePreviewRow">
                                     <!-- แสดงรูปภาพที่อัปโหลดก่อนหน้านี้ -->
-                                    @foreach($activity->images as $image)
-                                        <div class="image-preview-item" data-id="{{ $image->img_id }}">
-                                            <?php    $image_path =  $image->img_path; ?>
-                                            <!-- แสดงเส้นทางเพื่อตรวจสอบ -->
-                                            {{-- <div>
-                                                {{ ($image->img_id)}}
-                                            </div> --}}
 
-                                            <img src="{{ asset($image_path) }}" alt="{{ $image->img_name }}">
-                                            <!-- แสดงชื่อภาพ -->
-                                            <!-- ปุ่มลบ -->
-                                            {{-- <form action="{{ url('activity-images/' . $image->img_id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="remove-image"
-                                                    onclick="return confirm('คุณแน่ใจว่าจะลบภาพนี้?')">×</button>
-                                            </form> --}}
-                                        </div>
-                                    @endforeach
                                 </div>
                             </div>
                         </div>
                         <!-- ปุ่มบันทึกการแก้ไข -->
                         <button type="submit" class="btn btn-save">บันทึกการแก้ไข</button>
                     </form>
+                    <!-- ✅ ฟอร์มลบภาพ อยู่ข้างนอก -->
+                    @foreach($activity->images as $image)
+                        <div class="image-preview-item">
+                            <img src="{{ asset($image->img_path) }}" alt="{{ $image->img_name }}">
+
+                            <form action="{{ route('images.destroy', $image->img_id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" onclick="return confirm('ยืนยันลบภาพนี้?')">ลบ</button>
+                            </form>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="d-flex justify-content-end mt-3" style="margin-left: 70vw; margin-top: -5vh; padding: 0px;">
-        <form action="http://localhost:1301/activity/8" onsubmit="clickme(event)" method="post">
-            <input type="hidden" name="_token" value="s8PolA0EYQEVUG7WuL08J7idIjnsFsld11V0jH84" autocomplete="off">
-            <input type="hidden" name="_method" value="delete">
-            <button type="submit" class="btn btn-danger btn-lg">ลบกิจกรรม</button>
-        </form>
-    </div>
-    
-    
+
+
+{{--
+    <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
+        @csrf
+        @method("delete")
+        <button type="submit" class="btn btn-danger btn-sm">ลบกิจกรรม </button>
+    </form> --}}
 
 
 
@@ -118,10 +111,10 @@
         }
 
         .content-container {
-            width: 100vh;
+            width: 80vh;
             margin-left: 30vh;
-            margin-top: -5vh;
-            padding: 0px;
+            margin-top: 10vh;
+            padding: 20px;
             transition: all 0.3s ease-in-out;
         }
 
@@ -228,6 +221,7 @@
                 previewContainer.style.display = 'block';
 
                 Array.from(files).forEach(file => {
+
                     if (file.type.startsWith("image/")) {
                         const reader = new FileReader();
 
@@ -237,6 +231,8 @@
 
                             const imageWrapper = document.createElement("div");
                             imageWrapper.classList.add("image-preview-item");
+
+
 
                             const removeButton = document.createElement("div");
                             removeButton.classList.add("remove-image");
