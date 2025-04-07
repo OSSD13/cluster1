@@ -70,8 +70,6 @@ class HomeController extends Controller
             return view('province.overview', compact('categoryCount', 'activityCount', 'categories'));
         } elseif ($user->hasRole('Volunteer')) {
 
-
-
             // ดึงหมวดหมู่ที่เผยแพร่แล้ว
             $categories = Category::where('status', 'published')->get();
 
