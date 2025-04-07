@@ -9,7 +9,7 @@ use App\Models\VarImage;
 use App\Models\Activity;
 use App\Models\Category;
 
-class imageController extends Controller
+class ImageController extends Controller
 {
     //
     public function destroy($id)
