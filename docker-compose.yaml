@@ -5,7 +5,7 @@ services:
     container_name: VAR
     ports:
       - "1301:80"
-    # volumes:
-    #   - .:/var/www/html
+    volumes:
+      - .:/var/www/html
     env_file:
       - .env
