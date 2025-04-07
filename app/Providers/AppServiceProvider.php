@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,6 +13,11 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        if (config('app.env') === 'production'){
+            $customUrl = config('app.url');
+            URL::forceRootUrl($customUrl);
+            URL::forceScheme('https');
+        }
     }
 
     /**
