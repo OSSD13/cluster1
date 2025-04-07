@@ -27,7 +27,7 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('activities/historyActivity') }}"
+                <a href="{{ route('historyActivity') }}"
                     class="nav-link sidebar-link {{ Request::is('activities/historyActivity') ? 'active' : '' }}">
                     <i class="bi bi-clock-fill"></i>
                     <span>กิจกรรมที่เคยทำ</span>
@@ -45,21 +45,21 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('/province/approve') }}"
+                <a href="{{ route('province.index') }}"
                     class="nav-link sidebar-link {{ Request::is('province/approve') ? 'active' : '' }}">
                     <i class="bi bi-check2-square sidebar-icon"></i>
                     <span>อนุมัติงาน</span>
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('province/unapprove') }}"
+                <a href="{{ route('province.unapprove') }}"
                     class="nav-link sidebar-link text-muted {{ Request::is('province/unapprove') ? 'active' : '' }}">
                     <i class="bi bi-x-circle sidebar-icon"></i>
                     <span>กิจกรรมที่ไม่ผ่าน</span>
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('report') }}" class="nav-link sidebar-link {{ Request::is('report') ? 'active' : '' }}">
+                <a href="{{ route('province.report') }}" class="nav-link sidebar-link {{ Request::is('report') ? 'active' : '' }}">
                     <i class="bi bi-file-earmark-bar-graph sidebar-icon"></i>
                     <span>รายงาน</span>
                 </a>
@@ -76,7 +76,7 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('categories') }}"
+                <a href="{{ route('categories.index') }}"
                     class="nav-link sidebar-link {{ Request::is('categories*') ? 'active' : '' }}">
                     <i class="bi bi-journal-text sidebar-icon"></i>
                     <span>กำหนดหมวดหมู่</span>
