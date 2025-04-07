@@ -36,9 +36,16 @@
 @section('content')
     {{-- 🔍 Search Bar --}}
     <div class="row mb-3">
-        <div class="col-6">
+        <!-- <div class="col-6">
             <input type="text" class="form-control shadow-sm" placeholder="🔍 ค้นหา..." />
+        </div> -->
+        
+        <div class="col-6">
+        <div class="position-relative">
+            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+            <input type="text" class="form-control ps-5 shadow-sm" placeholder="ค้นหา..." name="search" value="{{ request('search') }}">
         </div>
+        
     </div>
 
     {{-- 📊 Filter & Summary Info --}}
