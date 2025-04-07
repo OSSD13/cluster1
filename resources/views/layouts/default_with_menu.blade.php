@@ -75,6 +75,10 @@
 
     <!-- <link rel="stylesheet" href="../../../dist/css/adminlte.css" /> -->
     <link rel="stylesheet" href="{{ url('public/css/adminlte.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="{{ asset('js/app.js') }}"></script>
+
+
     <!--end::Required Plugin(AdminLTE)-->
     @yield('styles')
 </head>
