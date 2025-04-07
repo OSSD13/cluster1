@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\volunteerController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\provinceController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Controllers\centralController;
@@ -73,7 +73,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     // ตรวจสอบให้แน่ใจว่า route นี้เป็น method DELETE
 
     // แก้จาก /images/{id}
-    Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->name('images.destroy');
+    Route::delete('/activity-images/{id}', [imageController::class, 'destroy'])->name('images.destroy');
     // Routes สำหรับให้ User2 ตรวจสอบกิจกรรม
 
     // Routes สำหรับให้ User1 ตรวจสอบและอนุมัติขั้นสุดท้าย
@@ -104,21 +104,21 @@ Route::middleware([UserMiddleware::class])->group(function () {
     // --------------------------------
     // Route for Province
     // --------------------------------
-    Route::get('/province/approve', [ProvinceController::class, 'reviewList'])->name('province.index');
-    Route::get('/province/approve/category/{user_id}', [ProvinceController::class, 'showCategoryToSelect'])->name('province.approve.category');
-    Route::get('/province/approve/category/{user_id}/activities/{cat_id}', [ProvinceController::class, 'showActivities'])->name('province.approve.category.activities');
-    Route::get('/province/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [ProvinceController::class, 'showActivityDetail'])->name('province.approve.category.activities.detail');
-    Route::get('/consider-event/activity-data', [ProvinceController::class, 'considerData'])->name('province.considerData');
-    Route::get('/report', [ProvinceController::class, 'report'])->name('province.report');
-    Route::get('/report/activity-data', [ProvinceController::class, 'activityData'])->name('province.activityData');
-    Route::post('/province/approve/{id}', [ProvinceController::class, 'approveActivity'])->name('province.approve');
-    Route::post('/province/reject/{id}', [ProvinceController::class, 'rejectActivity'])->name('province.rejectActivity');
-    Route::post('/province/reject/sentback{id}', [ProvinceController::class, 'unapproveByCentral'])->name('province.unapprove.click');
-    Route::post('/province/reject/all', [ProvinceController::class, 'rejectAllInProvince'])->name('province.rejectAllInProvince');
-    Route::get('/province/unapprove', [ProvinceController::class, 'showUnapprovedActivities'])->name('province.unapprove');
+    Route::get('/province/approve', [provinceController::class, 'reviewList'])->name('province.index');
+    Route::get('/province/approve/category/{user_id}', [provinceController::class, 'showCategoryToSelect'])->name('province.approve.category');
+    Route::get('/province/approve/category/{user_id}/activities/{cat_id}', [provinceController::class, 'showActivities'])->name('province.approve.category.activities');
+    Route::get('/province/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [provinceController::class, 'showActivityDetail'])->name('province.approve.category.activities.detail');
+    Route::get('/consider-event/activity-data', [provinceController::class, 'considerData'])->name('province.considerData');
+    Route::get('/report', [provinceController::class, 'report'])->name('province.report');
+    Route::get('/report/activity-data', [provinceController::class, 'activityData'])->name('province.activityData');
+    Route::post('/province/approve/{id}', [provinceController::class, 'approveActivity'])->name('province.approve');
+    Route::post('/province/reject/{id}', [provinceController::class, 'rejectActivity'])->name('province.rejectActivity');
+    Route::post('/province/reject/sentback{id}', [provinceController::class, 'unapproveByCentral'])->name('province.unapprove.click');
+    Route::post('/province/reject/all', [provinceController::class, 'rejectAllInProvince'])->name('province.rejectAllInProvince');
+    Route::get('/province/unapprove', [provinceController::class, 'showUnapprovedActivities'])->name('province.unapprove');
 
     // Route สำหรับความคิดเห็น
-    Route::post('/province/comment/{activityId}', [ProvinceController::class, 'storeComment'])->name('province.comment.store');
+    Route::post('/province/comment/{activityId}', [provinceController::class, 'storeComment'])->name('province.comment.store');
 
     // ปุ่มแสดงความคิดเห็น
     Route::get('/province/approve_activity_activity_detail', function () {
