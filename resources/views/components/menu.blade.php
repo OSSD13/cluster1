@@ -27,8 +27,8 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('/cluster1/activities/historyActivity') }}"
-                    class="nav-link sidebar-link {{ Request::is('/cluster1/activities/historyActivity') ? 'active' : '' }}">
+                <a href="{{ url('activities/historyActivity') }}"
+                    class="nav-link sidebar-link {{ Request::is('activities/historyActivity') ? 'active' : '' }}">
                     <i class="bi bi-clock-fill"></i>
                     <span>กิจกรรมที่เคยทำ</span>
                 </a>
@@ -45,21 +45,21 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('/cluster1/province/approve') }}"
-                    class="nav-link sidebar-link {{ Request::is('/cluster1/province/approve') ? 'active' : '' }}">
+                <a href="{{ url('/province/approve') }}"
+                    class="nav-link sidebar-link {{ Request::is('province/approve') ? 'active' : '' }}">
                     <i class="bi bi-check2-square sidebar-icon"></i>
                     <span>อนุมัติงาน</span>
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('/cluster1/province/unapprove') }}"
-                    class="nav-link sidebar-link text-muted {{ Request::is('/cluster1/province/unapprove') ? 'active' : '' }}">
+                <a href="{{ url('province/unapprove') }}"
+                    class="nav-link sidebar-link text-muted {{ Request::is('province/unapprove') ? 'active' : '' }}">
                     <i class="bi bi-x-circle sidebar-icon"></i>
                     <span>กิจกรรมที่ไม่ผ่าน</span>
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('/cluster1/report') }}" class="nav-link sidebar-link {{ Request::is('/cluster1/report') ? 'active' : '' }}">
+                <a href="{{ url('report') }}" class="nav-link sidebar-link {{ Request::is('report') ? 'active' : '' }}">
                     <i class="bi bi-file-earmark-bar-graph sidebar-icon"></i>
                     <span>รายงาน</span>
                 </a>
@@ -76,8 +76,8 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ url('/cluster1/categories') }}"
-                    class="nav-link sidebar-link {{ Request::is('/cluster1/categories*') ? 'active' : '' }}">
+                <a href="{{ url('categories') }}"
+                    class="nav-link sidebar-link {{ Request::is('categories*') ? 'active' : '' }}">
                     <i class="bi bi-journal-text sidebar-icon"></i>
                     <span>กำหนดหมวดหมู่</span>
                 </a>
