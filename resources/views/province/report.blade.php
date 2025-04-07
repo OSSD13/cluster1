@@ -186,23 +186,6 @@
                         data: 'date'
                     }
                 ],
-                dom: 'Bfrtip',
-                buttons: [{
-                        extend: 'excel',
-                        className: 'btn btn-sm btn-success',
-                        text: '💾 Excel'
-                    },
-                    {
-                        extend: 'pdf',
-                        className: 'btn btn-sm btn-danger',
-                        text: '📄 PDF'
-                    },
-                    {
-                        extend: 'print',
-                        className: 'btn btn-sm btn-secondary',
-                        text: '🖨️ พิมพ์'
-                    }
-                ],
                 language: {
                     search: "🔍 ค้นหา:",
                     lengthMenu: "แสดง _MENU_ รายการ",

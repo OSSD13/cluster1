@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Provinces;
 use App\Models\User;
 
-class ProvinceController extends Controller
+class provinceController extends Controller
 {
     public function overview()
     {
@@ -78,7 +78,12 @@ class ProvinceController extends Controller
         $selectedYearId = $request->input('year_id', $latestYear->year_id);
         $provinceId = auth()->user()->province;
 
-        $activities = Activity::where('status', ['Sent','Approve_by_central'])
+        $activities = Activity::where('status', 'Sent')
+            ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
+            ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
+            ->with(['creator', 'category'])
+            ->get();
+        $activities = Activity::where('status', 'Approve_by_central')
             ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
             ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
             ->with(['creator', 'category'])
@@ -112,6 +117,11 @@ class ProvinceController extends Controller
                 $q->where('province', $provinceId);
             })
             ->with(['creator.provinceData', 'category']);
+        $activities = Activity::where('status', 'Approve_by_central')
+            ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
+            ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
+            ->with(['creator', 'category'])
+            ->get();
 
         // กรองปีจาก category
         if ($yearId) {
