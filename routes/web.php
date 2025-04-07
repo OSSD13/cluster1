@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\provinceController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Controllers\centralController;
