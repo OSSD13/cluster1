@@ -18,7 +18,7 @@ class HomeController extends Controller
         if (Auth::check()) {
             $userId = Auth::id();
         } else {
-            return redirect('/login')->with('error', 'กรุณาเข้าสู่ระบบก่อน');
+            return redirect(route('logined'))->with('error', 'กรุณาเข้าสู่ระบบก่อน');
         }
         $user = Auth::user();
 
