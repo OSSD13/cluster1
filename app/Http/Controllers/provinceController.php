@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Provinces;
 use App\Models\User;
 
-class ProvinceController extends Controller
+class provinceController extends Controller
 {
     public function overview()
     {
