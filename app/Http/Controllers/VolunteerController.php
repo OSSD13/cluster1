@@ -16,7 +16,7 @@ class volunteerController extends Controller
         if (Auth::check()) {
             $userId = Auth::id();
         } else {
-            return redirect('/login')->with('error', 'กรุณาเข้าสู่ระบบก่อน');
+            return redirect()->route('logined')->with('error', 'กรุณาเข้าสู่ระบบก่อน');
         }
 
         // ดึงหมวดหมู่ที่เผยแพร่แล้ว

@@ -12,7 +12,7 @@ class UserMiddleware
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
         if (!Auth::check()) {
-            return redirect('/login')->with('error', 'กรุณาเข้าสู่ระบบก่อน');
+            return redirect()->route('logined')->with('error', 'กรุณาเข้าสู่ระบบก่อน');
         }
 
         /** @var \App\Models\User $user */

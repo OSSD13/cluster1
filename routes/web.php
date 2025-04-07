@@ -22,8 +22,7 @@ use App\Http\Controllers\imageController;
 Route::get('/login', [LoginController::class, 'index'])->name('logined');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
-Route::post('/register', [RegisterController::class, 'create']);
+
 
 Route::get('/.env', function () {
     return redirect('/');
