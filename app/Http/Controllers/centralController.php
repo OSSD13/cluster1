@@ -6,7 +6,7 @@ use App\Models\Category;
 use App\Models\Activity;
 
 
-class centralController extends Controller
+class CentralController extends Controller
 {
     //
     public function overview()
