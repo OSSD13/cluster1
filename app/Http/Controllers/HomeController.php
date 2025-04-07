@@ -69,7 +69,7 @@ class HomeController extends Controller
 
             return view('province.overview', compact('categoryCount', 'activityCount', 'categories'));
         }
-        :elseif ($user->hasRole('Volunteer')) {
+        elseif ($user->hasRole('Volunteer')) {
 
 
 
