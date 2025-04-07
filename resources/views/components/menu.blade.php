@@ -27,7 +27,7 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{ route('historyActivity') }}"
+                <a href="{{ route('activities.history') }}"
                     class="nav-link sidebar-link {{ Request::is('activities/historyActivity') ? 'active' : '' }}">
                     <i class="bi bi-clock-fill"></i>
                     <span>กิจกรรมที่เคยทำ</span>
