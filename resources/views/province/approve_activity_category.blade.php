@@ -13,7 +13,7 @@
     <div class="d-flex justify-content-end mb-3">
 
         <div class="btn-group">
-            <form method="POST" action="{{ route('province.approve', $user->user_id) }}">
+            <form method="POST" action="{{ route('province.approve',$user->user_id) }}?year_id={{ $selectedYearId }}">
                 @csrf
                 <button class="btn btn-primary fw-light" type="submit">ส่งให้ส่วนกลาง</button>
             </form>
@@ -31,7 +31,7 @@
                 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
                 gap: 1.5rem;
             }
-            
+
             .category-grid .card {
                 height: 100%;
                 border-radius: 20px;
@@ -39,7 +39,7 @@
                 flex-direction: column;
             }
             </style>
-            
+
         @forelse ($categories as $category)
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm h-100" style="border-radius: 20px">
@@ -54,8 +54,8 @@
                                 <span class="text-danger ms-2">*</span>
                             @endif
                         </div>
-                        
-                        
+
+
                         <hr>
                         <p class="mb-1 fw-light">รายละเอียด</p>
                         <p class="text-muted fw-light">{{ $category->description }}</p>
@@ -69,7 +69,7 @@
                                 border: 1px solid #81b7d8;
                                 transition: background-color 0.3s, border-color 0.3s;
                                 }
-                            
+
                                 .custom-btn:hover {
                                 background-color: #5d93b3;
                                 border-color: #5d93b3;
@@ -86,7 +86,7 @@
                                 รายละเอียด
                             </a>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

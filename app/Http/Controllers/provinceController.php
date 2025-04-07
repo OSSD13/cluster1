@@ -78,7 +78,7 @@ class ProvinceController extends Controller
         $selectedYearId = $request->input('year_id', $latestYear->year_id);
         $provinceId = auth()->user()->province;
 
-        $activities = Activity::where('status', 'Sent')
+        $activities = Activity::where('status', ['Sent','Approve_by_central'])
             ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
             ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
             ->with(['creator', 'category'])
@@ -180,11 +180,13 @@ class ProvinceController extends Controller
         $user = \App\Models\User::findOrFail($id);
         $selectedYearId = $request->input('year_id');
 
-        Category::where('cat_year_id', $selectedYearId)
-            ->whereHas('activities', function ($query) use ($user) {
-                $query->where('act_submit_by', $user->user_id)
-                      ->where('status', 'Sent');
-            })->update(['status' => 'Approve_by_province']);
+    // อัปเดตเฉพาะกิจกรรมของผู้ใช้นี้ในปีที่เลือก และมีสถานะ Sent
+    Activity::where('act_submit_by', $user->user_id)
+        ->where('status', 'Sent')
+        ->whereHas('category', function ($query) use ($selectedYearId) {
+            $query->where('cat_year_id', $selectedYearId);
+        })
+        ->update(['status' => 'Approve_by_province']);
 
         return redirect()->route('province.index')->with('success', 'กิจกรรมของผู้ใช้นี้ถูกส่งกลับเรียบร้อยแล้ว');
     }
