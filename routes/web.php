@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Controllers\centralController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\imageController;
+use App\Http\Controllers\ImageController;
 
 /**
  * ------------------------------
@@ -73,7 +73,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     // ตรวจสอบให้แน่ใจว่า route นี้เป็น method DELETE
 
     // แก้จาก /images/{id}
-    Route::delete('/activity-images/{id}', [imageController::class, 'destroy'])->name('images.destroy');
+    Route::delete('/activity-images/{id}', [ImageController::class, 'destroy'])->name('images.destroy');
     // Routes สำหรับให้ User2 ตรวจสอบกิจกรรม
 
     // Routes สำหรับให้ User1 ตรวจสอบและอนุมัติขั้นสุดท้าย
