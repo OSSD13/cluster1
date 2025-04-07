@@ -66,7 +66,7 @@
                             <th class="text-center">การกระทำ</th>
                         </tr>
                     </thead>
-                    <tbody id="activityTableBody">
+                    <tbody id="activityTableBody" >
                         @php
                             $grouped = $activities->groupBy(fn($a) => $a->creator->user_fullname);
                         @endphp
