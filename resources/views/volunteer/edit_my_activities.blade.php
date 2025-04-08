@@ -100,6 +100,18 @@
                         <!-- ปุ่มบันทึก -->
                         <button type="submit" class="btn btn-save">บันทึกการแก้ไข</button>
                     </form>
+                    <!-- ✅ ฟอร์มลบภาพ อยู่ข้างนอก -->
+                    @foreach($activity->images as $image)
+                        <div class="image-preview-item">
+                            <img src="{{ asset($image->img_path) }}" alt="{{ $image->img_name }}">
+
+                            <form action="{{ route('images.destroy', $image->img_id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="remove-image"onclick="return confirm('ยืนยันลบภาพนี้?')">x</button>
+                            </form>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -147,6 +159,13 @@
         border-radius: 1vh;
         cursor: pointer;
     }
+<div style="text-align: right; margin-top: 20px;">
+    <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
+        @csrf
+        @method("delete")
+        <button type="submit" class="btn btn-danger btn-lg">ลบกิจกรรม </button>
+    </form>
+</div>
 
     .upload-label:hover {
         background: #c6daff;
@@ -165,6 +184,13 @@
         width: 150px;
         height: 100px;
     }
+        .content-container {
+            width: 120vh;
+            margin-left: 20vh;
+            margin-top: 0vh;
+            padding: 0px;
+            transition: all 0.3s ease-in-out;
+        }
 
     .image-preview-item img {
         width: 100%;
