@@ -94,6 +94,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::post('/categories/{id}/unpublish', [CategoryController::class, 'unpublish'])->name('categories.unpublish');
     Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::get('/categories/{id}/detail', [CategoryController::class, 'detail'])->name('categories.detail');
 
     /**
      * ------------------------------

@@ -3,18 +3,17 @@
 @section('content')
 <div class="container">
     <!-- ส่วนบนของการ์ดข้อมูล (4 คอลัมน์) -->
-    <select name="year_id" id="yearFilter" class="form-select shadow-sm" onchange="document.getElementById('yearForm').submit()">
-    @if($years->count())
-        @foreach ($years as $year)
-            <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
-                {{ $year->year_name }}
-            </option>
-        @endforeach
-    @else
-        <option disabled>ไม่พบปี</option>
-    @endif
-</select>
-
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label class="form-label">ปีที่ทำกิจกรรม</label>
+            <div class="card p-4 shadow-sm rounded-3">
+                <table style="width: 101%;">
+                    <tr>
+                        <td class="text-left">2568</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 
             <div class="col-md-3">
                 <label class="form-label">สถานะของกิจกรรม</label>

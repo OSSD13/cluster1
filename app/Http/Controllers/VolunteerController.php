@@ -8,50 +8,44 @@ use App\Models\Category;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-App\Models\Year;
+use App\Models\Year;
 
 class volunteerController extends Controller
 {
 
     public function overview()
 {
-    if (Auth::check()) {
-        $userId = Auth::id();
-    } else {
-        return redirect('/login')->with('error', 'กรุณาเข้าสู่ระบบก่อน');
-    }
+    $userId = auth()->id();
 
     // ดึงหมวดหมู่ที่เผยแพร่แล้ว
     $categories = Category::where('status', 'published')->get();
 
-    // นับหมวดหมู่ทั้งหมดที่ User สามารถเข้าถึง
+    // นับหมวดหมู่ทั้งหมดที่ User เข้าถึงได้
     $categoryCount = $categories->count();
 
-    // นับกิจกรรมที่ทำสำเร็จ
+    // นับกิจกรรมที่ทำเสร็จแล้ว
     $completedCategories = Activity::where('created_by', $userId)
         ->whereIn('status', ['approved', 'final_approved'])
         ->distinct('category_id')
         ->count();
 
-    // ดึง ID หมวดหมู่ที่ทำกิจกรรมสำเร็จ
     $completedCategoryIds = Activity::where('created_by', $userId)
         ->whereIn('status', ['approved', 'final_approved'])
         ->pluck('category_id')
         ->toArray();
 
-    // ✅ ดึงปีทั้งหมด
+    // ✅ เพิ่มตรงนี้
     $years = Year::all();
+    $selectedYearId = $request->input('year_id');
 
-    // ✅ ดึง year_id ที่เลือกไว้ (ถ้ามี)
-    $selectedYearId = request()->input('year_id');
-
+    // ✅ เพิ่มตัวแปร years และ selectedYearId ไปใน view
     return view('volunteer.overview', compact(
+        'categories',
         'categoryCount',
         'completedCategories',
         'completedCategoryIds',
-        'categories',
-        'years',              // ✅ ส่งตัวแปร $years ไปยัง view
-        'selectedYearId'      // ✅ เพื่อให้ option ที่เลือกไว้ยังคงอยู่
+        'years',
+        'selectedYearId'
     ));
 }
 }
@@ -84,4 +78,4 @@ class volunteerController extends Controller
 
     //     return view('volunteer.overview', compact('categoryCount', 'completedCategories', 'completedCategoryIds', 'categories'));
     // }
-}
+
