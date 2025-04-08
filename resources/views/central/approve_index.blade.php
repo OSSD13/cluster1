@@ -14,7 +14,7 @@
                     {{-- ปี --}}
                     <div class="col-md-3">
                         <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
-                        <form method="GET" action="{{ route('central.approve.index') }}" id="yearForm">
+                        <form method="GET" action="{{ route('central.report.index') }}" id="yearForm">
                             <select name="year_id" id="yearFilter" class="form-select shadow-sm"
                                 onchange="document.getElementById('yearForm').submit()">
                                 @foreach ($years as $year)
@@ -67,7 +67,7 @@
                                             <td class="text-center">{{ $index + 1 }}</td>
                                             <td class="text-start " style="padding-left: 100px;">{{ $province->pvc_name }}</td>
                                             <td class="text-center">
-                                                <a href="{{ route('central.report', ['pvc_id' => $province->pvc_id, 'year_id' => $selectedYearId]) }}"
+                                                <a href="{{ route('central.province.index', ['pvc_id' => $province->pvc_id, 'year_id' => $selectedYearId]) }}"
                                                    class="btn btn-sm btn-primary rounded-pill px-3">รายละเอียด</a>
                                             </td>
                                         </tr>
@@ -105,7 +105,7 @@
                         const yearId = $(this).val();
 
                         $.ajax({
-                            url: '{{ route('central.approve.index.data') }}',
+                            url: '{{ route('central.provinceData') }}',
                             type: 'GET',
                             data: {
                                 year_id: yearId

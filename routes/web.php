@@ -133,4 +133,13 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/central/report/province-data', [centralController::class, 'provinceData'])->name('central.provinceData');
     Route::get('/central/report/activity-data', [centralController::class, 'activityData'])->name('central.activityData');
 
+    Route::get('/central/approve/index', [centralController::class, 'approveIndex'])->name('central.approve.index');
+    Route::get('/central/approve/approve-index-data', [centralController::class, 'approveIndexData'])->name('central.approve.index.data');
+    Route::get('/central/approve/province/{pvc_id}', [centralController::class, 'selectVolunteer'])->name('central.province.index');
+    Route::get('/central/approve/category/{user_id}', [centralController::class, 'showCategoryToSelect'])->name('central.approve.category');
+    Route::get('/central/approve/category/{user_id}/activities/{cat_id}', [centralController::class, 'selectActivities'])->name('central.approve.category.activities');
+    Route::get('/central/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [centralController::class, 'showActivityDetail'])->name('central.approve.category.activities.detail');
+
+    Route::post('/central/approve/submit/{id}', [centralController::class, 'approveActivity'])->name('central.approve');
+    Route::post('/central/approve/reject/{id}', [centralController::class, 'rejectActivity'])->name('central.rejectActivity');
 });

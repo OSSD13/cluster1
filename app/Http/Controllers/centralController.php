@@ -65,7 +65,7 @@ class centralController extends Controller
         $years = \App\Models\Year::orderByDesc('year_name')->get();
         $userCount = $groupedActivities->count();
         $activityCount = $activities->count();
-        
+
         return view('province.report', compact(
             'groupedActivities',
             'years',
@@ -149,5 +149,205 @@ class centralController extends Controller
             'userCount' => $data->count(),
             'activityCount' => $activities->count(),
         ]);
+    }
+    public function approveIndex(Request $request)
+    {
+        $years = \App\Models\Year::orderByDesc('year_name')->get();
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
+        $selectedProvinceId = $request->input('province_id');
+
+        $provinces = \App\Models\Provinces::whereHas('users.activities', function ($query) use ($selectedYearId) {
+            $query->where('status', 'Approve_by_province')
+                ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId));
+        })->get();
+        $provinceIds = $provinces->pluck('pvc_id');
+
+        $activities = Activity::where('status', 'Approve_by_province')
+            ->when($selectedProvinceId, function ($query) use ($selectedProvinceId) {
+                return $query->whereHas('creator', fn($q) => $q->where('province', $selectedProvinceId));
+            }, function ($query) use ($provinces) {
+                return $query->whereHas('creator', fn($q) => $q->whereIn('province', $provinces->pluck('pvc_id')));
+            })
+            ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
+            ->get();
+
+        $userCount = $activities->count();
+        $activityCount = $activities->count();
+
+        return view('central.approve_index', compact(
+            'years',
+            'selectedYearId',
+            'provinces',
+            'selectedProvinceId',
+            'userCount',
+            'activityCount'
+        ));
+    }
+    public function approveIndexData(Request $request)
+    {
+        $yearId = $request->input('year_id');
+        $index = 0;
+
+        // ดึงเฉพาะจังหวัดที่มี user และ user เหล่านั้นมี activity ที่ผ่านสถานะ Approve_by_central
+        $provinces = \App\Models\Provinces::whereHas('users.activities', function ($query) use ($yearId) {
+            $query->where('status', 'Approve_by_central')
+                ->whereHas('category', fn($q) => $q->where('cat_year_id', $yearId));
+        })->get();
+
+        $provinceIds = $provinces->pluck('pvc_id');
+
+        $activities = Activity::where('status', 'Approve_by_central')
+            ->whereHas('creator', fn($q) => $q->whereIn('province', $provinceIds))
+            ->whereHas('category', fn($q) => $q->where('cat_year_id', $yearId))
+            ->with(['creator.provinceData', 'category'])
+            ->get();
+
+        $data = $activities->groupBy(function ($a) {
+            return $a->creator->provinceData->pvc_name ?? 'ไม่ทราบจังหวัด';
+        })->map(function ($group, $provinceName) use (&$index) {
+            return [
+                'index' => ++$index,
+                'province' => $provinceName,
+            ];
+        })->values();
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
+    public function selectVolunteer(Request $request, $pvc_id)
+    {
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
+        $provinceID = \App\Models\Provinces::find($pvc_id)->pvc_id;
+        $activities = Activity::where('status', ['Approve_by_province', 'Approve_by_central'])
+            ->whereHas('creator', fn($q) => $q->where('province', $provinceID))
+            ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
+            ->with(['creator', 'category'])
+            ->get();
+
+        $groupedActivities = $activities
+            ->groupBy(fn($activity) => $activity->creator->user_fullname)
+            ->sortKeys();
+
+        $years = \App\Models\Year::orderByDesc('year_name')->get();
+        $userCount = $groupedActivities->count();
+        $activityCount = $activities->count();
+
+        return view('central.approve_activity_index', compact(
+            'groupedActivities',
+            'years',
+            'selectedYearId',
+            'userCount',
+            'activityCount',
+            'activities',
+            'provinceID',
+        ));
+    }
+
+    public function showCategoryToSelect(Request $request, $id)
+    {
+        $provinceID = $request->input('pvc_id');
+        $user = \App\Models\User::findOrFail($id);
+        $selectedYearId = $request->input('year_id');
+
+        $categories = \App\Models\Category::where('cat_year_id', $selectedYearId)
+            ->whereHas('activities', function ($query) use ($user) {
+                $query->where('act_submit_by', $user->user_id)
+                    ->where('status', 'Approve_by_province');
+            })
+            ->get();
+
+        return view('central.approve_activity_category', compact('user', 'categories', 'selectedYearId', 'provinceID'));
+    }
+    public function approveActivity(Request $request, $id)
+    {
+        $provinceId = $request->input('pvc_id');
+        $user = \App\Models\User::findOrFail($id);
+        $selectedYearId = $request->input('year_id');
+
+        \App\Models\Activity::where('act_submit_by', $user->user_id)
+            ->where('status', 'Approve_by_province')
+            ->whereHas('category', function ($query) use ($selectedYearId) {
+                $query->where('cat_year_id', $selectedYearId);
+            })
+            ->update(['status' => 'Approve_by_central']);
+
+        return redirect()->route('central.province.index', ['pvc_id' => $provinceId])
+            ->with('success', 'กิจกรรมของผู้ใช้นี้ถูกส่งเรียบร้อยแล้ว');
+    }
+    public function rejectActivity(Request $request, $id)
+    {
+        $provinceId = $request->input('pvc_id');
+        $user = \App\Models\User::findOrFail($id);
+        $selectedYearId = $request->input('year_id');
+
+        \App\Models\Activity::where('act_submit_by', $user->user_id)
+            ->where('status', 'Approve_by_province')
+            ->whereHas('category', function ($query) use ($selectedYearId) {
+                $query->where('cat_year_id', $selectedYearId);
+            })
+            ->update(['status' => 'Unapproved_by_central']);
+
+        return redirect()->route('central.province.index', ['pvc_id' => $provinceId]);
+    }
+
+    public function selectActivities($id, $cat_id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $category = \App\Models\Category::findOrFail($cat_id);
+
+        $activities = \App\Models\Activity::where('act_submit_by', $user->user_id)
+            ->where('act_cat_id', $cat_id)
+            ->where('status', 'Approve_by_province')
+            ->with(['creator', 'category'])
+            ->get();
+
+        return view('central.approve_activity_activity', compact('user', 'activities', 'category'));
+    }
+    public function showActivityDetail($id, $cat_id, $act_id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $category = \App\Models\Category::findOrFail($cat_id);
+        $activity = \App\Models\Activity::findOrFail($act_id);
+
+        return view('central.approve_activity_activity_detail', compact('user', 'activity', 'category'));
+    }
+
+    public function storeComment(Request $request, $activityId)
+    {
+        $request->validate([
+            'comment' => 'required|string',
+        ]);
+
+        \App\Models\Approval::create([
+            'apv_act_id' => $activityId,
+            'apv_approver' => auth()->id(),
+            'apv_level' => auth()->user()->user_role,
+            'apv_comment' => $request->input('comment'),
+            'apv_date' => now(),
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'บันทึกความคิดเห็นเรียบร้อยแล้ว']);
+    }
+    public function considerData(Request $request, $pvc_id)
+    {
+
+        $yearId = $request->input('year_id');
+        $provinceId = \App\Models\Provinces::find($pvc_id)->pvc_id;
+
+        $activities = Activity::where('status', 'Approve_by_province')
+            ->whereHas('creator', fn($q) => $q->where('province', $provinceId))
+            ->whereHas('category', fn($q) => $q->where('cat_year_id', $yearId))
+            ->with(['creator', 'category'])
+            ->get();
+
+        $groupedActivities = $activities->groupBy(fn($a) => $a->creator->user_fullname);
+
+        $html = view('partials._consider_table_body', compact('groupedActivities'))->render();
+
+        return response()->json(['html' => $html]);
     }
 }

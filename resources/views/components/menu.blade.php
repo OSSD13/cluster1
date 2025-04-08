@@ -83,7 +83,7 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="#"
+                <a href="{{route('central.approve.index')}}"
                     class="nav-link sidebar-link text-muted {{ Request::is('activities/approve*') ? 'active' : '' }}">
                     <i class="bi bi-check2-square sidebar-icon"></i>
                     <span>อนุมัติงาน</span>
