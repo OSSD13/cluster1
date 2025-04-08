@@ -5,95 +5,112 @@
 <a href="{{ route('activities.history') }}" class="btn btn-light mb-3 mt-3">
     <i class="bi bi-chevron-left"></i>
 </a>
-        <div class="content-container">
-            <div class="container">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <!-- Form ส่งข้อมูลไปที่ activity.update -->
-                        <form method="POST" enctype="multipart/form-data"
-                            action="{{ route('activities.update', $activity->act_id) }}">
-                            @csrf
-                            @method('PUT') <!-- ใช้ PUT เพราะการแก้ไขข้อมูล -->
-
-                            <!-- ชื่อกิจกรรม & วันที่ทำกิจกรรม -->
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <label for="act_title">ชื่อกิจกรรม <span style="color: red;">*</span></label>
-                                    <input type="text" id="act_title" name="act_title" class="form-control"
-                                        value="{{ old('act_title', $activity->act_title) }}" placeholder="ชื่อกิจกรรม"
-                                        required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="act_date">วันที่ทำกิจกรรม <span style="color: red;">*</span></label>
-                                    <div class="input-group">
-                                        <input type="date" id="act_date" name="act_date" class="form-control"
-                                            value="{{ old('act_date', \Carbon\Carbon::parse($activity->act_date)->format('Y-m-d')) }}"
-                                            required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- หมวดหมู่ -->
-                            <div class="mb-3">
-                                <label for="act_cat_id" class="form-label">หมวดหมู่</label>
-                                <select name="act_cat_id" id="act_cat_id" class="form-select" required>
-                                    <option value="" disabled selected>เลือกหมวดหมู่</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->cat_id }}" {{ $category->cat_id == $activity->act_cat_id ? 'selected' : '' }}>
-                                            {{ $category->cat_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- เนื้อหา -->
-                            <div class="mb-3">
-                                <label for="act_description" class="form-label">เนื้อหา</label>
-                                <textarea name="act_description" id="act_description" rows="5" class="form-control"
-                                    required>{{ old('act_description', $activity->act_description) }}</textarea>
-                            </div>
-
-                            <!-- อัปโหลดรูปภาพ (หลายรูป) -->
-                            <div class="mb-3">
-                                <label for="images" class="form-label">รูปภาพกิจกรรม</label>
-                                <div class="upload-container">
-                                    <input type="file" name="images[]" id="images" class="file-input" accept="image/*"
-                                        multiple onchange="previewImages(event)">
-                                    <label for="images" class="upload-label">อัพโหลด</label>
-                                </div>
-                                <!-- ส่วนแสดงภาพที่อัปโหลด -->
-                                <div class="image-preview mt-3" id="imagePreviewContainer" style="display: block;">
-                                    <div class="image-preview-grid" id="imagePreviewRow">
-                                        <!-- แสดงรูปภาพที่อัปโหลดก่อนหน้านี้ -->
-                                        @foreach($activity->images as $image)
-                                            <div class="image-preview-item" data-id="{{ $image->img_id }}">
-                                                <?php    $image_path = 'storage/activity_images/' . $image->img_path; ?>
-                                                <!-- แสดงเส้นทางเพื่อตรวจสอบ -->
-                                                <p>เส้นทางรูปภาพ: {{ $image_path }}</p>
-                                                <p>ไฟล์มีอยู่จริง: {{ file_exists(public_path($image_path)) ? 'ใช่' : 'ไม่' }}
-                                                </p>
-
-                                                <img src="{{ asset($image_path) }}" alt="{{ $image->img_name }}">
-                                                <!-- ปุ่มลบ -->
-                                                <form action="{{ route('images.destroy', $image->img_id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="remove-image"
-                                                        onclick="return confirm('คุณแน่ใจว่าจะลบภาพนี้?')">×</button>
-                                                </form>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- ปุ่มบันทึกการแก้ไข -->
-                            <button type="submit" class="btn btn-save">บันทึกการแก้ไข</button>
-                        </form>
+<div class="d-flex">
+    @if($comment)
+    <div class="content-container flex-grow-1">
+        <div class="container">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="text-lg font-semibold mb-2">คอมเมนต์</h2>
+                    <hr class="mb-2">
+                    <div class="text-sm text-gray-800">
+                        <p class="font-medium">รายละเอียด</p>
+                        <p>{{ $comment }}</p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    @endif
+    <div class="ms-2">
+        <div class="container">
+            <div class="card shadow">
+                <div class="card-body">
+                    <!-- Form ส่งข้อมูลไปที่ activity.update -->
+                    <form method="POST" enctype="multipart/form-data"
+                        action="{{ route('activities.update', $activity->act_id) }}">
+                        @csrf
+                        @method('PUT') <!-- ใช้ PUT เพราะการแก้ไขข้อมูล -->
+
+                        <!-- ชื่อกิจกรรม & วันที่ทำกิจกรรม -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="act_title">ชื่อกิจกรรม <span style="color: red;">*</span></label>
+                                <input type="text" id="act_title" name="act_title" class="form-control"
+                                    value="{{ old('act_title', $activity->act_title) }}" placeholder="ชื่อกิจกรรม"
+                                    required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="act_date">วันที่ทำกิจกรรม <span style="color: red;">*</span></label>
+                                <div class="input-group">
+                                    <input type="date" id="act_date" name="act_date" class="form-control"
+                                        value="{{ old('act_date', \Carbon\Carbon::parse($activity->act_date)->format('Y-m-d')) }}"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- หมวดหมู่ -->
+                        <div class="mb-3">
+                            <label for="act_cat_id" class="form-label">หมวดหมู่</label>
+                            <select name="act_cat_id" id="act_cat_id" class="form-select" required>
+                                <option value="" disabled selected>เลือกหมวดหมู่</option>
+                                @foreach($categories as $category)
+                                <option value="{{ $category->cat_id }}" {{ $category->cat_id == $activity->act_cat_id ? 'selected' : '' }}>
+                                    {{ $category->cat_name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- เนื้อหา -->
+                        <div class="mb-3">
+                            <label for="act_description" class="form-label">เนื้อหา</label>
+                            <textarea name="act_description" id="act_description" rows="5" class="form-control"
+                                required>{{ old('act_description', $activity->act_description) }}</textarea>
+                        </div>
+
+                        <!-- อัปโหลดรูปภาพ (หลายรูป) -->
+                        <div class="mb-3">
+                            <label for="images" class="form-label">รูปภาพกิจกรรม</label>
+                            <div class="upload-container">
+                                <input type="file" name="images[]" id="images" class="file-input" accept="image/*"
+                                    multiple onchange="previewImages(event)">
+                                <label for="images" class="upload-label">อัพโหลด</label>
+                            </div>
+                            <!-- ส่วนแสดงภาพที่อัปโหลด -->
+                            <div class="image-preview mt-3" id="imagePreviewContainer" style="display: block;">
+                                <div class="image-preview-grid" id="imagePreviewRow">
+                                    <!-- แสดงรูปภาพที่อัปโหลดก่อนหน้านี้ -->
+                                    @foreach($activity->images as $image)
+                                    <div class="image-preview-item" data-id="{{ $image->img_id }}">
+                                        <?php $image_path = 'storage/activity_images/' . $image->img_path; ?>
+                                        <!-- แสดงเส้นทางเพื่อตรวจสอบ -->
+                                        <p>เส้นทางรูปภาพ: {{ $image_path }}</p>
+                                        <p>ไฟล์มีอยู่จริง: {{ file_exists(public_path($image_path)) ? 'ใช่' : 'ไม่' }}
+                                        </p>
+
+                                        <img src="{{ asset($image_path) }}" alt="{{ $image->img_name }}">
+                                        <!-- ปุ่มลบ -->
+                                        <form action="{{ route('images.destroy', $image->img_id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="remove-image"
+                                                onclick="return confirm('คุณแน่ใจว่าจะลบภาพนี้?')">×</button>
+                                        </form>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ปุ่มบันทึกการแก้ไข -->
+                        <button type="submit" class="btn btn-save">บันทึกการแก้ไข</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <style>
@@ -104,9 +121,9 @@
         }
 
         .content-container {
-            width: 80vh;
-            margin-left: 30vh;
-            margin-top: 10vh;
+            width: 60vh;
+            margin-left: 0vh;
+            margin-top: 0vh;
             padding: 20px;
             transition: all 0.3s ease-in-out;
         }
@@ -217,7 +234,7 @@
                     if (file.type.startsWith("image/")) {
                         const reader = new FileReader();
 
-                        reader.onload = function (e) {
+                        reader.onload = function(e) {
                             const imgElement = document.createElement("img");
                             imgElement.src = e.target.result;
 
@@ -227,7 +244,7 @@
                             const removeButton = document.createElement("div");
                             removeButton.classList.add("remove-image");
                             removeButton.innerHTML = "×";
-                            removeButton.onclick = function () {
+                            removeButton.onclick = function() {
                                 imageWrapper.remove();
                                 uploadedImages = uploadedImages.filter(img => img !== e.target.result);
                                 if (uploadedImages.length === 0) {
@@ -249,4 +266,4 @@
         }
     </script>
 
-@endsection
+    @endsection
