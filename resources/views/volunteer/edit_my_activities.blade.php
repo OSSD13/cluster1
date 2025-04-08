@@ -85,12 +85,7 @@
                                     <div class="image-preview-item" data-id="{{ $image->img_id }}">
                                         <?php $image_path = 'storage/activity_images/' . $image->img_path; ?>
                                         <img src="{{ asset($image_path) }}" alt="{{ $image->img_name }}">
-                                        <form action="{{ route('images.destroy', $image->img_id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="remove-image"
-                                                onclick="return confirm('คุณแน่ใจว่าจะลบภาพนี้?')">×</button>
-                                        </form>
+                                    
                                     </div>
                                     @endforeach
                                 </div>
@@ -117,6 +112,13 @@
         </div>
 
     </div>
+</div>
+<div style="text-align: right; margin-top: 20px;">
+    <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
+        @csrf
+        @method("delete")
+        <button type="submit" class="btn btn-danger btn-lg">ลบกิจกรรม </button>
+    </form>
 </div>
 
 <!-- สไตล์ -->
@@ -159,13 +161,7 @@
         border-radius: 1vh;
         cursor: pointer;
     }
-<div style="text-align: right; margin-top: 20px;">
-    <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
-        @csrf
-        @method("delete")
-        <button type="submit" class="btn btn-danger btn-lg">ลบกิจกรรม </button>
-    </form>
-</div>
+
 
     .upload-label:hover {
         background: #c6daff;
