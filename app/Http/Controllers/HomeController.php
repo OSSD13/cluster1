@@ -38,18 +38,23 @@ class HomeController extends Controller
             $categoryCount = Category::count();
             $activityCount = Activity::count();
 
-            $categories = Category::withCount([
+            $categories = Category::where('status', 'published')
+            ->withCount([
                 'activities as approved_activities_count' => function ($q) {
                     $q->where('status', 'Approve_by_central');
                 },
                 'activities as unapproved_activities_count' => function ($q) {
                     $q->whereNot('status', 'Approve_by_central');
                 },
+                'activities as activities_count' => function ($q) {
+                    $q->selectRaw('count(*)');
+                },
             ])->get();
 
             $labels = $categories->pluck('cat_name');
             $approvedCounts = $categories->pluck('approved_activities_count');
             $unapprovedCounts = $categories->pluck('unapproved_activities_count');
+            $activityCounts = $categories->pluck('activities_count');
 
             return view('central.overview', compact(
                 'labels',
@@ -58,7 +63,8 @@ class HomeController extends Controller
                 'categoryCount',
                 'activityCount',
                 'category_due_date',
-                'years'
+                'years',
+                'activityCounts'
             ));
         } elseif ($user->hasRole('Province Officer')) {
 
