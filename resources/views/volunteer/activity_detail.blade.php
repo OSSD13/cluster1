@@ -2,84 +2,58 @@
 @section('page-title', 'รายละเอียดงาน')
 @section('content')
 
-    <a href="{{ route('activities.history') }}" class="btn btn-light mb-3 mt-3">
-        <i class="bi bi-chevron-left"></i>
-    </a>
-    <div class="content-container">
-        <div class="container">
-            <div class="card shadow">
-                <div class="card-body">
-                    <!-- Form ส่งข้อมูลไปที่ activity.update -->
-                    <form method="POST" enctype="multipart/form-data"
-                        action="{{ route('activities.update', $activity->act_id) }}">
-                        @csrf
-                        @method('PUT') <!-- ใช้ PUT เพราะการแก้ไขข้อมูล -->
+<a href="{{ route('activities.history') }}" class="btn btn-light mb-3 mt-3">
+    <i class="bi bi-chevron-left"></i>
+</a>
 
-                        <!-- ชื่อกิจกรรม & วันที่ทำกิจกรรม -->
-                        <div class="row">
-                            <div class="col-md-8">
-                                <label for="act_title">ชื่อกิจกรรม <span style="color: red;">*</span></label>
-                                <input type="text" id="act_title" name="act_title" class="form-control"
-                                    value="{{ old('act_title', $activity->act_title) }}" placeholder="ชื่อกิจกรรม" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="act_date">วันที่ทำกิจกรรม <span style="color: red;">*</span></label>
-                                <div class="input-group">
-                                    <input type="date" id="act_date" name="act_date" class="form-control"
-                                        value="{{ old('act_date', \Carbon\Carbon::parse($activity->act_date)->format('Y-m-d')) }}"
-                                        required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- หมวดหมู่ -->
-                        <div class="mb-3">
-                            <label for="act_cat_id" class="form-label">หมวดหมู่</label>
-                            <select name="act_cat_id" id="act_cat_id" class="form-select" required>
-                                <option value="" disabled selected>เลือกหมวดหมู่</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->cat_id }}" {{ $category->cat_id == $activity->act_cat_id ? 'selected' : '' }}>
-                                        {{ $category->cat_name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- เนื้อหา -->
-                        <div class="mb-3">
-                            <label for="act_description" class="form-label">เนื้อหา</label>
-                            <textarea name="act_description" id="act_description" rows="5" class="form-control"
-                                required>{{ old('act_description', $activity->act_description) }}</textarea>
-                        </div>
-
-                        <!-- อัปโหลดรูปภาพ (หลายรูป) -->
-                        <div class="mb-3">
-                            <label for="images" class="form-label">รูปภาพกิจกรรม</label>
-
-                            <!-- ส่วนแสดงภาพที่อัปโหลด -->
-                            <div class="image-preview mt-3" id="imagePreviewContainer" style="display: block;">
-                                <div class="image-preview-grid" id="imagePreviewRow">
-                                    <!-- แสดงรูปภาพที่อัปโหลดก่อนหน้านี้ -->
-                                    @foreach($activity->images as $image)
-                                        <div class="image-preview-item" data-id="{{ $image->img_id }}">
-                                            <?php    $image_path = $image->img_path; ?>
-                                            <!-- แสดงเส้นทางเพื่อตรวจสอบ -->
-                                            <img src="{{ asset($image_path) }}" alt="{{ $image->img_name }}">
-                                            <!-- ปุ่มลบ -->
-
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ปุ่มบันทึกการแก้ไข -->
-
-                    </form>
+<div class="content-container">
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-body">
+                <!-- ชื่อกิจกรรม & วันที่ทำกิจกรรม -->
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <label>ชื่อกิจกรรม</label>
+                        <p>{{ $activity->act_title }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label>วันที่ทำกิจกรรม</label>
+                        <p>{{ \Carbon\Carbon::parse($activity->act_date)->format('d/m/Y') }}</p>
+                    </div>
                 </div>
+
+                <!-- หมวดหมู่ -->
+                <div class="mb-3">
+                    <label>หมวดหมู่</label>
+                    <p>
+                        {{ $categories->firstWhere('cat_id', $activity->act_cat_id)?->cat_name ?? 'ไม่ระบุ' }}
+                    </p>
+                </div>
+
+                <!-- เนื้อหา -->
+                <div class="mb-3">
+                    <label>เนื้อหา</label>
+                    <div class="border rounded p-2" style="background-color:#ffffff">
+                        {{ $activity->act_description }}
+                    </div>
+                </div>
+
+                <!-- รูปภาพ -->
+                <div class="mb-3">
+                    <label>รูปภาพกิจกรรม</label>
+                    <div class="image-preview-grid mt-3">
+                        @foreach($activity->images as $image)
+                            <div class="image-preview-item">
+                                <img src="{{ asset($image->img_path) }}" alt="{{ $image->img_name }}">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 
 
 
