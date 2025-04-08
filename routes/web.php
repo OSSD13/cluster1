@@ -123,4 +123,4 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/province/approve_activity_activity_detail', function () {
         return view('province.approve_activity_activity_detail');
     });
-});
+});     
