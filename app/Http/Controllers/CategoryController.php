@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Year;
 
+
 class CategoryController extends Controller
 {
     public function index()
@@ -124,5 +125,5 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         return view('categories.category_detail', compact('category'));
     }
-    
+
 }
