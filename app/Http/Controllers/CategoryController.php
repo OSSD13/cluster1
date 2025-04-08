@@ -119,4 +119,10 @@ class CategoryController extends Controller
                 ->withInput();
         }
     }
+
+    public function detail($id){
+        $category = Category::findOrFail($id);
+        return view('categories.category_detail', compact('category'));
+    }
+    
 }

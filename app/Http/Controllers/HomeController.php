@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Activity;
 use Carbon\Carbon;
+use App\Models\Year;
 
 class HomeController extends Controller
 {
@@ -25,10 +26,10 @@ class HomeController extends Controller
 
         if ($user->hasRole('Central Officer')) {
             $years = Category::with('year')
-            ->select('cat_year_id')
-            ->distinct()
-            ->get()
-            ->pluck('year.year_name');
+                ->select('cat_year_id')
+                ->distinct()
+                ->get()
+                ->pluck('year.year_name');
             $expiration_date = Category::value('expiration_date');
             $category_due_date = $expiration_date
                 ? Carbon::parse($expiration_date)->subDays(15)->format('Y-m-d')
@@ -61,38 +62,55 @@ class HomeController extends Controller
             ));
         } elseif ($user->hasRole('Province Officer')) {
 
-            $categories = Category::where('status', 'published')->get();
-            $categoryCount = Category::count();
-            // เดิม
+            // 1. ดึงปีล่าสุด (อ้างอิงจาก id)
+            $latestYear = Year::orderBy('year_name', 'desc')->first();
+
+            // ถ้าเจอปีล่าสุด ก็เอาหมวดหมู่ที่ตรงกับปีนั้น
+            $categories = collect(); // default เป็นค่าว่าง
+
+            if ($latestYear) {
+                $categories = Category::where('status', 'published')
+                    ->where('cat_year_id', $latestYear->year_id)
+                    ->get();
+            }
+
+            // 3. นับจำนวนหมวดหมู่ และกิจกรรม
+            $categoryCount = $categories->count(); // นับเฉพาะของปีล่าสุด
             $activityCount = Activity::count();
 
+            // 4. ส่งค่าไปที่ view
+            return view('province.overview', compact(
+                'categoryCount',
+                'activityCount',
+                'categories',
+                'latestYear' // เพิ่มอันนี้เผื่อใช้ในหน้า blade
+            ));
+        } elseif ($user->hasRole('Volunteer')) {
+            // หาปีล่าสุดจากตาราง years โดยดูจาก year_name
+            $latestYear = Year::orderBy('year_name', 'desc')->first();
 
-            return view('province.overview', compact('categoryCount', 'activityCount', 'categories'));
-        }
-        elseif ($user->hasRole('Volunteer')) {
+            // ถ้าเจอปีล่าสุด ก็เอาหมวดหมู่ที่ตรงกับปีนั้น
+            $categories = collect(); // default เป็นค่าว่าง
 
+            if ($latestYear) {
+                $categories = Category::where('status', 'published')
+                    ->where('cat_year_id', $latestYear->year_id)
+                    ->get();
+            }
 
-
-            // ดึงหมวดหมู่ที่เผยแพร่แล้ว
-            $categories = Category::where('status', 'published')->get();
-
-            // นับหมวดหมู่ทั้งหมดที่ User3 สามารถเข้าถึง
             $categoryCount = $categories->count();
 
-            // นับกิจกรรมที่ทำสำเร็จ
             $completedCategories = Activity::where('act_submit_by', 1)
                 ->whereIn('status', ['Saved', 'Edit', 'Sent', 'Approve_by_province', 'Approve_by_central'])
                 ->distinct('act_cat_id')
                 ->count('act_cat_id');
 
-            // ดึง ID หมวดหมู่ที่ทำกิจกรรมสำเร็จ
             $completedCategoryIds = Activity::where('act_submit_by', 1)
                 ->whereIn('status', ['Saved', 'Sent', 'Approve_by_province', 'Approve_by_central'])
                 ->pluck('act_cat_id')
                 ->toArray();
 
-
-            return view('volunteer.overview', compact('categoryCount', 'completedCategories', 'completedCategoryIds', 'categories'));
+            return view('volunteer.overview', compact('categoryCount', 'completedCategories', 'completedCategoryIds', 'categories', 'latestYear'));
         } else {
             return view('errors.404');
         }

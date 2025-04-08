@@ -62,7 +62,7 @@
                                 </td>
                                 <td class="text-center mt-4">
                                    <a href="{{route('categories.edit', $category->cat_id)}}" class="btn btn-lg btn-warning btn-sm">แก้ไข</a>
-                                    <a href="#" class="btn btn-primary btn-sm">รายละเอียด</a>
+                                   <a href="{{ route('categories.detail', $category->cat_id) }}" class="btn btn-info btn-sm" style = "background-color:#2079FF">รายละเอียด</a>
                                 </td>
                             </tr>
                         @endforeach

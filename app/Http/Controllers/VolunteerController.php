@@ -8,10 +8,12 @@ use App\Models\Category;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use App\Models\Year;
 
 class volunteerController extends Controller
 {
-    public function overview()
+
+    public function overview($id)
     {
         if (Auth::check()) {
             $userId = Auth::id();
@@ -22,21 +24,31 @@ class volunteerController extends Controller
         // ดึงหมวดหมู่ที่เผยแพร่แล้ว
         $categories = Category::where('status', 'published')->get();
 
-        // นับหมวดหมู่ทั้งหมดที่ User3 สามารถเข้าถึง
+        // นับหมวดหมู่ทั้งหมดที่ User เข้าถึงได้
         $categoryCount = $categories->count();
 
-        // นับกิจกรรมที่ทำสำเร็จ
+        // นับกิจกรรมที่ทำเสร็จแล้ว
         $completedCategories = Activity::where('created_by', $userId)
             ->whereIn('status', ['approved', 'final_approved'])
             ->distinct('category_id')
             ->count();
 
-        // ดึง ID หมวดหมู่ที่ทำกิจกรรมสำเร็จ
         $completedCategoryIds = Activity::where('created_by', $userId)
             ->whereIn('status', ['approved', 'final_approved'])
             ->pluck('category_id')
             ->toArray();
 
-        return view('volunteer.overview', compact('categoryCount', 'completedCategories', 'completedCategoryIds', 'categories'));
+        // ✅ เพิ่มตรงนี้
+        $years = Year::all();
+
+        // ✅ เพิ่มตัวแปร years และ selectedYearId ไปใน view
+        return view('volunteer.overview', compact(
+            // 'categories',
+            // 'categoryCount',
+            // 'completedCategories',
+            // 'completedCategoryIds',
+            'years',
+            'latestYear'
+        ));
     }
 }
