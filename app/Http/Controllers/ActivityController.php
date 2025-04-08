@@ -147,13 +147,28 @@ class ActivityController extends Controller
     public function show($id)
     {
         // ดึงข้อมูลกิจกรรมโดยใช้ id
-        $activity = Activity::findOrFail($id);
-        $categories = Category::where('status', 'published')->get(); // ดึงเฉพาะหมวดหมู่ที่เผยแพร่แล้ว
-        $activities = Activity::where('act_save_by', Auth::id())->get();
-        if ($activities->isEmpty()) {
-            $activities = 0;
-        }
-        return view('volunteer.makedActivity', compact('activities', 'categories', 'activity'));
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
+
+        $activities = Category::where('status', 'Sent')
+            ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
+            ->get();
+
+        $groupedActivities = $activities
+            ->groupBy(fn($activity) => $activity->creator->user_fullname)
+            ->sortKeys();
+
+        $years = \App\Models\Year::orderByDesc('year_name')->get();
+        $userCount = $groupedActivities->count();
+        $activityCount = $activities->count();
+
+        return view('volunteer.makedActivity', compact(
+            'groupedActivities',
+            'years',
+            'selectedYearId',
+            'userCount',
+            'activityCount'
+        ));
         // ส่งข้อมูลกิจกรรมไปยัง view
     }
 
