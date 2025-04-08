@@ -13,7 +13,7 @@ class Category extends Model
     protected $primaryKey = 'cat_id'; // ระบุ Primary Key
     public $timestamps = false;
 
-    protected $fillable = ['cat_name', 'description', 'cat_ismandatory', 'expiration_date', 'created_by', 'status'];
+    protected $fillable = ['cat_name', 'description', 'cat_ismandatory', 'expiration_date', 'created_by', 'status','year_name'];
 
     /**
      * ความสัมพันธ์กับ User1 (ผู้สร้างหมวดหมู่)
@@ -26,6 +26,7 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'cat_id');
     }
+    
 
     /**
      * ความสัมพันธ์กับกิจกรรมที่ใช้หมวดหมู่นี้

@@ -125,4 +125,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/province/approve_activity_activity_detail', function () {
         return view('province.approve_activity_activity_detail');
     });
+
+    //ดึงหมวดหมู่มาแสดงตามปี
+    Route::get('/volunteer/overview', [volunteerController::class, 'yearList'])->name('volunteer.overview');
 });
