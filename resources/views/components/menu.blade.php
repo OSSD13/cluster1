@@ -83,14 +83,14 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="#"
+                <a href="{{route('central.approve.index')}}"
                     class="nav-link sidebar-link text-muted {{ Request::is('activities/approve*') ? 'active' : '' }}">
                     <i class="bi bi-check2-square sidebar-icon"></i>
                     <span>อนุมัติงาน</span>
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="#" class="nav-link sidebar-link text-muted {{ Request::is('report*') ? 'active' : '' }}">
+                <a href="{{route('central.report.index')}}" class="nav-link sidebar-link text-muted {{ Request::is('report*') ? 'active' : '' }}">
                     <i class="bi bi-file-earmark-bar-graph sidebar-icon"></i>
                     <span>รายงาน</span>
                 </a>

@@ -106,7 +106,7 @@ class provinceController extends Controller
         ));
     }
 
-    public function activityData(Request $request)
+    public function activityData(Request $request,$id)
     {
         $provinceId = auth()->user()->province;
         $yearId = $request->input('year_id');
@@ -295,6 +295,7 @@ class provinceController extends Controller
 
         return redirect()->route('province.unapprove')->with('success', 'กิจกรรมของทุกคนในจังหวัดถูกส่งกลับเรียบร้อยแล้ว');
     }
+    
     public function unapproveByCentral(Request $request, $id)
     {
         $user = \App\Models\User::findOrFail($id);

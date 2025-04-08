@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\volunteerController;
+use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\provinceController;
@@ -123,4 +123,22 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/province/approve_activity_activity_detail', function () {
         return view('province.approve_activity_activity_detail');
     });
+
+    // --------------------------------
+    // Route for Centrlal
+    // --------------------------------
+    Route::get('/central/report/index', [centralController::class, 'reportIndex'])->name('central.report.index');
+    Route::get('/central/report/{pvc_id}', [centralController::class, 'report'])->name('central.report');
+    Route::get('/central/report/province-data', [centralController::class, 'provinceData'])->name('central.provinceData');
+    Route::get('/central/report/activity-data', [centralController::class, 'activityData'])->name('central.activityData');
+
+    Route::get('/central/approve/index', [centralController::class, 'approveIndex'])->name('central.approve.index');
+    Route::get('/central/approve/approve-index-data', [centralController::class, 'approveIndexData'])->name('central.approve.index.data');
+    Route::get('/central/approve/province/{pvc_id}', [centralController::class, 'selectVolunteer'])->name('central.province.index');
+    Route::get('/central/approve/category/{user_id}', [centralController::class, 'showCategoryToSelect'])->name('central.approve.category');
+    Route::get('/central/approve/category/{user_id}/activities/{cat_id}', [centralController::class, 'selectActivities'])->name('central.approve.category.activities');
+    Route::get('/central/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [centralController::class, 'showActivityDetail'])->name('central.approve.category.activities.detail');
+
+    Route::post('/central/approve/submit/{id}', [centralController::class, 'approveActivity'])->name('central.approve');
+    Route::post('/central/approve/reject/{id}', [centralController::class, 'rejectActivity'])->name('central.rejectActivity');
 });
