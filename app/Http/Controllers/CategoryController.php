@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Year;
 
+
 class CategoryController extends Controller
 {
     public function index()
@@ -118,5 +119,17 @@ class CategoryController extends Controller
                 ->with('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage())
                 ->withInput();
         }
+    }
+    // add
+    public function indexdetail(Request $request)
+    {
+        $selectedYear = $request->input('year', 2568); // ถ้าไม่ส่งมา ให้ default ปี 2568
+
+        $categories = Category::where('ัcat_year_id', $selectedYear)->get();
+
+        return view('categories.index', [
+            'categories' => $categories,
+            'selectedYear' => $selectedYear,
+        ]);
     }
 }
