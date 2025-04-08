@@ -124,4 +124,13 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/province/approve_activity_activity_detail', function () {
         return view('province.approve_activity_activity_detail');
     });
+
+    // --------------------------------
+    // Route for Centrlal
+    // --------------------------------
+    Route::get('/central/report/index', [centralController::class, 'reportIndex'])->name('central.report.index');
+    Route::get('/central/report/{pvc_id}', [centralController::class, 'report'])->name('central.report');
+    Route::get('/central/report/province-data', [centralController::class, 'provinceData'])->name('central.provinceData');
+    Route::get('/central/report/activity-data', [centralController::class, 'activityData'])->name('central.activityData');
+
 });

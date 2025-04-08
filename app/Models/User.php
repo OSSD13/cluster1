@@ -67,4 +67,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Provinces::class, 'province', 'pvc_id');
     }
+    public function activities()
+{
+    return $this->hasMany(\App\Models\Activity::class, 'act_submit_by', 'user_id');
+}
 }
