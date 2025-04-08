@@ -2,7 +2,7 @@
 @section('page-title', 'แก้ไขงาน')
 @section('content')
 
-    <a href="{{ route('activities.history') }}" class="btn btn-light mb-3 mt-3">
+    <a href="{{ route('activities.history') }}" class="btn btn-light mb-3">
         <i class="bi bi-chevron-left"></i>
     </a>
     <div class="content-container">
@@ -82,7 +82,7 @@
                             <form action="{{ route('images.destroy', $image->img_id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" onclick="return confirm('ยืนยันลบภาพนี้?')">ลบ</button>
+                                <button type="submit" class="remove-image"onclick="return confirm('ยืนยันลบภาพนี้?')">x</button>
                             </form>
                         </div>
                     @endforeach
@@ -94,13 +94,13 @@
 
 
 
-{{--
+<div style="text-align: right; margin-top: 20px;">
     <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
         @csrf
         @method("delete")
-        <button type="submit" class="btn btn-danger btn-sm">ลบกิจกรรม </button>
-    </form> --}}
-
+        <button type="submit" class="btn btn-danger btn-lg">ลบกิจกรรม </button>
+    </form>
+</div>
 
 
     <style>
@@ -111,10 +111,10 @@
         }
 
         .content-container {
-            width: 80vh;
-            margin-left: 30vh;
-            margin-top: 10vh;
-            padding: 20px;
+            width: 120vh;
+            margin-left: 20vh;
+            margin-top: 0vh;
+            padding: 0px;
             transition: all 0.3s ease-in-out;
         }
 
