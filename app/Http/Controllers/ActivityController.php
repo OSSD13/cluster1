@@ -135,7 +135,7 @@ class ActivityController extends Controller
             ->where('status', 'Edit') // เฉพาะกิจกรรมที่ยังไม่ถูกส่ง
             ->update(['status' => 'Sent']);
 
-            Activity::where('act_submit_by', $userId)
+        Activity::where('act_submit_by', $userId)
             ->where('status', 'Edit') // เฉพาะกิจกรรมที่ยังไม่ถูกส่ง
             ->update(['status' => 'Sent']);
 
@@ -162,12 +162,40 @@ class ActivityController extends Controller
 
     public function edit($id)
     {
-        // ตรวจสอบว่า id ถูกต้อง
         $activity = Activity::findOrFail($id); // ดึงข้อมูลกิจกรรม
         $categories = Category::where('status', 'published')->get(); // ดึงหมวดหมู่ที่เผยแพร่
 
-        return view('volunteer.edit_my_activities', compact('activity', 'categories'));
+        // ดึง apv_comment จากตาราง var_approvals
+        $approval = DB::table('var_approvals')
+            ->where('apv_act_id', $id)
+            ->orderByDesc('apv_date') // หากมีหลาย comment อาจเอาอันล่าสุด
+            ->first();
+
+        $comment = $approval->apv_comment ?? null; // กรณีไม่มีข้อมูลจะได้ค่า null
+
+        return view('volunteer.edit_my_activities', compact('activity', 'categories', 'comment'));
     }
+    public function editwithcomment($id)
+    {
+        // ดึงกิจกรรมที่ต้องการแก้ไข (ถ้าไม่เจอจะ error 404)
+        $activity = Activity::findOrFail($id);
+
+        // ดึงหมวดหมู่ทั้งหมดที่เผยแพร่แล้ว
+        $categories = Category::where('status', 'published')->get();
+
+        // ดึง apv_comment จาก var_approvals โดยอิงจาก act_id
+        $approval = DB::table('var_approvals')
+            ->where('apv_act_id', $id)
+            ->first(); // ใช้ first() เพราะมีแค่หนึ่ง comment เท่านั้น
+
+        // ถ้ามีข้อมูลใน $approval จะได้ $approval->apv_comment, ถ้าไม่มีจะได้ null
+        $comment = $approval->apv_comment ?? null;
+
+        // ส่งค่าทั้งหมดไปยัง view
+        return view('volunteer.edit_my_activities_with_comment', compact('activity', 'categories', 'comment'));
+    }
+
+
 
     public function update(Request $request, $id)
     {
