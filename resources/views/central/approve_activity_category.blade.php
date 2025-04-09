@@ -1,4 +1,4 @@
-@extends('layouts.default_with_menu')
+    @extends('layouts.default_with_menu')
 
 @section('content')
 <a href="{{ route('central.province.index', ['pvc_id' => $provinceID]) }}" class="btn btn-light mb-3 ">

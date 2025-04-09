@@ -102,7 +102,7 @@
                 </span>
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('province.approve.category', ['user_id' => $creator->user_id, 'year_id' => $selectedYearId]) }}"
+                                    <a href="{{ route('central.approve.category', ['user_id' => $creator->user_id])}}?year_id={{$selectedYearId}}&pvc_id={{$provinceID}}"
                                        class="btn bg-primary text-white btn-sm action-btn">รายละเอียด</a>
                                 </td>
                             </tr>
