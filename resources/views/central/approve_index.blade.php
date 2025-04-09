@@ -1,13 +1,17 @@
 @extends('layouts.default_with_menu')
-
+@section('page-title', 'อนุมัติงาน')
 @section('content')
-    <div class="container" style="margin-top: -40px;">
-        <div class="row mb-3 align-items-end">
-            <div class="container mt-4">
-                {{-- 🔍 Search --}}
-                <div class="mb-3">
-                    <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
-                </div>
+<div class="container" style="margin-top: -5px;">
+    {{-- 🔍 Search --}}
+    <div class="mb-4">
+        <div class="position-relative" style="max-width: 350px;">
+            <input type="text"
+                class="form-control ps-5 rounded-3"
+                placeholder="ค้นหา..."s
+                style="height: 45px; font-size: 1rem; border: 1px solid #333;">
+            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+        </div>
+    </div>
 
                 {{-- 📊 Summary Filters --}}
                 <div class="row g-3 align-items-end mb-4">
