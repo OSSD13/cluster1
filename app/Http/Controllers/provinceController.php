@@ -287,6 +287,7 @@ class provinceController extends Controller
     }
     public function rejectAllInProvince(Request $request)
     {
+
         $provinceId = auth()->user()->province;
 
         // อัปเดตเฉพาะกิจกรรมที่สถานะ Sent และผู้สร้างอยู่ในจังหวัดเดียวกัน
@@ -298,7 +299,7 @@ class provinceController extends Controller
 
         return redirect()->route('province.unapprove')->with('success', 'กิจกรรมของทุกคนในจังหวัดถูกส่งกลับเรียบร้อยแล้ว');
     }
-    
+
     public function unapproveByCentral(Request $request, $id)
     {
         $user = \App\Models\User::findOrFail($id);

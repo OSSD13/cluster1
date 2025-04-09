@@ -14,7 +14,7 @@
                     {{-- ปี --}}
                     <div class="col-md-3">
                         <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
-                        <form method="GET" action="{{ route('central.report.index') }}" id="yearForm">
+                        <form method="GET" action="{{ route('central.approve.index') }}" id="yearForm">
                             <select name="year_id" id="yearFilter" class="form-select shadow-sm"
                                 onchange="document.getElementById('yearForm').submit()">
                                 @foreach ($years as $year)
