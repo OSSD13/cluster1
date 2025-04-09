@@ -113,11 +113,12 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/consider-event/activity-data', [provinceController::class, 'considerData'])->name('province.considerData');
     Route::get('/report', [provinceController::class, 'report'])->name('province.report');
     Route::get('/report/activity-data', [provinceController::class, 'activityData'])->name('province.activityData');
+    Route::get('/province/unapprove', [provinceController::class, 'showUnapprovedActivities'])->name('province.unapprove');
+
     Route::post('/province/approve/{id}', [provinceController::class, 'approveActivity'])->name('province.approve');
     Route::post('/province/reject/{id}', [provinceController::class, 'rejectActivity'])->name('province.rejectActivity');
-    Route::post('/province/reject/sentback{id}', [provinceController::class, 'unapproveByCentral'])->name('province.unapprove.click');
-    Route::post('/province/reject/all', [provinceController::class, 'rejectAllInProvince'])->name('province.rejectAllInProvince');
-    Route::get('/province/unapprove', [provinceController::class, 'showUnapprovedActivities'])->name('province.unapprove');
+    Route::post('/province/reject/sentback/{id}', [provinceController::class, 'unapproveByCentral'])->name('province.unapprove.click');
+    Route::post('/province/reject/sentback', [provinceController::class, 'rejectAllInProvince'])->name('province.rejectAllInProvince');
 
     // Route สำหรับความคิดเห็น
     Route::post('/province/comment/{activityId}', [provinceController::class, 'storeComment'])->name('province.comment.store');
@@ -142,6 +143,6 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/central/approve/category/{user_id}/activities/{cat_id}', [centralController::class, 'selectActivities'])->name('central.approve.category.activities');
     Route::get('/central/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [centralController::class, 'showActivityDetail'])->name('central.approve.category.activities.detail');
 
-    Route::post('/central/approve/submit/{id}', [centralController::class, 'approveActivity'])->name('central.approve');
+    Route::post('/central/approve/submit/{id}', [centralController::class, 'approveActivity'])->name('central.approveActivity');
     Route::post('/central/approve/reject/{id}', [centralController::class, 'rejectActivity'])->name('central.rejectActivity');
 });

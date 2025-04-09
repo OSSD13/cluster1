@@ -13,7 +13,7 @@
     <div class="d-flex justify-content-end mb-3">
 
         <div class="btn-group">
-            <form method="POST" action="{{ route('central.approve', $user->user_id) }}?pvc_id={{ $provinceID }}&year_id={{ $selectedYearId }}">
+            <form method="POST" action="{{ route('central.approveActivity', $user->user_id) }}?pvc_id={{ $provinceID }}&year_id={{ $selectedYearId }}">
                 @csrf
                 <button class="btn btn-primary fw-light" type="submit">อนุมัติ</button>
             </form>

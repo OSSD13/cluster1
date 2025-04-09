@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="col-md-4 text-end">
-                <form method="POST" action="{{ route('province.rejectAllInProvince') }}">
+                <form method="POST" action="{{route('province.rejectAllInProvince') }}">
                     @csrf
                     <button class="btn btn-danger" type="submit">ส่งกลับให้เจ้าหน้าที่อาสา</button>
                 </form>
