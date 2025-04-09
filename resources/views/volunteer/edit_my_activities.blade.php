@@ -12,20 +12,20 @@
 
         <!-- กล่องคอมเมนต์ -->
         @if($comment)
-        <div class="col-12 col-md-4 align-self-start">
-            <div class="card shadow w-100">
-                <div class="card-body">
-                    <h2 class="text-lg font-semibold mb-2">คอมเมนต์</h2>
-                    <hr class="mb-2">
-                    <div class="text-sm text-gray-800">
-                        <p class="font-medium">รายละเอียด</p>
-                        <p style="white-space: pre-wrap;">{{ $comment }}</p>
-                    </div>
+    <!-- กล่องคอมเมนต์ -->
+    <div class="col-12 col-md-4 align-self-start">
+        <div class="card shadow w-100">
+            <div class="card-body">
+                <h2 class="text-lg font-semibold mb-2">คอมเมนต์</h2>
+                <hr class="mb-2">
+                <div class="text-sm text-gray-800">
+                    <p class="font-medium">รายละเอียด</p>
+                    <p style="white-space: pre-wrap;">{{ $comment }}</p>
                 </div>
             </div>
         </div>
-        @else
-        @endif
+    </div>
+    @endif
 
         <!-- ฟอร์มด้านขวา -->
         <div class="flex-grow-1">
@@ -73,47 +73,39 @@
                         </div>
 
                         <!-- รูปภาพ -->
+                        <!-- รูปภาพ -->
                         <div class="mb-3">
                             <label for="images">รูปภาพกิจกรรม</label>
                             <div class="upload-container">
-                                <input type="file" name="images[]" id="images" class="file-input" accept="image/*"
-                                    multiple onchange="previewImages(event)">
+                                <input type="file" name="images[]" id="images" class="file-input" accept="image/*" multiple onchange="previewImages(event)">
                                 <label for="images" class="upload-label">อัพโหลด</label>
                             </div>
                             <div class="image-preview mt-3" id="imagePreviewContainer" style="display: block;">
                                 <div class="image-preview-grid" id="imagePreviewRow">
                                     @foreach($activity->images as $image)
-                                    <div class="image-preview-item" data-id="{{ $image->img_id }}">
-                                        <?php $image_path = 'storage/activity_images/' . $image->img_path; ?>
-                                        <img src="{{ asset($image_path) }}" alt="{{ $image->img_name }}">
-
-                                    </div>
+                                        <div class="image-preview-item" id="image-{{ $image->img_id }}" data-id="{{ $image->img_id }}">
+                                            <img src="{{ asset('storage/activity_images/' . $image->img_path) }}" alt="{{ $image->img_name }}">
+                                            <!-- ปุ่มลบในภาพเก่าจากฐานข้อมูล -->
+                                            <div class="remove-image" onclick="deleteImage({{ $image->img_id }})">×</div>
+                                        </div>
                                     @endforeach
                                 </div>
+
                             </div>
                         </div>
+
 
                         <!-- ปุ่มบันทึก -->
                         <button type="submit" class="btn btn-save">บันทึกการแก้ไข</button>
                     </form>
                     <!-- ✅ ฟอร์มลบภาพ อยู่ข้างนอก -->
-                    @foreach($activity->images as $image)
-                        <div class="image-preview-item">
-                            <img src="{{ asset($image->img_path) }}" alt="{{ $image->img_name }}">
-
-                            <form action="{{ route('images.destroy', $image->img_id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="remove-image"onclick="return confirm('ยืนยันลบภาพนี้?')">x</button>
-                            </form>
-                        </div>
-                    @endforeach
                 </div>
             </div>
         </div>
 
     </div>
 </div>
+@if(!$comment)
 <div style="text-align: right; margin-top: 20px;">
     <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
         @csrf
@@ -121,6 +113,7 @@
         <button type="submit" class="btn btn-danger btn-lg">ลบกิจกรรม </button>
     </form>
 </div>
+@endif
 
 <!-- สไตล์ -->
 <style>
@@ -138,6 +131,7 @@
     }
 
     .btn-save:hover {
+        color: rgb(0, 0, 0);
         background-color: #ffe7b0;
         opacity: 0.9;
     }
@@ -147,7 +141,7 @@
         justify-content: center;
         align-items: center;
         border-radius: 8px;
-        padding: 20px 0;
+        padding: 0px 0;
         width: 100%;
     }
 
@@ -221,47 +215,105 @@
     let uploadedImages = [];
 
     function previewImages(event) {
-        const files = event.target.files;
-        const previewContainer = document.getElementById('imagePreviewContainer');
-        const previewRow = document.getElementById('imagePreviewRow');
+    const files = event.target.files;
+    const previewRow = document.getElementById('imagePreviewRow');  // ใช้ container เดียวกัน
 
-        if (files.length > 0) {
-            previewContainer.style.display = 'block';
+    // ตรวจสอบว่าเป็นภาพใหม่ที่อัพโหลด
+    if (files.length > 0) {
+        Array.from(files).forEach(file => {
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
 
-            Array.from(files).forEach(file => {
-                if (file.type.startsWith("image/")) {
-                    const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgElement = document.createElement("img");
+                    imgElement.src = e.target.result;  // แสดงภาพใหม่
 
-                    reader.onload = function(e) {
-                        const imgElement = document.createElement("img");
-                        imgElement.src = e.target.result;
+                    const imageWrapper = document.createElement("div");
+                    imageWrapper.classList.add("image-preview-item");
 
-                        const imageWrapper = document.createElement("div");
-                        imageWrapper.classList.add("image-preview-item");
-
-                        const removeButton = document.createElement("div");
-                        removeButton.classList.add("remove-image");
-                        removeButton.innerHTML = "×";
-                        removeButton.onclick = function() {
-                            imageWrapper.remove();
-                            uploadedImages = uploadedImages.filter(img => img !== e.target.result);
-                            if (uploadedImages.length === 0) {
-                                previewContainer.style.display = 'none';
-                            }
-                        };
-
-                        imageWrapper.appendChild(imgElement);
-                        imageWrapper.appendChild(removeButton);
-                        previewRow.appendChild(imageWrapper);
-
-                        uploadedImages.push(e.target.result);
+                    const removeButton = document.createElement("div");
+                    removeButton.classList.add("remove-image");
+                    removeButton.innerHTML = "×";
+                    removeButton.onclick = function() {
+                        imageWrapper.remove();  // ลบแค่ grid ของภาพที่อัพโหลดใหม่
                     };
 
-                    reader.readAsDataURL(file);
+                    imageWrapper.appendChild(imgElement);
+                    imageWrapper.appendChild(removeButton);
+                    previewRow.appendChild(imageWrapper);  // เพิ่มภาพใหม่ใน Row เดียวกัน
+
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+}
+
+
+function deleteImage(imageId) {
+    // ใช้ SweetAlert แทน confirm() เดิม
+    Swal.fire({
+        title: 'ยืนยันการลบภาพนี้?',
+        text: 'คุณต้องการลบภาพนี้หรือไม่?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'ใช่, ลบเลย!',
+        cancelButtonText: 'ยกเลิก'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // ส่งคำขอลบไปที่เซิร์ฟเวอร์
+            fetch(`/activity-images/${imageId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    // ลบภาพออกจาก DOM ถ้าลบสำเร็จ
+                    const el = document.getElementById(`image-${imageId}`);
+                    if (el) el.remove();
+                } else {
+                    Swal.fire(
+                        'เกิดข้อผิดพลาด!',
+                        'ไม่สามารถลบภาพได้',
+                        'error'
+                    );
+                }
+            })
+            .catch(err => {
+                console.error('ลบภาพผิดพลาด:', err);
+                Swal.fire(
+                    'เกิดข้อผิดพลาด!',
+                    'เกิดข้อผิดพลาดในการลบภาพ',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
+
+    function clickme(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'ลบกิจกรรมนี้หรือไม่?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ใช่, ลบเลย!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    event.target.closest('form').submit(); // ✅ แก้ตรงนี้
                 }
             });
         }
-    }
 </script>
 
 @endsection
