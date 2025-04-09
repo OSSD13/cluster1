@@ -5,14 +5,14 @@
     <!-- ส่วนบนของการ์ดข้อมูล (4 คอลัมน์) -->
     <div class="row g-3">
         <div class="col-md-3">
-        <label class="form-label fw-normal">ปีที่ทำกิจกรรม</label>
-        <div class="card p-4 shadow-sm rounded-3">
+            <label class="form-label fw-normal">ปีที่ทำกิจกรรม</label>
+            <div class="card p-4 shadow-sm rounded-3">
                 <table style="width: 101%;">
                     <tr>
-                    <td class="text-left">{{ $latestYear->year_name }}</td>
+                        <td class="text-left">{{ $latestYear->year_name }}</td>
                     </tr>
                 </table>
-                </div>
+            </div>
         </div>
 
         <div class="col-md-3">
@@ -160,31 +160,32 @@
             /* Allow the description to take up remaining vertical space */
         }
     </style>
-   @if ($categories->count() > 0)
+    @if ($categories->count() > 0)
     <div class="row g-3">
         @foreach ($categories as $category)
-            <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                <div class="card p-3 shadow-sm rounded-4" style="width: 100%;">
-                    <h5 class="d-flex align-items-center" style="border-bottom: 1px solid #dcdcdc; padding-bottom: 10px;-webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box; overflow: hidden; text-overflow: ellipsis; font-weight: 600;">
-                        {{ $category->cat_name }}
-                        @if ($category->cat_ismandatory)
-                            <span class="text-danger ms-2">*</span>
-                        @endif
-                    </h5>
-                    <p class="text-muted">รายละเอียด</p>
-                    <p class="card-text">
-                        {{ $category->description }}
-                    </p>
-                </div>
+        <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
+            <div class="card p-3 shadow-sm rounded-4" style="width: 100%;">
+                <h5 class="d-flex align-items-center" style="border-bottom: 1px solid #dcdcdc; padding-bottom: 10px;-webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box; overflow: hidden; text-overflow: ellipsis; font-weight: 600;">
+                    {{ $category->cat_name }}
+                    @if ($category->cat_ismandatory)
+                    <span class="text-danger ms-2">*</span>
+                    @endif
+                </h5>
+                <p class="text-muted">รายละเอียด</p>
+                <p class="card-text">
+                    {{ $category->description }}
+                </p>
             </div>
-            @if (($loop->iteration % 3) == 0 && !$loop->last)
-                </div><div class="row g-3">
-            @endif
+        </div>
+        @if (($loop->iteration % 3) == 0 && !$loop->last)
+    </div>
+    <div class="row g-3">
+        @endif
         @endforeach
     </div>
-@else
+    @else
     <div class="alert alert-warning text-center mt-4">ยังไม่มีหมวดหมู่สำหรับปีล่าสุด</div>
-@endif
+    @endif
 
-    </div>
-    @endsection
+</div>
+@endsection

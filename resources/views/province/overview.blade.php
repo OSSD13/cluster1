@@ -6,13 +6,13 @@
     <div class="row g-3">
         <div class="col-md-3">
             <label class="form-label fw-normal">ปีที่ทำกิจกรรม</label>
-        <div class="card p-4 shadow-sm rounded-3">
+            <div class="card p-4 shadow-sm rounded-3">
                 <table style="width: 101%;">
                     <tr>
-                    <td class="text-left">{{ $latestYear->year_name }}</td>
+                        <td class="text-left">{{ $latestYear->year_name }}</td>
                     </tr>
                 </table>
-                </div>
+            </div>
         </div>
 
         <div class="col-md-3">

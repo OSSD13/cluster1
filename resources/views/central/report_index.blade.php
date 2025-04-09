@@ -1,12 +1,16 @@
 @extends('layouts.default_with_menu')
-
 @section('page-title', 'รายงาน')
-
 @section('content')
 <div class="container mt-4">
     {{-- 🔍 Search --}}
-    <div class="mb-3">
-        <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
+    <div class="mb-4">
+        <div class="position-relative" style="max-width: 350px;">
+            <input type="text"
+                class="form-control ps-5 rounded-3"
+                placeholder="ค้นหา..."
+                style="height: 45px; font-size: 1rem; border: 1px solid #333;">
+            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+        </div>
     </div>
 
     {{-- 📊 Summary Filters --}}
@@ -30,7 +34,8 @@
         {{-- จำนวนอาสา --}}
         <div class="col-md-3">
             <label class="form-label fw-bold">จำนวนอาสา</label>
-            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center" style="height: 72px;">
+            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center"
+                style="height: 72px;">
                 <span>{{ $userCount }}</span>
                 <span>คน</span>
             </div>
@@ -39,7 +44,8 @@
         {{-- จำนวนกิจกรรม --}}
         <div class="col-md-3">
             <label class="form-label fw-bold">จำนวนกิจกรรม</label>
-            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center" style="height: 72px;">
+            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center"
+                style="height: 72px;">
                 <span>{{ $activityCount }}</span>
                 <span>กิจกรรม</span>
             </div>
@@ -78,57 +84,30 @@
                     </table>
                 </div>
 
-                {{-- Pagination + Rows Per Page --}}
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="d-flex align-items-center">
-                        <label class="form-label me-2 mb-0">Show</label>
-                        <select class="form-select form-select-sm w-auto me-2">
-                            <option selected>10</option>
-                            <option>20</option>
-                            <option>50</option>
-                        </select>
-                        <span class="form-label mb-0">Row</span>
-                    </div>
 
-                    {{-- ตัวอย่าง pagination UI mockup --}}
-                    <nav>
-                        <ul class="pagination mb-0">
-                            <li class="page-item disabled"><a class="page-link">‹</a></li>
-                            <li class="page-item active"><a class="page-link">1</a></li>
-                            <li class="page-item"><a class="page-link">2</a></li>
-                            <li class="page-item"><a class="page-link">3</a></li>
-                            <li class="page-item"><a class="page-link">4</a></li>
-                            <li class="page-item"><a class="page-link">5</a></li>
-                            <li class="page-item"><a class="page-link">…</a></li>
-                            <li class="page-item"><a class="page-link">7</a></li>
-                            <li class="page-item"><a class="page-link">›</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        @endsection
+                @endsection
 
-        @section('javascript')
-            <script>
-                $(document).ready(function() {
-                    $('#yearFilter').on('change', function() {
-                        const yearId = $(this).val();
+                @section('javascript')
+                <script>
+                    $(document).ready(function() {
+                        $('#yearFilter').on('change', function() {
+                            const yearId = $(this).val();
 
-                        $.ajax({
-                            url: "{{ route('central.approve.index.data') }}",
-                            type: 'GET',
-                            data: {
-                                year_id: yearId
-                            },
-                            success: function(response) {
-                                const selectedYear = $('#yearFilter').val();
-                                let rows = '';
-                                let index = 1;
-                                response.data.forEach((item) => {
-                                    if (item.category && item.category.cat_year_id ==
-                                        selectedYear) {
-                                        rows +=
-                                            `<tr>
+                            $.ajax({
+                                url: "{{ route('central.report.index') }}",
+                                type: 'GET',
+                                data: {
+                                    year_id: yearId
+                                },
+                                success: function(response) {
+                                    const selectedYear = $('#yearFilter').val();
+                                    let rows = '';
+                                    let index = 1;
+                                    response.data.forEach((item) => {
+                                        if (item.category && item.category.cat_year_id ==
+                                            selectedYear) {
+                                            rows +=
+                                                `<tr>
                                             <td>${index++}</td>
                                             <td class="text-start">${item.fullname}</td>
                                             <td>${item.province}</td>
@@ -137,18 +116,19 @@
                                             <a href="/report/${item.activity_id}" class="btn btn-primary btn-sm px-4 rounded-pill">รายละเอียด</a>
                                             </td>
                                             </tr>`;
-                                    }
-                                });
+                                        }
+                                    });
 
-                                $('#activityTableBody').html(rows);
-                                $('#volunteerCount').text(response.userCount + ' คน');
-                                $('#activityCount').text(response.activityCount + ' กิจกรรม');
-                            },
-                            error: function() {
-                                alert('โหลดข้อมูลล้มเหลว กรุณาลองใหม่');
-                            }
+                                    $('#activityTableBody').html(rows);
+                                    $('#volunteerCount').text(response.userCount + ' คน');
+                                    $('#activityCount').text(response.activityCount + ' กิจกรรม');
+                                },
+                                error: function() {
+                                    alert('โหลดข้อมูลล้มเหลว กรุณาลองใหม่');
+                                }
+                            });
                         });
                     });
-                });
-            </script>
-        @endsection
+                </script>
+                @endsection
+
