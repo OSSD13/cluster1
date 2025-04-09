@@ -9,7 +9,6 @@ use App\Models\VarImage;
 use App\Models\Activity;
 use App\Models\Category;
 
-
 class ImageController extends Controller
 {
     //
