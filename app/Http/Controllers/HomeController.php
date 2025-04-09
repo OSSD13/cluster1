@@ -14,7 +14,7 @@ use App\Models\Year;
 class HomeController extends Controller
 {
 
-    public function overview()
+    public function overview(Request $request)
     {
         if (Auth::check()) {
             $userId = Auth::id();
@@ -25,11 +25,14 @@ class HomeController extends Controller
 
 
         if ($user->hasRole('Central Officer')) {
-            $years = Category::with('year')
-                ->select('cat_year_id')
-                ->distinct()
-                ->get()
-                ->pluck('year.year_name');
+            $years = \App\Models\Year::orderByDesc('year_name')->get();
+            $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+            $selectedYearId = $request->input('year_id', $latestYear->year_id);
+            // $years = Category::with('year')
+            //     ->select('cat_year_id')
+            //     ->distinct()
+            //     ->get()
+            //     ->pluck('year.year_name');
             $expiration_date = Category::value('expiration_date');
             $category_due_date = $expiration_date
                 ? Carbon::parse($expiration_date)->subDays(15)->format('Y-m-d')
@@ -64,7 +67,9 @@ class HomeController extends Controller
                 'activityCount',
                 'category_due_date',
                 'years',
-                'activityCounts'
+                'activityCounts',
+                'latestYear',
+                'selectedYearId'
             ));
         } elseif ($user->hasRole('Province Officer')) {
 

@@ -8,13 +8,16 @@
 
         <div class="col-md-3">
             <label class="form-label">ปีที่ทำกิจกรรม</label>
-            <div class="card p-4 shadow-sm rounded-3">
-                <table style="width: 101%;">
-                    <tr>
-                        <td class="text-left">{{$years}}</td>
-                    </tr>
-                </table>
-            </div>
+            <form method="GET" action="{{ route('overview.index') }}" id="yearForm">
+                <select name="year_id" id="year_id" class="form-select shadow-sm p-4" required>
+                    @foreach ($years as $year)
+                    <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
+                        {{ $year->year_name }}
+                    </option>
+                    @endforeach
+                </select>
+            </form>
+            {{ $selectedYearId }}
         </div>
 
 
@@ -61,15 +64,15 @@
 
         <!-- กราฟ -->
         <div class="card p-4 shadow-sm rounded-3 mt-4">
-            <p style="font-weight: 600;">กราฟแสดงจำนวนกิจกรรมที่ยังไม่อนุมัติในแต่ละหมวดหมู่</p>
-            <div class="container col-md-9" >
-                <canvas id="unapproved_activity_chart" ></canvas>
+            <p style="font-weight: 600;">กราฟแสดงจำนวนกิจกรรมที่อนุมัติและยังไม่อนุมัติในแต่ละหมวดหมู่</p>
+            <div class="container col-md-9">
+                <canvas id="unapproved_activity_chart"></canvas>
             </div>
         </div>
         <div class="card p-4 shadow-sm rounded-3 mt-4">
             <p style="font-weight: 600;">กราฟแสดงจำนวนกิจกรรมในแต่ละหมวดหมู่</p>
-            <div class="container col-md-9" >
-                <canvas id="activity_count_chart" ></canvas>
+            <div class="container col-md-9">
+                <canvas id="activity_count_chart"></canvas>
             </div>
         </div>
 
