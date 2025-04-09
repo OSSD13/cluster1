@@ -4,12 +4,12 @@
     <div class="container mt-4">
         <!-- ส่วนหัวของ Dashboard -->
         <div class="row mb-4">
-            
+
             <!-- แสดงตามปีที่เลือก -->
             <div class="col-md-3">
                 <form method="GET" action="{{ route('categories.index') }}" id="yearForm">
                     <label for="year_id" class="form-label">ปี</label>
-                
+
                     <select name="year_id" id="yearFilter" class="form-select"
                         onchange="document.getElementById('yearForm').submit()">
                     @foreach ($years as $year)
@@ -98,13 +98,15 @@
         </div>
 
         <!-- ปุ่มสร้างหมวดหมู่ -->
+{{-- {{dd($selectedYearId, $latestYearID->year_id)}} --}}
+        @if ($selectedYearId >= $latestYearID->year_id)
         <div class="text-center mt-4">
-            <a href="{{ route('categories.create') }}" class="btn btn-lg btn-primary" style="background-color: #81B7D8; border-color: #81B7D8; color: white;padding: 8px 36px; "
-                @if($selectedYearId != \Carbon\Carbon::now()->year) disabled @endif>
+            <a href="{{ route('categories.create') }}" class="btn btn-lg btn-primary" style="background-color: #81B7D8; border-color: #81B7D8; color: white;padding: 8px 36px; ">
                 สร้างหมวดหมู่
             </a>
         </div>
+        @endif
         <!-- เหลือเอาปุ่มออกถ้าปีที่เลือกไม่ใช่ปีปัจจุบัน -->
-    
+
     </div>
 @endsection
