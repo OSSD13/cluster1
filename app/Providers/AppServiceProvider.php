@@ -24,10 +24,10 @@ class AppServiceProvider extends ServiceProvider
             // ถ้าเข้าโดเมนมหาลัย
             URL::forceRootUrl(config('app.url'));
             URL::forceScheme('https');
-            config(['app.asset_url' => config('app.url') . '/cluster3']); // แก้ตรงนี้
+            config(['app.asset_url' => config('app.url') . '/cluster1']); // แก้ตรงนี้
         } else {
             // กรณีเข้า IP
-            URL::forceRootUrl('http://' . $host . ':1303');
+            URL::forceRootUrl('http://' . $host . ':1301');
             config(['app.asset_url' => null]);
         }
     }

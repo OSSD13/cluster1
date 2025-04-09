@@ -84,7 +84,7 @@
                                 <div class="image-preview-grid" id="imagePreviewRow">
                                     @foreach($activity->images as $image)
                                         <div class="image-preview-item" id="image-{{ $image->img_id }}" data-id="{{ $image->img_id }}">
-                                            <img src="{{ asset('storage/activity_images/' . $image->img_path) }}" alt="{{ $image->img_name }}">
+                                            <img src="{{ asset($image->img_path) }}" alt="{{ $image->img_name }}">
                                             <!-- ปุ่มลบในภาพเก่าจากฐานข้อมูล -->
                                             <div class="remove-image" onclick="deleteImage({{ $image->img_id }})">×</div>
                                         </div>
