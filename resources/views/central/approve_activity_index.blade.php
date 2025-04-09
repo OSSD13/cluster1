@@ -1,21 +1,27 @@
 @extends('layouts.default_with_menu')
-
+@section('page-title', 'อนุมัติงาน')
 @section('content')
-<div class="container" style="margin-top: -40px;">
-    <div class="row mb-3 align-items-end">
-<div class="container mt-4">
+<div class="container" style="margin-top: -5px;">
     {{-- 🔍 Search --}}
-    <div class="mb-3">
-        <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
+    <div class="mb-4">
+        <div class="position-relative" style="max-width: 615px;">
+            <input type="text"
+                class="form-control ps-5 rounded-3"
+                placeholder="ค้นหา..."
+                style="height: 45px; font-size: 1rem; border: 1px solid #333;">
+            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+        </div>
     </div>
-
+    
     {{-- 📊 Summary Filters --}}
         <div class="row g-3 align-items-end mb-4">
             {{-- ปี --}}
             <div class="col-md-3">
-                <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
+                <label class="form-label fw-semibold small">ปีที่ทำกิจกรรม</label>
                 <form method="GET" action="{{ route('central.province.index',['pvc_id' => $provinceID]) }}" id="yearForm">
-                    <select name="year_id" id="yearFilter" class="form-select shadow-sm" onchange="document.getElementById('yearForm').submit()">
+                    <select name="year_id" id="yearFilter" class="form-select shadow-sm" 
+                    onchange="document.getElementById('yearForm').submit()"
+                    style="height: 55px; font-size: 1rem; padding: 0.75rem;">
                         @foreach ($years as $year)
                             <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
                                 {{ $year->year_name }}
@@ -24,28 +30,34 @@
                     </select>
                 </form>
             </div>
-
             {{-- จังหวัด --}}
             <div class="col-md-3">
-                <label class="form-label">จังหวัด</label>
-                <div class="form-control shadow-sm bg-white">
-                    {{ $pr ?? '-' }}
+                <label class="form-label fw-semibold small">จังหวัด</label>
+                <div class="form-control shadow-sm bg-white d-flex align-items-center"
+                style="height: 55px; font-size: 1rem; padding: 0.75rem;">
+                    {{ $provinceName ?? '-' }}
                 </div>
             </div>
 
             {{-- จำนวนอาสา --}}
             <div class="col-md-3">
-                <label class="form-label">จำนวนอาสา</label>
-                <div class="form-control shadow-sm bg-white text-end" id="volunteerCount">
-                    {{ $userCount }} คน
+                <label class="form-label fw-semibold small">จำนวนอาสา</label>
+                <div class="form-control shadow-sm bg-white text-end d-flex justify-content-between align-items-center" 
+                id="volunteerCount"
+                style="height: 55px; font-size: 1rem; padding: 0.75rem;">
+                <span>{{ $userCount }} </span>
+                <span class="text-muted">คน</span>
                 </div>
             </div>
 
             {{-- จำนวนกิจกรรม --}}
             <div class="col-md-3">
-                <label class="form-label">จำนวนกิจกรรม</label>
-                <div class="form-control shadow-sm bg-white text-end" id="activityCount">
-                    {{ $activityCount }} กิจกรรม
+                <label class="form-label fw-semibold small">จำนวนกิจกรรม</label>
+                <div class="form-control shadow-sm bg-white text-end d-flex justify-content-between align-items-center" 
+                id="activityCount"
+                style="height: 55px; font-size: 1rem; padding: 0.75rem;">
+                <span>{{ $activityCount }}</span>
+                <span class="text-muted">กิจกรรม</span>
                 </div>
             </div>
         </div>
@@ -82,14 +94,16 @@
                                 <td class="text-start">{{ $fullname }}</td>
                                 <td>{{ $province }}</td>
                                 <td>
-                                <span class="badge bg-light text-dark d-flex align-items-center gap-2 px-2 py-2 rounded-pill" style="font-weight: 500;">
-                    <span class="bg-secondary rounded-circle d-inline-block" style="width: 10px; height: 10px;"></span>
-                    ยังไม่ตรวจสอบ
+                                <span class="badge d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="background-color:rgba(209, 213, 213, 0.85); color: #6c757d; font-weight: 500;">
+                                <span class="bg-secondary rounded-circle d-inline-block"
+                                            style="width: 8px; height: 8px;"></span>
+                                        ยังไม่ตรวจสอบ
+                   
                 </span>
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('central.approve.category', ['user_id' => $creator->user_id]) }}?year_id={{ $selectedYearId }}&pvc_id={{ $provinceID }}"
-                                       class="btn btn-sm btn-outline-primary">รายละเอียด</a>
+                                    <a href="{{ route('central.approve.category', ['user_id' => $creator->user_id])}}?year_id={{$selectedYearId}}&pvc_id={{$provinceID}}"
+                                       class="btn bg-primary text-white btn-sm action-btn">รายละเอียด</a>
                                 </td>
                             </tr>
                         @empty

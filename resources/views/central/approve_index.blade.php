@@ -1,22 +1,27 @@
 @extends('layouts.default_with_menu')
-
+@section('page-title', 'อนุมัติงาน')
 @section('content')
-    <div class="container" style="margin-top: -40px;">
-        <div class="row mb-3 align-items-end">
-            <div class="container mt-4">
-                {{-- 🔍 Search --}}
-                <div class="mb-3">
-                    <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
-                </div>
+<div class="container" style="margin-top: -5px;">
+    {{-- 🔍 Search --}}
+    <div class="mb-4">
+        <div class="position-relative" style="max-width: 615px; ">
+            <input type="text"
+                class="form-control ps-5 rounded-3"
+                placeholder="ค้นหา..."s
+                style="height: 45px; font-size: 1rem; border: 1px solid #333;">
+            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+        </div>
+    </div>
 
                 {{-- 📊 Summary Filters --}}
                 <div class="row g-3 align-items-end mb-4">
                     {{-- ปี --}}
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
+                        <label class="form-label fw-semibold small">ปีที่ทำกิจกรรม</label>
                         <form method="GET" action="{{ route('central.approve.index') }}" id="yearForm">
                             <select name="year_id" id="yearFilter" class="form-select shadow-sm"
-                                onchange="document.getElementById('yearForm').submit()">
+                                onchange="document.getElementById('yearForm').submit()"
+                                style="height: 55px; font-size: 1rem; padding: 0.75rem;">
                                 @foreach ($years as $year)
                                     <option value="{{ $year->year_id }}"
                                         {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
@@ -27,22 +32,24 @@
                         </form>
                     </div>
 
-                    {{-- จังหวัด --}}
-
-
                     {{-- จำนวนอาสา --}}
                     <div class="col-md-3">
-                        <label class="form-label">จำนวนอาสา</label>
-                        <div class="form-control shadow-sm bg-white text-end" id="volunteerCount">
-                            {{ $userCount }} คน
+                        <label class="form-label fw-semibold small">จำนวนอาสา</label>
+                        <div class="form-control shadow-sm bg-white text-end d-flex justify-content-between align-items-center"
+                        id="volunteerCount"
+                        style="height: 55px; font-size: 1rem; padding: 0.75rem;">
+                        <span>{{ $userCount }} </span>
+                        <span class="text-muted">คน</span>
                         </div>
                     </div>
-
                     {{-- จำนวนกิจกรรม --}}
                     <div class="col-md-3">
-                        <label class="form-label">จำนวนกิจกรรม</label>
-                        <div class="form-control shadow-sm bg-white text-end" id="activityCount">
-                            {{ $activityCount }} กิจกรรม
+                        <label class="form-label fw-semibold small">จำนวนกิจกรรม</label>
+                        <div class="form-control shadow-sm bg-white text-end d-flex justify-content-between align-items-center"
+                        id="activityCount"
+                        style="height: 55px; font-size: 1rem; padding: 0.75rem;">
+                        <span> {{ $activityCount }} </span>
+                        <span class="text-muted">กิจกรรม</span>
                         </div>
                     </div>
                 </div>
@@ -68,8 +75,9 @@
                                             <td class="text-start " style="padding-left: 100px;">{{ $province->pvc_name }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('central.province.index', ['pvc_id' => $province->pvc_id, 'year_id' => $selectedYearId]) }}"
-                                                   class="btn btn-sm btn-primary rounded-pill px-3">รายละเอียด</a>
+                                                   class="btn bg-primary text-white btn-sm action-btn">รายละเอียด</a>
                                             </td>
+
                                         </tr>
                                     @empty
                                         <tr>
@@ -80,19 +88,7 @@
                             </table>
                         </div>
 
-                        {{-- Pagination UI Mockup --}}
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div class="d-flex align-items-center">
-                                <label class="form-label me-2 mb-0">Show</label>
-                                <select class="form-select form-select-sm w-auto me-2">
-                                    <option selected>10</option>
-                                    <option>20</option>
-                                    <option>50</option>
-                                </select>
-                                <span class="form-label mb-0">Row</span>
-                            </div>
 
-                        </div>
                     </div>
                 </div>
             </div>
