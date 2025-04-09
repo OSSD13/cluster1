@@ -4,7 +4,7 @@
 <div class="container" style="margin-top: -5px;">
     {{-- 🔍 Search --}}
     <div class="mb-4">
-        <div class="position-relative" style="max-width: 350px;">
+        <div class="position-relative" style="max-width: 615px;">
             <input type="text"
                 class="form-control ps-5 rounded-3"
                 placeholder="ค้นหา..."
