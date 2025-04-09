@@ -6,15 +6,17 @@
     <div class="row mb-3 align-items-end">
         <!-- ปีที่ทำกิจกรรม -->
         <div class="col-md-3">
-            <label class="form-label fw-semibold small">ปีที่ทำกิจกรรม</label>
-            <select class="form-select" style="height: 55px; font-size: 1rem; padding: 0.75rem;">
-                <option selected>2021</option>
-                <option selected>2022</option>
-                <option selected>2023</option>
-                <option selected>2024</option>
-                <option selected>2025</option>   
-            </select>
-        </div>
+                <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
+                <form method="GET" action="{{ route('province.index') }}" id="yearForm">
+                    <select name="year_id" id="yearFilter" class="form-select shadow-sm" onchange="document.getElementById('yearForm').submit()">
+                        @foreach ($years as $year)
+                            <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
+                                {{ $year->year_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
 
 
         <!-- จำนวนหมวดหมู่ทั้งหมด -->

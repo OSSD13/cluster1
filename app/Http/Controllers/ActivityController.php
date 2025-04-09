@@ -36,10 +36,53 @@ class ActivityController extends Controller
         }
         return view('volunteer.makedActivity', compact('activities', 'categories'));
     }
-
-
-    public function historyActivity()
+    public function historyActivity(Request $request)
     {
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
+    
+        $categories = Category::where('status', 'published')
+            ->where('cat_year_id', $selectedYearId) // กรองเฉพาะหมวดหมู่ของปีที่เลือก
+            ->get();
+    
+        $activities = Activity::where('act_save_by', Auth::id())
+            ->whereHas('category', function ($query) use ($selectedYearId) {
+                $query->where('cat_year_id', $selectedYearId);
+            })
+            ->with(['creator', 'category'])
+            ->get();
+    
+        $checkAcSent = false;
+        $years = \App\Models\Year::orderByDesc('year_name')->get();
+    
+        if ($activities->isEmpty()) {
+            $activities = 0;
+        } else {
+            foreach ($activities as $activity) {
+                if ($activity->status == 'Sent') {
+                    $checkAcSent = true;
+                    break;
+                }
+            }
+        }
+    
+        return view('volunteer.makedActivity', compact(
+            'activities',
+            'categories',
+            'checkAcSent',
+            'selectedYearId',
+            'latestYear',
+            'years'
+        ));
+    }
+    
+
+
+
+    public function activityData(Request $request)
+    {
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
         $categories = Category::where('status', 'published')->get();
         $activities = Activity::where('act_save_by', Auth::id())->get();
         $checkAcSent = false;
@@ -55,10 +98,13 @@ class ActivityController extends Controller
                 }
             }
         }
+        return response()->json([
+            'data' => $data,
+            'userCount' => $data->count(),
+            'activityCount' => $activities->count(),
+        ]);
         return view('volunteer.makedActivity', compact('activities', 'categories', 'checkAcSent'));
     }
-
-
 
     /**
      * บันทึกกิจกรรมใหม่

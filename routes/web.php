@@ -66,6 +66,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/activities/{id}/edit', [ActivityController::class, 'edit'])->name('activities.edit');
     Route::put('/activities/{id}', [ActivityController::class, 'update'])->name('activities.update');
     Route::get('/activities/{id}/detail', [ActivityController::class, 'detail'])->name('activities.detail');
+    Route::get('/activities/activity-data', [centralController::class, 'activityData'])->name('activities.activityData');
     //Route::delete('/activity/{id}', [ActivityController::class, 'destroy'])->name('activities.delete');
 
     // Route สำหรับลบภาพ
