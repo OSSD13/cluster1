@@ -2,7 +2,9 @@
 @section('page-title', 'รายละเอียดงาน')
 @section('content')
 
-<button type="button" class="btn btn-secondary" onclick="window.history.back()">ย้อนกลับ</button>
+<a href="javascript:history.back()" class="btn btn-light mb-3">
+    <i class="bi bi-chevron-left"></i>
+</a>
 <div class="content-container">
     <div class="container">
         <div class="card shadow">
@@ -87,7 +89,7 @@
     .content-container {
         width: 80vh;
         margin-left: 30vh;
-        margin-top: 10vh;
+        margin-top: 0vh;
         padding: 20px;
         transition: all 0.3s ease-in-out;
     }

@@ -222,6 +222,7 @@ class centralController extends Controller
         $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
         $selectedYearId = $request->input('year_id', $latestYear->year_id);
         $provinceID = \App\Models\Provinces::find($pvc_id)->pvc_id;
+        $provinceName = \App\Models\Provinces::find($pvc_id)->pvc_name;
         $activities = Activity::where('status', ['Approve_by_province', 'Approve_by_central'])
             ->whereHas('creator', fn($q) => $q->where('province', $provinceID))
             ->whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))
@@ -244,6 +245,7 @@ class centralController extends Controller
             'activityCount',
             'activities',
             'provinceID',
+            'provinceName'
         ));
     }
 
