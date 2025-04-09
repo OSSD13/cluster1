@@ -17,7 +17,7 @@
                     @endforeach
                 </select>
             </form>
-            {{ $selectedYearId }}
+
         </div>
 
 
@@ -142,6 +142,16 @@
                 }
             });
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const yearSelect = document.getElementById('year_id');
+                if (yearSelect) {
+                    yearSelect.addEventListener('change', function () {
+                        document.getElementById('yearForm').submit();
+                    });
+                }
+            });
+        </script>
 
 
 
@@ -149,7 +159,17 @@
     </div>
 </div>
 
-
-
+@section('javascript')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const yearSelect = document.getElementById('year_id');
+        if (yearSelect) {
+            yearSelect.addEventListener('change', function () {
+                document.getElementById('yearForm').submit();
+            });
+        }
+    });
+</script>
+@endsection
 
 @endsection

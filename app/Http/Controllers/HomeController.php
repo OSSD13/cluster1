@@ -28,31 +28,27 @@ class HomeController extends Controller
             $years = \App\Models\Year::orderByDesc('year_name')->get();
             $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
             $selectedYearId = $request->input('year_id', $latestYear->year_id);
-            // $years = Category::with('year')
-            //     ->select('cat_year_id')
-            //     ->distinct()
-            //     ->get()
-            //     ->pluck('year.year_name');
             $expiration_date = Category::value('expiration_date');
             $category_due_date = $expiration_date
                 ? Carbon::parse($expiration_date)->subDays(15)->format('Y-m-d')
                 : null;
 
-            $categoryCount = Category::count();
-            $activityCount = Activity::count();
+            $categoryCount = Category::where('cat_year_id', $selectedYearId)->count();
+            $activityCount = Activity::whereHas('category', fn($q) => $q->where('cat_year_id', $selectedYearId))->count();
 
             $categories = Category::where('status', 'published')
-            ->withCount([
-                'activities as approved_activities_count' => function ($q) {
-                    $q->where('status', 'Approve_by_central');
-                },
-                'activities as unapproved_activities_count' => function ($q) {
-                    $q->whereNot('status', 'Approve_by_central');
-                },
-                'activities as activities_count' => function ($q) {
-                    $q->selectRaw('count(*)');
-                },
-            ])->get();
+                ->where('cat_year_id', $selectedYearId)
+                ->withCount([
+                    'activities as approved_activities_count' => function ($q) {
+                        $q->where('status', 'Approve_by_central');
+                    },
+                    'activities as unapproved_activities_count' => function ($q) {
+                        $q->whereNot('status', 'Approve_by_central');
+                    },
+                    'activities as activities_count' => function ($q) {
+                        $q->selectRaw('count(*)');
+                    },
+                ])->get();
 
             $labels = $categories->pluck('cat_name');
             $approvedCounts = $categories->pluck('approved_activities_count');
