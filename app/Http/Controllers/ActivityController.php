@@ -183,7 +183,7 @@ class ActivityController extends Controller
             ->where('apv_act_id', $id)
             ->orderByDesc('apv_date') // หากมีหลาย comment อาจเอาอันล่าสุด
             ->first();
-        dd($activity->images);
+        //dd($activity->images);
         $comment = $approval->apv_comment ?? null; // กรณีไม่มีข้อมูลจะได้ค่า null
 
         return view('volunteer.edit_my_activities', compact('activity', 'categories', 'comment'));

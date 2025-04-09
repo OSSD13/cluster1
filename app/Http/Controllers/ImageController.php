@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\VarImage;
 use App\Models\Activity;
@@ -32,6 +32,12 @@ class ImageController extends Controller
 
         $categories = Category::where('status', 'published')->get(); // ดึงหมวดหมู่ที่เผยแพร่
 
-        return view('volunteer.edit_my_activities', compact('activity', 'categories'));
+        $approval = DB::table('var_approvals')
+            ->where('apv_act_id', $id)
+            ->orderByDesc('apv_date') // หากมีหลาย comment อาจเอาอันล่าสุด
+            ->first();
+        $comment = $approval->apv_comment ?? null; // กรณีไม่มีข้อมูลจะได้ค่า null
+
+        return view('volunteer.edit_my_activities', compact('activity', 'categories', 'comment'));
     }
 }
