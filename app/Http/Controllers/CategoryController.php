@@ -16,18 +16,16 @@ class CategoryController extends Controller
         //$this->checkCategoryExpiration();
         // $categories = Category::all();
         // return view('categories.index', compact('categories'));
-
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $latestYearID = \App\Models\Year::orderByDesc('year_id')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
         // เพิ่มเข้ามา
         $years = Year::orderByDesc('year_name')->get(); // ดึงรายการปีทั้งหมด
-        $latestYear = Year::orderByDesc('year_name')->first(); // ดึงปีล่าสุด
-
         // ถ้ามีการส่ง year_id มาใน query string ให้ใช้ค่านั้น ถ้าไม่มีก็ใช้ปีล่าสุด
-        $selectedYearId = $request->input('year_id', $latestYear->year_id);
-
         // ดึงเฉพาะหมวดหมู่ของปีที่เลือก
         $categories = Category::where('cat_year_id', $selectedYearId)->get();
 
-        return view('categories.index', compact('categories', 'years', 'selectedYearId'));
+        return view('categories.index', compact('categories', 'years', 'selectedYearId','latestYear','latestYearID','selectedYearId'));
     }
 
     public function create(Request $request)

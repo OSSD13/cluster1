@@ -90,7 +90,7 @@
                 </a>
             </li>
             <li class="nav-item mb-3">
-                <a href="{{route('central.report.index')}}" class="nav-link sidebar-link text-muted {{ Request::is('central/report/*') ? 'active' : '' }}">
+                <a href="{{route('central.report.index')}}" class="nav-link sidebar-link text-muted {{ Request::is('*report*') ? 'active' : '' }}">
                     <i class="bi bi-file-earmark-bar-graph sidebar-icon"></i>
                     <span>รายงาน</span>
                 </a>

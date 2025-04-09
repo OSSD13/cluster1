@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\VarImage;
 use App\Models\Activity;
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
+
 
 class ImageController extends Controller
 {
