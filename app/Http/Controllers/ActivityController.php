@@ -281,7 +281,7 @@ class ActivityController extends Controller
                 // บันทึกข้อมูลรูปภาพในตาราง var_images
                 DB::table('var_images')->insert([
                     'img_act_id' => $activity->act_id,  // ใช้ ID ของกิจกรรมที่สัมพันธ์
-                    'img_path' => 'storage/' . $imagePath,  // ระบุ path ของไฟล์ภาพ
+                    'img_path' => 'storage/app/public/' . $imagePath,  // ระบุ path ของไฟล์ภาพ
                     'img_name' => $imageName,  // ระบุชื่อไฟล์
                     'img_uploaded_at' => now(),  // ใช้เวลาปัจจุบันสำหรับ img_uploaded_at
                 ]);
