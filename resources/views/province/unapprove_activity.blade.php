@@ -1,5 +1,5 @@
 @extends('layouts.default_with_menu')
-
+@section('page-title', 'กิจกรรมที่ไม่ผ่าน')
 @section('content')
 <div class="container mt-4">
     <div class="container" style="margin-top: -5px;">

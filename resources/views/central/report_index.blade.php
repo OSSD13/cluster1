@@ -1,6 +1,7 @@
 @extends('layouts.default_with_menu')
 
 @section('content')
+
     <div class="container" style="margin-top: -40px;">
         <div class="row mb-3 align-items-end">
             <div class="container mt-4">
@@ -105,7 +106,7 @@
                         const yearId = $(this).val();
 
                         $.ajax({
-                            url: '{{ route('central.approve.index.data') }}',
+                            url: "{{ route('central.approve.index.data') }}",
                             type: 'GET',
                             data: {
                                 year_id: yearId
