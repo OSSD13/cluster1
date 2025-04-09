@@ -41,6 +41,7 @@ class ActivityController extends Controller
     public function historyActivity(Request $request)
     {
         $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $latestYearID = \App\Models\Year::orderByDesc('year_id')->first();
         $selectedYearId = $request->input('year_id', $latestYear->year_id);
 
         $categories = Category::where('status', 'published')
@@ -73,6 +74,7 @@ class ActivityController extends Controller
             'checkAcSent',
             'selectedYearId',
             'latestYear',
+            'latestYearID',
             'years'
         ));
     }
@@ -108,6 +110,7 @@ class ActivityController extends Controller
             'activities' => $activities,
             'categories' => $categories,
             'checkAcSent' => $checkAcSent,
+            
         ]);
     }
 
