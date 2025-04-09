@@ -1,21 +1,25 @@
-@extends('layouts.default_with_menu') {{-- ใช้ layout หลักที่มีเมนูนำทาง --}}
-@section('page-title', 'กิจกรรมที่เคยทำ')
-@section('content') {{-- เริ่มต้น section content ที่จะใส่ลงใน layout หลัก --}}
+@extends('layouts.default_with_menu')
 
+@section('page-title', 'กิจกรรมที่เคยทำ')
+@section('content')
+<div class="row mb-3 align-items-end">
 <div class="container" style="margin-top: -11px;">
     <div class="row mb-3 align-items-end">
         <!-- ปีที่ทำกิจกรรม -->
         <div class="col-md-3">
             <label class="form-label fw-semibold small">ปีที่ทำกิจกรรม</label>
-            <select class="form-select" style="height: 55px; font-size: 1rem; padding: 0.75rem;">
-                <option selected>2021</option>
-                <option selected>2022</option>
-                <option selected>2023</option>
-                <option selected>2024</option>
-                <option selected>2025</option>   
-            </select>
+            <form method="GET" action="{{ route('activities.history') }}" id="yearForm">
+                <select name="year_id" id="yearFilter" class="form-select shadow-sm"
+                    onchange="document.getElementById('yearForm').submit()"
+                    style="height: 55px; font-size: 1rem; padding: 0.75rem;">
+                    @foreach ($years as $year)
+                        <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
+                            {{ $year->year_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
         </div>
-
 
         <!-- จำนวนหมวดหมู่ทั้งหมด -->
         <div class="col-md-3">
@@ -34,21 +38,26 @@
                 <span class="text-muted">กิจกรรม</span>
             </div>
         </div>
-    
-    <!-- ปุ่มส่งกิจกรรม -->
-    <div class="col-md-3 text-end d-flex justify-content-end align-items-center">
-            <form action="{{ route('activities.submitAll') }}" method="POST">
-                @csrf
-                @if ($checkAcSent)
-                    <button class="btn btn-sm" style="background-color: #6c757d; color: white;" disabled>ส่งกิจกรรมทั้งหมด</button>
-                @else
-                    <button type="submit" class="btn btn-sm" style="background-color:rgb(39, 219, 135); color: white;">ส่งกิจกรรมทั้งหมด</button>
-                @endif
-            </form>
-        </div>
-    </div>
 
-    <div class="card shadow-sm"> {{-- เริ่มต้น card แสดงตารางกิจกรรม --}}
+        <!-- ปุ่มส่งกิจกรรม -->
+<div class="col-md-3 text-end d-flex justify-content-end align-items-center">{{-- Debug ค่า --}}
+
+    <form action="{{ route('activities.submitAll') }}" method="POST">
+        @csrf
+        @if ($selectedYearId < $latestYearID->year_id)
+            <button class="btn btn-sm" style="background-color: #6c757d; color: white;" disabled>ส่งกิจกรรมทั้งหมด</button>
+        @else
+            @if ($checkAcSent)
+                <button class="btn btn-sm" style="background-color: #6c757d; color: white;" disabled>ส่งกิจกรรมทั้งหมด</button>
+            @else
+                <button type="submit" class="btn btn-sm" style="background-color:rgb(39, 219, 135); color: white;">ส่งกิจกรรมทั้งหมด</button>
+            @endif
+        @endif
+    </form>
+</div>
+
+</div>
+    <div class="card shadow-sm">
         <div class="card-body p-3">
             <h6 class="mb-3 fw-bold">ตารางการทำงาน</h6>
             <table class="table table-sm text-center align-middle custom-table">
@@ -63,9 +72,9 @@
                         <th>การกระทำ</th>
                     </tr>
                 </thead>
-                <tbody class="small">
+                <tbody class="small" id="activityTableBody">
                     @php
-                        // กำหนดข้อความและสีตามสถานะต่าง ๆ ของกิจกรรม
+                        $row = 1;
                         $statusText = [
                             'Saved' => 'บันทึกแล้ว',
                             'Sent' => 'ส่งแล้ว',
@@ -83,15 +92,16 @@
                             'Approve_by_central' => '#6c757d',
                         ];
                         $row = 1; // ตัวแปรลำดับแถว
-                    @endphp
 
+                    @endphp
+                    
                     @if ($activities == null || count($activities) === 0)
                         <tr>
                             <td colspan="7" class="text-center text-muted">ไม่มีข้อมูลกิจกรรม</td>
                         </tr>
                     @else
                         @foreach ($activities as $activity)
-                            @if (isset($statusText[$activity->status])) {{-- แสดงเฉพาะกิจกรรมที่มีสถานะที่กำหนด --}}
+                        @if (isset($statusText[$activity->status])) {{-- แสดงเฉพาะกิจกรรมที่มีสถานะที่กำหนด --}}
                                 <tr>
                                     <td>{{ $row++ }}</td>
                                     <td>{{ $activity->category->cat_name ?? 'ไม่ระบุหมวดหมู่' }}</td> {{-- ชื่อหมวดหมู่ --}}
@@ -146,7 +156,7 @@
                                                 {{-- เงื่อนไขปุ่มแก้ไข --}}
                                                 @if (in_array($activity->status, ['Saved','Edit','unapproved_by_central']))
                                                     <a href="{{ route('activities.edit', $activity->act_id) }}">
-                                                        <button type="button" class="btn btn-warning btn-sm action-btn">แก้ไข</button>
+                                                        <button type="button" class="btn btn-warning text-white btn-sm action-btn">แก้ไข</button>
                                                     </a>
                                                 @else
                                                     <div class="action-placeholder"></div>
@@ -160,7 +170,8 @@
                                                 @else
                                                     <div class="action-placeholder"></div>
                                                 @endif
-                                            </div>
+
+                                                </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -172,8 +183,6 @@
         </div>
     </div>
 </div>
-
-{{-- CSS ปรับแต่งเพิ่มเติม --}}
 <style>
     .dot-container {
         width: 14px;
@@ -280,4 +289,46 @@
     }
 </style>
 
-@endsection {{-- ปิด section content --}}
+
+
+@section('javascript')
+<script>
+    $(document).ready(function () {
+        $('#yearFilter').on('change', function () {
+            const yearId = $(this).val();
+
+            $.ajax({
+                url: '{{ route("activities.activityData") }}',
+                method: 'GET',
+                data: { year_id: yearId },
+                success: function (response) {
+                    let rows = '';
+                    let row = 1;
+                    response.activities.forEach(activity => {
+                        rows += `
+                            <tr>
+                                <td>${row++}</td>
+                                <td>${activity.category.cat_name ?? '-'}</td>
+                                <td>${activity.act_title ?? '-'}</td>
+                                <td>${activity.act_date ? new Date(activity.act_date).toLocaleDateString('th-TH') : '-'}</td>
+                                <td>${activity.category.cat_ismandatory ? 'บังคับ' : 'ไม่บังคับ'}</td>
+                                <td>${activity.status}</td>
+                                <td>
+                                    <a href="/activities/${activity.act_id}/detail" class="btn btn-sm btn-outline-primary">รายละเอียด</a>
+                                </td>
+                            </tr>`;
+                    });
+                    $('#activityTableBody').html(rows);
+                    $('#activityCount').text(response.activities.length);
+                    $('#categoryCount').text(response.categories.length);
+                },
+                error: function () {
+                    alert('โหลดข้อมูลล้มเหลว กรุณาลองใหม่');
+                }
+            });
+        });
+    });
+</script>
+
+@endsection
+@endsection
