@@ -79,6 +79,7 @@ class ActivityController extends Controller
             'act_date' => 'required|date', // ตรวจสอบวันที่
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
+
         try {
             // สร้างกิจกรรมใหม่
             $activity = new Activity();
@@ -95,13 +96,13 @@ class ActivityController extends Controller
             if (!$activity->act_id) {
                 dd('กิจกรรมไม่สามารถบันทึกได้', $activity);
             }
-            // dd($request->hasFile('images'));
+
             // อัปโหลดรูปภาพ (ถ้ามี)
-            if (!$request->hasFile('images')) {
-                dd('ปปปปปปปปป', $activity);
+            if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     $imageName = time() . '_' . $image->getClientOriginalName();
                     $imagePath = $image->storeAs('activity_images', $imageName, 'public');
+
                     // บันทึกข้อมูลรูปภาพ
                     DB::table('var_images')->insert([
                         'img_act_id' => $activity->act_id,
@@ -111,6 +112,7 @@ class ActivityController extends Controller
                     ]);
                 }
             }
+
             return redirect()->route('activities.history')
                 ->with('success', 'สร้างกิจกรรม ' . $activity->act_title . ' สำเร็จแล้ว');
         } catch (\Exception $e) {
@@ -183,30 +185,12 @@ class ActivityController extends Controller
             ->where('apv_act_id', $id)
             ->orderByDesc('apv_date') // หากมีหลาย comment อาจเอาอันล่าสุด
             ->first();
-        dd($activity->images);
+       // dd($activity->images);
         $comment = $approval->apv_comment ?? null; // กรณีไม่มีข้อมูลจะได้ค่า null
-
+        
         return view('volunteer.edit_my_activities', compact('activity', 'categories', 'comment'));
     }
-    public function editwithcomment($id)
-    {
-        // ดึงกิจกรรมที่ต้องการแก้ไข (ถ้าไม่เจอจะ error 404)
-        $activity = Activity::findOrFail($id);
 
-        // ดึงหมวดหมู่ทั้งหมดที่เผยแพร่แล้ว
-        $categories = Category::where('status', 'published')->get();
-
-        // ดึง apv_comment จาก var_approvals โดยอิงจาก act_id
-        $approval = DB::table('var_approvals')
-            ->where('apv_act_id', $id)
-            ->first(); // ใช้ first() เพราะมีแค่หนึ่ง comment เท่านั้น
-
-        // ถ้ามีข้อมูลใน $approval จะได้ $approval->apv_comment, ถ้าไม่มีจะได้ null
-        $comment = $approval->apv_comment ?? null;
-
-        // ส่งค่าทั้งหมดไปยัง view
-        return view('volunteer.edit_my_activities_with_comment', compact('activity', 'categories', 'comment'));
-    }
 
 
 
