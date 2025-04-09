@@ -1,100 +1,109 @@
 @extends('layouts.default_with_menu')
 
+@section('page-title', 'รายงาน')
+
 @section('content')
+<div class="container mt-4">
+    {{-- 🔍 Search --}}
+    <div class="mb-3">
+        <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
+    </div>
 
-    <div class="container" style="margin-top: -40px;">
-        <div class="row mb-3 align-items-end">
-            <div class="container mt-4">
-                {{-- 🔍 Search --}}
-                <div class="mb-3">
-                    <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
+    {{-- 📊 Summary Filters --}}
+    <div class="row g-3 mb-4">
+        {{-- ปีที่ทำกิจกรรม --}}
+        <div class="col-md-3">
+            <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
+            <form method="GET" action="{{ route('central.approve.index') }}" id="yearForm">
+                <select name="year_id" id="yearFilter" class="form-select shadow-sm"
+                    onchange="document.getElementById('yearForm').submit()" style="height: 72px;">
+                    @foreach ($years as $year)
+                    <option value="{{ $year->year_id }}"
+                        {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
+                        {{ $year->year_name }}
+                    </option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
+
+        {{-- จำนวนอาสา --}}
+        <div class="col-md-3">
+            <label class="form-label fw-bold">จำนวนอาสา</label>
+            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center" style="height: 72px;">
+                <span>{{ $userCount }}</span>
+                <span>คน</span>
+            </div>
+        </div>
+
+        {{-- จำนวนกิจกรรม --}}
+        <div class="col-md-3">
+            <label class="form-label fw-bold">จำนวนกิจกรรม</label>
+            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center" style="height: 72px;">
+                <span>{{ $activityCount }}</span>
+                <span>กิจกรรม</span>
+            </div>
+        </div>
+
+
+        {{-- 📋 ตารางกิจกรรม --}}
+        <div class="card shadow-sm">
+            <div class="card-body p-3">
+                <h6 class="mb-3 fs-5 ps-3 fw-bold">ตารางการทำงาน</h6>
+                <div class="table-responsive">
+                    <table class="table align-middle table-hover text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 60px;"></th>
+                                <th class="text-start ps-5">จังหวัด</th>
+                                <th style="width: 150px;">การกระทำ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTableBody">
+                            @forelse ($provinces as $index => $province)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td class="text-start ps-5">{{ $province->pvc_name }}</td>
+                                <td>
+                                    <a href="{{ route('central.report', ['pvc_id' => $province->pvc_id, 'year_id' => $selectedYearId]) }}"
+                                        class="btn btn-sm btn-primary rounded-pill px-3">รายละเอียด</a>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="text-muted">ไม่มีข้อมูลกิจกรรมของปีที่เลือก</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
 
-                {{-- 📊 Summary Filters --}}
-                <div class="row g-3 align-items-end mb-4">
-                    {{-- ปี --}}
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
-                        <form method="GET" action="{{ route('central.approve.index') }}" id="yearForm">
-                            <select name="year_id" id="yearFilter" class="form-select shadow-sm"
-                                onchange="document.getElementById('yearForm').submit()">
-                                @foreach ($years as $year)
-                                    <option value="{{ $year->year_id }}"
-                                        {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
-                                        {{ $year->year_name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </form>
+                {{-- Pagination + Rows Per Page --}}
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="d-flex align-items-center">
+                        <label class="form-label me-2 mb-0">Show</label>
+                        <select class="form-select form-select-sm w-auto me-2">
+                            <option selected>10</option>
+                            <option>20</option>
+                            <option>50</option>
+                        </select>
+                        <span class="form-label mb-0">Row</span>
                     </div>
 
-                    {{-- จังหวัด --}}
-
-
-                    {{-- จำนวนอาสา --}}
-                    <div class="col-md-3">
-                        <label class="form-label">จำนวนอาสา</label>
-                        <div class="form-control shadow-sm bg-white text-end" id="volunteerCount">
-                            {{ $userCount }} คน
-                        </div>
-                    </div>
-
-                    {{-- จำนวนกิจกรรม --}}
-                    <div class="col-md-3">
-                        <label class="form-label">จำนวนกิจกรรม</label>
-                        <div class="form-control shadow-sm bg-white text-end" id="activityCount">
-                            {{ $activityCount }} กิจกรรม
-                        </div>
-                    </div>
-                </div>
-
-
-                {{-- 📋 ตารางกิจกรรม --}}
-                <div class="card shadow-sm">
-                    <div class="card-body p-3">
-                        <h6 class="mb-3 " style="font-size: 23px; padding-left: 10px;">ตารางการทำงาน</h6>
-                        <div class="table-responsive">
-                            <table class="table align-middle table-hover">
-                                <thead class="table-light small text-center" style="border-radius: 10px;">
-                                    <tr>
-                                        <th style="width: 60px;"></th>
-                                        <th class="text-start " style="padding-left: 100px;" >จังหวัด</th>
-                                        <th style="width: 150px;">การกระทำ</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="activityTableBody">
-                                    @forelse ($provinces as $index => $province)
-                                        <tr>
-                                            <td class="text-center">{{ $index + 1 }}</td>
-                                            <td class="text-start " style="padding-left: 100px;">{{ $province->pvc_name }}</td>
-                                            <td class="text-center">
-                                                <a href="{{ route('central.report', ['pvc_id' => $province->pvc_id, 'year_id' => $selectedYearId]) }}"
-                                                   class="btn btn-sm btn-primary rounded-pill px-3">รายละเอียด</a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center text-muted">ไม่มีข้อมูลกิจกรรมของปีที่เลือก</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- Pagination UI Mockup --}}
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div class="d-flex align-items-center">
-                                <label class="form-label me-2 mb-0">Show</label>
-                                <select class="form-select form-select-sm w-auto me-2">
-                                    <option selected>10</option>
-                                    <option>20</option>
-                                    <option>50</option>
-                                </select>
-                                <span class="form-label mb-0">Row</span>
-                            </div>
-
-                        </div>
-                    </div>
+                    {{-- ตัวอย่าง pagination UI mockup --}}
+                    <nav>
+                        <ul class="pagination mb-0">
+                            <li class="page-item disabled"><a class="page-link">‹</a></li>
+                            <li class="page-item active"><a class="page-link">1</a></li>
+                            <li class="page-item"><a class="page-link">2</a></li>
+                            <li class="page-item"><a class="page-link">3</a></li>
+                            <li class="page-item"><a class="page-link">4</a></li>
+                            <li class="page-item"><a class="page-link">5</a></li>
+                            <li class="page-item"><a class="page-link">…</a></li>
+                            <li class="page-item"><a class="page-link">7</a></li>
+                            <li class="page-item"><a class="page-link">›</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         @endsection
