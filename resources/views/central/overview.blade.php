@@ -82,8 +82,6 @@
             const approvedCounts = @json($approvedCounts);
             const unapprovedCounts = @json($unapprovedCounts);
             const activityCounts = @json($activityCounts);
-            //const labels = @json($labels).slice(0, 10);
-            //const activityCounts = @json($activityCounts).slice(0, 10);
 
             // ✅ กราฟกิจกรรมที่ยังไม่อนุมัติ
             new Chart(document.getElementById('unapproved_activity_chart'), {
@@ -124,7 +122,7 @@
                     datasets: [{
                         label: 'กิจกรรม',
                         data: activityCounts,
-                        backgroundColor: '#81B7D8' // สีแดงอมชมพู
+                        backgroundColor: '#81B7D8'
                     }]
                 },
                 options: {

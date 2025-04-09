@@ -1,11 +1,9 @@
 @extends('layouts.default_with_menu')
 
+@section('page-title', 'กำหนดหมวดหมู่')
 @section('content')
-<div class="container mt-4">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h4>เพิ่มหมวดหมู่</h4>
-        </div>
+<div class="container d-flex justify-content-center align-items-center mt-4">
+    <div class="card shadow" style="width: 900px;">
         <div class="card-body">
             @if (session('error'))
             <div class="alert alert-danger">
@@ -26,8 +24,8 @@
             <form action="{{ route('categories.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="cat_name" class="form-label ">ชื่อหมวดหมู่<span style="color:red"> *</span></label>
-                    <input type="text" name="cat_name" id="cat_name"
+                    <label for="cat_name" class="form-label ">หมวดหมู่<span style="color:red"> *</span></label>
+                    <input type="text" name="cat_name" id="cat_name" placeholder="ชื่อหมวดหมู่"
                         class="form-control @error('cat_name') is-invalid @enderror" value="{{ old('cat_name') }}"
                         required>
                     @error('cat_name')
@@ -36,9 +34,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label">คำอธิบายหมวดหมู่</label>
+                    <label for="description" class="form-label">รายละเอียด (ถ้ามี)</label>
                     <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
-                        rows="6">{{ old('description') }}</textarea>
+                        placeholder="รายละเอียดของหมวดหมู่"
+                        rows="10">{{ old('description') }}</textarea>
                     @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -77,7 +76,7 @@
                                 <label for="cat_ismandatory_1" class="form-check-label">บังคับ</label>
                             </div>
                         </div>
-                        
+
                     </div>
                     @error('cat_ismandatory')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -107,9 +106,9 @@
                     @enderror
                 </div>
 
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-success">บันทึก</button>
-                    <a href="{{ route('categories.index') }}" class="btn btn-secondary">ย้อนกลับ</a>
+                <div class="d-flex gap-2 justify-content-between">
+                    <a href="{{ route('categories.index') }}" class="btn btn-danger btn-lg w-25">ยกเลิก</a>
+                    <button type="submit" class="btn btn-primary btn-lg w-25">บันทึก</button>
                 </div>
             </form>
         </div>
