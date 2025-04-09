@@ -1,34 +1,37 @@
 @extends('layouts.default_with_menu')
-
+@section('page-title', 'กำหนดหมวดหมู่')
 @section('content')
     <div class="container mt-4">
         <!-- ส่วนหัวของ Dashboard -->
         <div class="row mb-4">
+            
+            <!-- แสดงตามปีที่เลือก -->
             <div class="col-md-3">
-                <label class="form-label">ปี</label>
-                <!-- <input type="text" class="form-control text-center bg-light" value="2568" readonly> -->
-                <select name="year" id="year" class="form-control">
-                    <!-- <option value="" disabled>แสดงปี 2560-2570</option> -->
-                    @foreach(range(2560, 2570) as $year)
-                        <option value="{{ $year }}" {{ $year == 2568 ? 'selected' : '' }}>
-                            {{ $year }}
+                <form method="GET" action="{{ route('categories.index') }}" id="yearForm">
+                    <label for="year_id" class="form-label">ปี</label>
+                
+                    <select name="year_id" id="yearFilter" class="form-select"
+                        onchange="document.getElementById('yearForm').submit()">
+                    @foreach ($years as $year)
+                        <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
+                            {{ $year->year_name }}
                         </option>
                     @endforeach
-
                 </select>
+            </form>
+        </div>
 
-            </div>
             <div class="col-md-3">
                 <label class="form-label">กำหนดส่ง</label>
-                <!-- <div class="input-group">
-                    <input type="text" class="form-control text-center bg-light" value="15 มกราคม 2569" readonly>
-                    <span class="input-group-text">📅</span>
-                </div> -->
-
                 <div class="input-group">
+                    <input type="text" class="form-control start bg-light" value="15 มกราคม 2569" readonly>
+                    <span class="input-group-text">📅</span>
+                </div>
+
+                <!-- <div class="input-group">
                     <input type="date" id="act_date" name="act_date" class="form-control"
                     value="{{ \Carbon\Carbon::parse($activity->act_date ?? now())->format('Y-m-d') }}"required>
-                </div>
+                </div> -->
 
             </div>
             <div class="col-md-3">
@@ -84,8 +87,8 @@
                                     @endif
                                 </td>
                                 <td class="text-center mt-4">
-                                   <a href="{{route('categories.edit', $category->cat_id)}}" class="btn btn-lg btn-warning btn-sm">แก้ไข</a>
-                                   <a href="{{ route('categories.detail', $category->cat_id) }}" class="btn btn-info btn-sm" style = "background-color:#2079FF">รายละเอียด</a>
+                                   <a href="{{route('categories.edit', $category->cat_id)}}" class="btn btn-lg btn-warning btn-sm" style="background-color: #FFB200; color: #FFFFFF;" >แก้ไข</a>
+                                   <a href="{{route('categories.detail', $category->cat_id) }}" class="btn btn-info btn-sm" style = "background-color: #2079FF; color: #FFFFFF;">รายละเอียด</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -96,6 +99,12 @@
 
         <!-- ปุ่มสร้างหมวดหมู่ -->
         <div class="text-center mt-4">
-            <a href="{{ route('categories.create') }}" class="btn btn-lg btn-primary" style="background-color: #81B7D8; border-color: #81B7D8; color: white;padding: 8px 36px; ">สร้างหมวดหมู่</a>
+            <a href="{{ route('categories.create') }}" class="btn btn-lg btn-primary" style="background-color: #81B7D8; border-color: #81B7D8; color: white;padding: 8px 36px; "
+                @if($selectedYearId != \Carbon\Carbon::now()->year) disabled @endif>
+                สร้างหมวดหมู่
+            </a>
+        </div>
+        <!-- เหลือเอาปุ่มออกถ้าปีที่เลือกไม่ใช่ปีปัจจุบัน -->
     
+    </div>
 @endsection
