@@ -53,7 +53,6 @@ class ActivityController extends Controller
             })
             ->with(['creator', 'category'])
             ->get();
-
         $checkAcSent = false;
         $years = \App\Models\Year::orderByDesc('year_name')->get();
 
