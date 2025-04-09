@@ -85,7 +85,7 @@
                                     <div class="image-preview-item" data-id="{{ $image->img_id }}">
                                         <?php $image_path = 'storage/activity_images/' . $image->img_path; ?>
                                         <img src="{{ asset($image_path) }}" alt="{{ $image->img_name }}">
-                                    
+
                                     </div>
                                     @endforeach
                                 </div>

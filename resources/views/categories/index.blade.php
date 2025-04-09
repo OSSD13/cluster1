@@ -97,9 +97,5 @@
         <!-- ปุ่มสร้างหมวดหมู่ -->
         <div class="text-center mt-4">
             <a href="{{ route('categories.create') }}" class="btn btn-lg btn-primary" style="background-color: #81B7D8; border-color: #81B7D8; color: white;padding: 8px 36px; ">สร้างหมวดหมู่</a>
-        </div>
-        <!-- <div class="text-center mt-4">
-            <a href="{{ route('categories.edit', $category->cat_id) }}" class="btn btn-warning btn-sm">แก้ไข</a>
-        </div> -->
-    </div>
+    
 @endsection

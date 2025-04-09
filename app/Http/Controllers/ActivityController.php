@@ -79,7 +79,6 @@ class ActivityController extends Controller
             'act_date' => 'required|date', // ตรวจสอบวันที่
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-
         try {
             // สร้างกิจกรรมใหม่
             $activity = new Activity();
@@ -96,13 +95,13 @@ class ActivityController extends Controller
             if (!$activity->act_id) {
                 dd('กิจกรรมไม่สามารถบันทึกได้', $activity);
             }
-
+            // dd($request->hasFile('images'));
             // อัปโหลดรูปภาพ (ถ้ามี)
-            if ($request->hasFile('images')) {
+            if (!$request->hasFile('images')) {
+                dd('ปปปปปปปปป', $activity);
                 foreach ($request->file('images') as $image) {
                     $imageName = time() . '_' . $image->getClientOriginalName();
                     $imagePath = $image->storeAs('activity_images', $imageName, 'public');
-
                     // บันทึกข้อมูลรูปภาพ
                     DB::table('var_images')->insert([
                         'img_act_id' => $activity->act_id,
@@ -112,7 +111,6 @@ class ActivityController extends Controller
                     ]);
                 }
             }
-
             return redirect()->route('activities.history')
                 ->with('success', 'สร้างกิจกรรม ' . $activity->act_title . ' สำเร็จแล้ว');
         } catch (\Exception $e) {
@@ -185,7 +183,7 @@ class ActivityController extends Controller
             ->where('apv_act_id', $id)
             ->orderByDesc('apv_date') // หากมีหลาย comment อาจเอาอันล่าสุด
             ->first();
-
+        dd($activity->images);
         $comment = $approval->apv_comment ?? null; // กรณีไม่มีข้อมูลจะได้ค่า null
 
         return view('volunteer.edit_my_activities', compact('activity', 'categories', 'comment'));
