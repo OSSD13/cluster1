@@ -105,7 +105,7 @@
 
     </div>
 </div>
-@if(!$comment)
+@if($activity->status === 'Saved')
 <div style="text-align: right; margin-top: 20px;">
     <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
         @csrf

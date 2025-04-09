@@ -175,6 +175,8 @@ class provinceController extends Controller
     {
         $user = \App\Models\User::findOrFail($id);
         $selectedYearId = $request->input('year_id');
+        
+    
 
         $categories = \App\Models\Category::where('cat_year_id', $selectedYearId)
             ->whereHas('activities', function ($query) use ($user) {
@@ -220,6 +222,7 @@ class provinceController extends Controller
     {
         $user = \App\Models\User::findOrFail($id);
         $category = \App\Models\Category::findOrFail($cat_id);
+        $approval = \App\Models\Approval::all();
 
         $activities = \App\Models\Activity::where('act_submit_by', $user->user_id)
             ->where('act_cat_id', $cat_id)
@@ -227,7 +230,7 @@ class provinceController extends Controller
             ->with(['creator', 'category'])
             ->get();
 
-        return view('province.approve_activity_activity', compact('user', 'activities', 'category'));
+        return view('province.approve_activity_activity', compact('user', 'activities', 'category','approval'));
     }
     public function showActivityDetail($id, $cat_id, $act_id)
     {
