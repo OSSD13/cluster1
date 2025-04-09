@@ -94,14 +94,16 @@
 
 
 
-{{--
+
+
+    @if ($activity->status != 'Edit')
+    {{-- เพิ่มใหม่โดยโชกุนเองอย่าลง task งาน --}}
     <form action="{{ url('/activity/' . $activity->act_id) }}" onsubmit="clickme(event)" method="post">
         @csrf
         @method("delete")
         <button type="submit" class="btn btn-danger btn-sm">ลบกิจกรรม </button>
-    </form> --}}
-
-
+    </form>
+    @endif
 
     <style>
         body {

@@ -38,12 +38,21 @@
                 <label class="form-label">หมวดหมู่ทั้งหมด</label>
                 <input type="text" class="form-control start bg-light" value="{{ count($categories) }}" readonly>
             </div>
+            @if ($selectedYearId >= $latestYearID->year_id)
             <div class="col-md-3 text-end">
                 <form action="{{ route('categories.publishAll') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-success mt-4" style="background-color: #45DA56; border-color: #45DA56; color: white;padding: 8px 24px; ">ส่งหมวดหมู่</button>
+                    <button type="submit" class="btn btn-success mt-4" style="background-color: #45DA56; border-color: #45DA56; color: white;padding: 8px 24px; " >ส่งหมวดหมู่</button>
                 </form>
             </div>
+            @else
+            <div class="col-md-3 text-end">
+                <form action="{{ route('categories.publishAll') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn  mt-4" style="background-color: #E9E9E9;border-color:#E9E9E9;  color: rgb(0, 0, 0) ;padding: 8px 24px; " disabled >ส่งหมวดหมู่</button>
+                </form>
+            </div>
+            @endif
         </div>
 
         <!-- ตารางแสดงหมวดหมู่กิจกรรม -->
