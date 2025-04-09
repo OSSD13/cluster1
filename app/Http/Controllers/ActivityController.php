@@ -38,11 +38,25 @@ class ActivityController extends Controller
     }
 
 
-    public function historyActivity()
+    public function historyActivity(Request $request)
     {
-        $categories = Category::where('status', 'published')->get();
-        $activities = Activity::where('act_save_by', Auth::id())->get();
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
+
+        $categories = Category::where('status', 'published')
+            ->where('cat_year_id', $selectedYearId)
+            ->get();
+
+        $activities = Activity::where('act_save_by', Auth::id())
+            ->whereHas('category', function ($query) use ($selectedYearId) {
+                $query->where('cat_year_id', $selectedYearId);
+            })
+            ->with(['creator', 'category'])
+            ->get();
+
         $checkAcSent = false;
+        $years = \App\Models\Year::orderByDesc('year_name')->get();
+
         if ($activities->isEmpty()) {
             $activities = 0;
         } else {
@@ -50,15 +64,53 @@ class ActivityController extends Controller
                 if ($activity->status == 'Sent') {
                     $checkAcSent = true;
                     break;
-                } else {
-                    $checkAcSent = false;
                 }
             }
         }
-        return view('volunteer.makedActivity', compact('activities', 'categories', 'checkAcSent'));
+
+        return view('volunteer.makedActivity', compact(
+            'activities',
+            'categories',
+            'checkAcSent',
+            'selectedYearId',
+            'latestYear',
+            'years'
+        ));
     }
 
+    public function activityData(Request $request)
+    {
+        $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
+        $selectedYearId = $request->input('year_id', $latestYear->year_id);
 
+        $categories = Category::where('status', 'published')
+            ->where('cat_year_id', $selectedYearId)
+            ->get();
+
+        $activities = Activity::where('act_save_by', Auth::id())
+            ->whereHas('category', function ($query) use ($selectedYearId) {
+                $query->where('cat_year_id', $selectedYearId);
+            })
+            ->with(['creator', 'category'])
+            ->get();
+
+        $checkAcSent = false;
+
+        if (!$activities->isEmpty()) {
+            foreach ($activities as $activity) {
+                if ($activity->status == 'Sent') {
+                    $checkAcSent = true;
+                    break;
+                }
+            }
+        }
+
+        return response()->json([
+            'activities' => $activities,
+            'categories' => $categories,
+            'checkAcSent' => $checkAcSent,
+        ]);
+    }
 
     /**
      * บันทึกกิจกรรมใหม่
