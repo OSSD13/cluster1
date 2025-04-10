@@ -4,12 +4,19 @@
 <div class="container" style="margin-top: -5px;">
     {{-- 🔍 Search --}}
     <div class="mb-4">
-        <div class="position-relative" style="max-width: 650px;">
-            <input type="text"
-                class="form-control ps-5 rounded-3"
-                placeholder="ค้นหา..."
-                style="height: 45px; font-size: 1rem; border: 1px solid #333;">
-            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+        <div class="position-relative" style="max-width: 350px;">
+            <form method="GET" action="{{ route('province.index') }}" class="mb-3">
+                <div class="input-group">
+                    <button class="btn " type="submit">
+                        <span class="input-group-text">
+                            <i
+                                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i></i>
+                        </span>
+                    </button>
+                    <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อ..."
+                        value="{{ request('search') }}">
+                </div>
+            </form>
         </div>
     </div>
 

@@ -8,7 +8,6 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Year;
 
-
 class CategoryController extends Controller
 {
     public function index(Request $request) //เพิ่มRequest $request
@@ -24,8 +23,9 @@ class CategoryController extends Controller
         // ถ้ามีการส่ง year_id มาใน query string ให้ใช้ค่านั้น ถ้าไม่มีก็ใช้ปีล่าสุด
         // ดึงเฉพาะหมวดหมู่ของปีที่เลือก
         $categories = Category::where('cat_year_id', $selectedYearId)->get();
+        $pendingCount = Category::where('status', 'published')->count();
 
-        return view('categories.index', compact('categories', 'years', 'selectedYearId','latestYear','latestYearID','selectedYearId'));
+        return view('categories.index', compact('categories', 'years', 'selectedYearId','latestYear','latestYearID','selectedYearId','pendingCount'));
     }
 
     public function create(Request $request)
@@ -47,12 +47,18 @@ class CategoryController extends Controller
 
     public function publishAll()
     {
-        // อัปเดตทุกหมวดหมู่ที่ยังไม่เผยแพร่ให้เป็น published
+        // ตรวจสอบว่ามีหมวดหมู่ที่ยังไม่เผยแพร่หรือไม่
+        $pendingCount = Category::where('status', 'published')->count();
+
+        if ($pendingCount >= 1) {
+            return redirect()->route('categories.index')->with('info', 'ไม่มีหมวดหมู่ที่รอการเผยแพร่');
+        }
+
+        // อัปเดตหมวดหมู่ที่ยังไม่เผยแพร่ให้เป็น published
         Category::where('status', 'pending')->update(['status' => 'published']);
 
-        return redirect()->route('categories.index')->with('success', 'เผยแพร่หมวดหมู่ทั้งหมดเรียบร้อยแล้ว!');
+        return redirect()->route('categories.index',compact('pendingCount'))->with('success', 'เผยแพร่หมวดหมู่ทั้งหมดเรียบร้อยแล้ว!');
     }
-
 
     /**
      * Store a newly created category in database.

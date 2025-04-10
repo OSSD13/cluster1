@@ -61,6 +61,13 @@ class provinceController extends Controller
         $years = \App\Models\Year::orderByDesc('year_name')->get();
         $userCount = $groupedActivities->count();
         $activityCount = $activities->count();
+        if ($request->filled('search')) {
+            $search = strtolower($request->input('search'));
+            $activities = $activities->filter(function ($activity) use ($search) {
+                return str_contains(strtolower($activity->creator->user_fullname), $search);
+            });
+        }
+
 
         return view('province.approve_activity_index', compact(
             'groupedActivities',
@@ -96,6 +103,13 @@ class provinceController extends Controller
         $years = \App\Models\Year::orderByDesc('year_name')->get();
         $userCount = $groupedActivities->count();
         $activityCount = $activities->count();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $groupedActivities = $groupedActivities->filter(function ($activities, $fullname) use ($search) {
+                return str_contains(strtolower($fullname), strtolower($search));
+            });
+        }
 
         return view('province.report', compact(
             'groupedActivities',
@@ -175,8 +189,11 @@ class provinceController extends Controller
     {
         $user = \App\Models\User::findOrFail($id);
         $selectedYearId = $request->input('year_id');
-        
-    
+
+
+       
+
+
 
         $categories = \App\Models\Category::where('cat_year_id', $selectedYearId)
             ->whereHas('activities', function ($query) use ($user) {
@@ -184,8 +201,10 @@ class provinceController extends Controller
                       ->where('status', 'Sent');
             })
             ->get();
+        // ดึงหมวดหมู่ที่มีความคิดเห็น
 
-        return view('province.approve_activity_category', compact('user', 'categories', 'selectedYearId'));
+
+        return view('province.approve_activity_category', compact('user', 'categories', 'selectedYearId','categoriesWithComment'));
     }
     public function approveActivity(Request $request, $id)
     {
@@ -257,6 +276,7 @@ class provinceController extends Controller
 
         return response()->json(['success' => true, 'message' => 'บันทึกความคิดเห็นเรียบร้อยแล้ว']);
     }
+
     public function showUnapprovedActivities(Request $request)
     {
         $latestYear = \App\Models\Year::orderByDesc('year_name')->first();
@@ -275,16 +295,23 @@ class provinceController extends Controller
         $years = \App\Models\Year::orderByDesc('year_name')->get();
         $userCount = $groupedActivities->count();
         $activityCount = $activities->count();
+        if ($request->filled('search')) {
+            $search = strtolower($request->input('search'));
+            $activities = $activities->filter(function ($activity) use ($search) {
+                return str_contains(strtolower($activity->creator->user_fullname), $search);
+            });
+        }
 
-        return view('province.unapprove_activity', compact(
-            'groupedActivities',
-            'years',
-            'selectedYearId',
-            'userCount',
-            'activityCount',
-            'activities'
-        ));
+        return view('province.unapprove_activity', [
+            'activities' => $activities,
+            'groupedActivities' => $groupedActivities,
+            'years' => $years,
+            'selectedYearId' => $selectedYearId,
+            'userCount' => $userCount,
+            'activityCount' => $activityCount,
+        ]);
     }
+
     public function rejectAllInProvince(Request $request)
     {
 

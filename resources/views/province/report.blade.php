@@ -36,17 +36,23 @@
 @section('content')
     {{-- 🔍 Search Bar --}}
     <div class="row mb-3">
-        <!-- <div class="col-6">
-            <input type="text" class="form-control shadow-sm" placeholder="🔍 ค้นหา..." />
-        </div> -->
-
         <div class="col-6">
-        <div class="position-relative">
-            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-            <input type="text" class="form-control ps-5 shadow-sm" placeholder="ค้นหา..." name="search" value="{{ request('search') }}">
+            <form method="GET" action="{{ route('province.report') }}" class="mb-3">
+                <div class="input-group">
+                    <button class="btn " type="submit">
+                        <span class="input-group-text">
+                            <i
+                                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i></i>
+                        </span>
+                    </button>
+                    <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อ..."
+                        value="{{ request('search') }}">
+                </div>
+            </form>
         </div>
 
     </div>
+
 
     {{-- 📊 Filter & Summary Info --}}
     <div class="row g-3 align-items-end mb-4 ">
@@ -55,8 +61,8 @@
         <div class="col-md-3">
             <label class="form-label fw-bold">ปีที่ทำกิจกรรม</label>
             <form method="GET" action="{{ route('province.report') }}" id="yearForm">
-                <select name="year_id" class="form-select shadow-sm"
-                    onchange="document.getElementById('yearForm').submit()" style="height: 72px;">
+                <select name="year_id" class="form-select shadow-sm" onchange="document.getElementById('yearForm').submit()"
+                    style="height: 72px;">
                     @foreach ($years as $year)
                         <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
                             {{ $year->year_name }}
@@ -78,7 +84,8 @@
         {{-- จำนวนอาสา --}}
         <div class="col-md-3">
             <label class="form-label fw-bold">จำนวนอาสา</label>
-            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center" style="height: 72px;">
+            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center"
+                style="height: 72px;">
                 <div>{{ $userCount }}</div>
                 <div>คน</div>
             </div>
@@ -87,9 +94,10 @@
         {{-- จำนวนกิจกรรม --}}
         <div class="col-md-3">
             <label class="form-label fw-bold">จำนวนกิจกรรม</label>
-            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center" style="height: 72px;">
-            <div>{{ $activityCount }}</div>
-            <div>กิจกรรม</div>
+            <div class="form-control shadow-sm bg-white d-flex justify-content-between align-items-center"
+                style="height: 72px;">
+                <div>{{ $activityCount }}</div>
+                <div>กิจกรรม</div>
             </div>
         </div>
     </div>

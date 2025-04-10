@@ -36,9 +36,6 @@ class LoginController extends Controller
         }
 
         // ❌ 7. Login fail
-        // return redirect()->back()->withErrors([
-        //     'user_username' => 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
-        // ]);
         return redirect()->back()->with('error', 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
     }
 

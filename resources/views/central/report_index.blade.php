@@ -3,13 +3,20 @@
 @section('content')
 <div class="container mt-4">
     {{-- 🔍 Search --}}
-    <div class="mb-4">
+    <div class="mb-3">
         <div class="position-relative" style="max-width: 350px;">
-            <input type="text"
-                class="form-control ps-5 rounded-3"
-                placeholder="ค้นหา..."
-                style="height: 45px; font-size: 1rem; border: 1px solid #333;">
-            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+            <form method="GET" action="{{ route('central.report.index') }}" class="mb-3">
+                <div class="input-group">
+                    <button class="btn " type="submit">
+                        <span class="input-group-text">
+                            <i
+                                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i></i>
+                        </span>
+                    </button>
+                    <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อ..."
+                        value="{{ request('search') }}">
+                </div>
+            </form>
         </div>
     </div>
 
@@ -84,8 +91,10 @@
                     </table>
                 </div>
 
+                {{-- Pagination + Rows Per Page --}}
 
-                @endsection
+            </div>
+        @endsection
 
                 @section('javascript')
                 <script>
@@ -113,7 +122,7 @@
                                             <td>${item.province}</td>
                                             <td><span class="badge bg-secondary text-white">ยังไม่ตรวจสอบ</span></td>
                                             <td class="text-center">
-                                            <a href="/report/${item.activity_id}" class="btn btn-primary btn-sm px-4 rounded-pill">รายละเอียด</a>
+                                            <a href="${detailUrl}" class="btn btn-primary btn-sm px-4 rounded-pill">รายละเอียด</a>
                                             </td>
                                             </tr>`;
                                         }
