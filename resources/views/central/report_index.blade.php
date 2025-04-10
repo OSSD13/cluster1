@@ -6,7 +6,20 @@
 <div class="container mt-4">
     {{-- 🔍 Search --}}
     <div class="mb-3">
-        <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
+        <div class="position-relative" style="max-width: 350px;">
+            <form method="GET" action="{{ route('central.report.index') }}" class="mb-3">
+                <div class="input-group">
+                    <button class="btn " type="submit">
+                        <span class="input-group-text">
+                            <i
+                                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i></i>
+                        </span>
+                    </button>
+                    <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อ..."
+                        value="{{ request('search') }}">
+                </div>
+            </form>
+        </div>
     </div>
 
     {{-- 📊 Summary Filters --}}
@@ -79,32 +92,7 @@
                 </div>
 
                 {{-- Pagination + Rows Per Page --}}
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="d-flex align-items-center">
-                        <label class="form-label me-2 mb-0">Show</label>
-                        <select class="form-select form-select-sm w-auto me-2">
-                            <option selected>10</option>
-                            <option>20</option>
-                            <option>50</option>
-                        </select>
-                        <span class="form-label mb-0">Row</span>
-                    </div>
 
-                    {{-- ตัวอย่าง pagination UI mockup --}}
-                    <nav>
-                        <ul class="pagination mb-0">
-                            <li class="page-item disabled"><a class="page-link">‹</a></li>
-                            <li class="page-item active"><a class="page-link">1</a></li>
-                            <li class="page-item"><a class="page-link">2</a></li>
-                            <li class="page-item"><a class="page-link">3</a></li>
-                            <li class="page-item"><a class="page-link">4</a></li>
-                            <li class="page-item"><a class="page-link">5</a></li>
-                            <li class="page-item"><a class="page-link">…</a></li>
-                            <li class="page-item"><a class="page-link">7</a></li>
-                            <li class="page-item"><a class="page-link">›</a></li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
         @endsection
 
@@ -134,7 +122,7 @@
                                             <td>${item.province}</td>
                                             <td><span class="badge bg-secondary text-white">ยังไม่ตรวจสอบ</span></td>
                                             <td class="text-center">
-                                            <a href="/report/${item.activity_id}" class="btn btn-primary btn-sm px-4 rounded-pill">รายละเอียด</a>
+                                            <a href="${detailUrl}" class="btn btn-primary btn-sm px-4 rounded-pill">รายละเอียด</a>
                                             </td>
                                             </tr>`;
                                     }

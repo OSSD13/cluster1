@@ -6,12 +6,18 @@
         {{-- 🔍 Search --}}
         <div class="row g-2 align-items-center">
             <div class="col-md-8">
-                <div class="position-relative">
-                    <input type="text"
-                        class="form-control ps-5 rounded-3"
-                        style="height: 48px; font-size: 1rem;">
-                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                </div>
+                <form method="GET" action="{{ route('province.unapprove') }}" class="mb-3">
+                    <div class="input-group">
+                        <button class="btn " type="submit">
+                            <span class="input-group-text">
+                                <i
+                                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i></i>
+                            </span>
+                        </button>
+                        <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อ..."
+                            value="{{ request('search') }}">
+                    </div>
+                </form>
             </div>
             <div class="col-md-4 text-end">
                 <form method="POST" action="{{route('province.rejectAllInProvince') }}">

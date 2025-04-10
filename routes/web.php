@@ -111,8 +111,8 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('/province/approve/category/{user_id}/activities/{cat_id}', [provinceController::class, 'showActivities'])->name('province.approve.category.activities');
     Route::get('/province/approve/category/{user_id}/activities/{cat_id}/detail/{act_id}', [provinceController::class, 'showActivityDetail'])->name('province.approve.category.activities.detail');
     Route::get('/consider-event/activity-data', [provinceController::class, 'considerData'])->name('province.considerData');
-    Route::get('/report', [provinceController::class, 'report'])->name('province.report');
-    Route::get('/report/activity-data', [provinceController::class, 'activityData'])->name('province.activityData');
+    Route::get('/province/report', [provinceController::class, 'report'])->name('province.report');
+    Route::get('/province/report/activity-data', [provinceController::class, 'activityData'])->name('province.activityData');
     Route::get('/province/unapprove', [provinceController::class, 'showUnapprovedActivities'])->name('province.unapprove');
 
     Route::post('/province/approve/{id}', [provinceController::class, 'approveActivity'])->name('province.approve');

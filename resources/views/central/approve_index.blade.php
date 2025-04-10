@@ -6,7 +6,18 @@
             <div class="container mt-4">
                 {{-- 🔍 Search --}}
                 <div class="mb-3">
-                    <input type="text" class="form-control shadow-sm rounded-4" placeholder="🔍 ค้นหา..." />
+                    <form method="GET" action="{{ route('central.approve.index') }}" class="mb-3">
+                        <div class="input-group">
+                            <button class="btn " type="submit">
+                                <span class="input-group-text">
+                                    <i
+                                        class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i></i>
+                                </span>
+                            </button>
+                            <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อ..."
+                                value="{{ request('search') }}">
+                        </div>
+                    </form>
                 </div>
 
                 {{-- 📊 Summary Filters --}}
@@ -80,19 +91,7 @@
                             </table>
                         </div>
 
-                        {{-- Pagination UI Mockup --}}
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div class="d-flex align-items-center">
-                                <label class="form-label me-2 mb-0">Show</label>
-                                <select class="form-select form-select-sm w-auto me-2">
-                                    <option selected>10</option>
-                                    <option>20</option>
-                                    <option>50</option>
-                                </select>
-                                <span class="form-label mb-0">Row</span>
-                            </div>
 
-                        </div>
                     </div>
                 </div>
             </div>

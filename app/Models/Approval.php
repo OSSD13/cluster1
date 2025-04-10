@@ -27,4 +27,11 @@ class Approval extends Model
     {
         return $this->belongsTo(User::class, 'apv_approver', 'user_id');
     }
+
+    public static function categoriesWithComments()
+    {
+        return \App\Models\Category::whereHas('activities.approvals', function ($query) {
+            $query->whereNotNull('apv_comment');
+        })->get();
+    }
 }

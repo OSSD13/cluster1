@@ -37,7 +37,18 @@
     {{-- 🔍 Search Bar --}}
     <div class="row mb-3">
         <div class="col-6">
-            <input type="text" class="form-control shadow-sm" placeholder="🔍 ค้นหา..." />
+            <form method="GET" action="{{ route('central.report', ['pvc_id' => $provinceId]) }}" class="mb-3">
+                <div class="input-group">
+                    <button class="btn " type="submit">
+                        <span class="input-group-text">
+                            <i
+                                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i></i>
+                        </span>
+                    </button>
+                    <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อ..."
+                        value="{{ request('search') }}">
+                </div>
+            </form>
         </div>
     </div>
 

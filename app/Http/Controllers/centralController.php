@@ -34,6 +34,13 @@ class centralController extends Controller
         $userCount = $activities->count();
         $activityCount = $activities->count();
 
+        if ($request->filled('search')) {
+            $search = strtolower($request->input('search'));
+            $provinces = $provinces->filter(function ($province) use ($search) {
+                return str_contains(strtolower($province->pvc_name), $search);
+            });
+        }
+
         return view('central.report_index', compact(
             'years',
             'selectedYearId',
@@ -66,7 +73,14 @@ class centralController extends Controller
         $userCount = $groupedActivities->count();
         $activityCount = $activities->count();
 
-        return view('province.report', compact(
+        if ($request->filled('search')) {
+            $search = strtolower($request->input('search'));
+            $activities = $activities->filter(function ($activity) use ($search) {
+                return str_contains(strtolower($activity->creator->user_fullname), $search);
+            });
+        }
+
+        return view('central.report', compact(
             'groupedActivities',
             'years',
             'selectedYearId',
@@ -174,6 +188,12 @@ class centralController extends Controller
 
         $userCount = $activities->count();
         $activityCount = $activities->count();
+        if ($request->filled('search')) {
+            $search = strtolower($request->input('search'));
+            $provinces = $provinces->filter(function ($province) use ($search) {
+                return str_contains(strtolower($province->pvc_name), $search);
+            });
+        }
 
         return view('central.approve_index', compact(
             'years',
@@ -235,6 +255,12 @@ class centralController extends Controller
         $years = \App\Models\Year::orderByDesc('year_name')->get();
         $userCount = $groupedActivities->count();
         $activityCount = $activities->count();
+        if ($request->filled('search')) {
+            $search = strtolower($request->input('search'));
+            $activities = $activities->filter(function ($activity) use ($search) {
+                return str_contains(strtolower($activity->creator->user_fullname), $search);
+            });
+        }
 
         return view('central.approve_activity_index', compact(
             'groupedActivities',

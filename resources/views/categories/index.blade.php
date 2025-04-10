@@ -4,12 +4,12 @@
     <div class="container mt-4">
         <!-- ส่วนหัวของ Dashboard -->
         <div class="row mb-4">
-            
+
             <!-- แสดงตามปีที่เลือก -->
             <div class="col-md-3">
                 <form method="GET" action="{{ route('categories.index') }}" id="yearForm">
                     <label for="year_id" class="form-label">ปี</label>
-                
+
                     <select name="year_id" id="yearFilter" class="form-select"
                         onchange="document.getElementById('yearForm').submit()">
                     @foreach ($years as $year)
@@ -41,7 +41,11 @@
             <div class="col-md-3 text-end">
                 <form action="{{ route('categories.publishAll') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-success mt-4" style="background-color: #45DA56; border-color: #45DA56; color: white;padding: 8px 24px; ">ส่งหมวดหมู่</button>
+                    @if($pendingCount >=0)
+                        <button type="submit" class="btn btn-success mt-4" style="background-color: #ABABAB; border-color: #ABABAB; color: rgb(0, 0, 0);padding: 8px 24px; " disabled>ส่งหมวดหมู่</button>
+                    @else
+                        <button type="submit" class="btn btn-success mt-4" style="background-color: #45DA56; border-color: #45DA56; color: white;padding: 8px 24px; ">ส่งหมวดหมู่</button>
+                    @endif
                 </form>
             </div>
         </div>
@@ -105,6 +109,6 @@
             </a>
         </div>
         <!-- เหลือเอาปุ่มออกถ้าปีที่เลือกไม่ใช่ปีปัจจุบัน -->
-    
+
     </div>
 @endsection
