@@ -59,8 +59,8 @@
             <div class="col-md-3 text-end">
                 <form action="{{ route('categories.publishAll') }}" method="POST">
                     @csrf
-                    @if($pendingCount >=0)
-                        <button type="submit" class="btn btn-success " style="background-color: #ABABAB; border-color: #ABABAB; color: rgb(0, 0, 0);padding: 8px 24px; margin-top: 40px; " disabled>ส่งหมวดหมู่</button>
+                    @if($pendingCount >0)
+                        <button type="submit" class="btn btn-success mt-4" style="background-color: #ABABAB; border-color: #ABABAB; color: rgb(0, 0, 0);padding: 8px 24px; " disabled>ส่งหมวดหมู่</button>
                     @else
                         <button type="submit" class="btn btn-success " style="background-color: #45DA56; border-color: #45DA56; color: white;padding: 8px 24px;margin-top: 40px; ">ส่งหมวดหมู่</button>
                     @endif
