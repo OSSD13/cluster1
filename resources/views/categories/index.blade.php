@@ -10,7 +10,7 @@
                 <form method="GET" action="{{ route('categories.index') }}" id="yearForm">
                     <label for="year_id" class="form-label">ปี</label>
 
-                    <select name="year_id" id="yearFilter" class="form-select"
+                    <select name="year_id" id="yearFilter" class="form-select bg-white d-flex justify-content-between align-items-center" style="height: 55px; font-size: 1rem; padding: 0.75rem;"
                         onchange="document.getElementById('yearForm').submit()">
                     @foreach ($years as $year)
                         <option value="{{ $year->year_id }}" {{ $year->year_id == $selectedYearId ? 'selected' : '' }}>
@@ -23,20 +23,34 @@
 
             <div class="col-md-3">
                 <label class="form-label">กำหนดส่ง</label>
-                <div class="input-group">
-                    <input type="text" class="form-control start bg-light" value="15 มกราคม 2569" readonly>
-                    <span class="input-group-text">📅</span>
+                <div class="form-control bg-white d-flex justify-content-between align-items-center" style="height: 55px; font-size: 1rem; padding: 0.75rem;">
+                    @php
+                    use Carbon\Carbon;
+
+                    $category = $categories->first();
+                    $date = $category->expiration_date ?? now();
+
+                    Carbon::setLocale('th'); // ตั้งค่าภาษาไทย
+                    $carbonDate = Carbon::parse($date);
+
+                    $formattedDate = $carbonDate->translatedFormat('j F Y'); // j = day, F = full month, Y = ปี ค.ศ.
+                    $formattedDate = str_replace(
+                        $carbonDate->year,
+                        $carbonDate->year ,
+                        $formattedDate
+                    );
+                @endphp
+
+                {{ $formattedDate }} <i class="bi bi-calendar3"></i>
                 </div>
 
-                <!-- <div class="input-group">
-                    <input type="date" id="act_date" name="act_date" class="form-control"
-                    value="{{ \Carbon\Carbon::parse($activity->act_date ?? now())->format('Y-m-d') }}"required>
-                </div> -->
 
             </div>
             <div class="col-md-3">
                 <label class="form-label">หมวดหมู่ทั้งหมด</label>
-                <input type="text" class="form-control start bg-light" value="{{ count($categories) }}" readonly>
+                <div class="form-control bg-white d-flex justify-content-between align-items-center" style="height: 55px; font-size: 1rem; padding: 0.75rem;">
+                {{ count($categories) }}
+                </div>
             </div>
             @if ($selectedYearId >= $latestYearID->year_id)
             <div class="col-md-3 text-end">

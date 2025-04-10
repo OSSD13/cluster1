@@ -1,5 +1,5 @@
 @extends('layouts.default_with_menu')
-
+@section('page-title', 'กิจกรรมที่เคยทำ')
 @section('content')
 <div class="container">
     <!-- ส่วนบนของการ์ดข้อมูล (4 คอลัมน์) -->

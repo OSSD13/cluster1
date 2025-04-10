@@ -1,5 +1,4 @@
 @extends('layouts.default_with_menu')
-
 @section('page-title', 'กิจกรรมที่เคยทำ')
 @section('content')
 <div class="row mb-3 align-items-end">
@@ -94,7 +93,7 @@
                         $row = 1; // ตัวแปรลำดับแถว
 
                     @endphp
-                    
+
                     @if ($activities == null || count($activities) === 0)
                         <tr>
                             <td colspan="7" class="text-center text-muted">ไม่มีข้อมูลกิจกรรม</td>
