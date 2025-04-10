@@ -96,8 +96,13 @@
                                     @endif
                                 </td>
                                 <td class="text-center mt-4">
-                                   <a href="{{route('categories.edit', $category->cat_id)}}" class="btn btn-lg btn-warning btn-sm" style="background-color: #FFB200; color: #FFFFFF;" >แก้ไข</a>
-                                   <a href="{{route('categories.detail', $category->cat_id) }}" class="btn btn-info btn-sm" style = "background-color: #2079FF; color: #FFFFFF;">รายละเอียด</a>
+                                    @if ($category->status == 'pending')
+                                    <a href="{{route('categories.edit', $category->cat_id)}}" class="btn btn-lg btn-warning btn-sm" style="background-color: #FFB200; color: #FFFFFF;" >แก้ไข</a>
+                                    <a href="{{route('categories.detail', $category->cat_id) }}" class="btn btn-info btn-sm" style = "background-color: #2079FF; color: #FFFFFF;">รายละเอียด</a>
+                                    @endif
+                                    @if ($category->status == 'published')
+                                    <a href="{{route('categories.detail', $category->cat_id) }}" class="btn btn-info btn-sm" style = "background-color: #2079FF; color: #FFFFFF;">รายละเอียด</a>
+                                @endif
                                 </td>
                             </tr>
                         @endforeach
