@@ -2,9 +2,19 @@
 @section('page-title', 'อนุมัติงาน')
 @section('content')
 
-<a href="javascript:history.back()" class="btn btn-light mb-3">
+<a href="javascript:void(0)" class="btn btn-light mb-3" onclick="goBackAndRefresh()">
     <i class="bi bi-chevron-left"></i>
 </a>
+
+<script>
+    function goBackAndRefresh() {
+        history.back();  // ย้อนกลับไปหน้าก่อนหน้า
+        setTimeout(function() {
+            location.reload();  // รีเฟรชหน้าหลังจากที่ย้อนกลับ
+        }, 500);  // 500ms ช้าหน่อยเพื่อให้การย้อนกลับทำงานก่อน
+    }
+</script>
+
 <div class="content-container">
     <div class="container">
         <div class="card shadow">

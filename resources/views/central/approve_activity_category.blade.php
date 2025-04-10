@@ -61,7 +61,7 @@
                         <p class="text-muted fw-light">{{ $category->description }}</p>
                         <div class="d-flex justify-content-end mt-2">
                             <a href="{{ route('central.approve.category.activities', ['user_id' => $user->user_id, 'cat_id' => $category->cat_id]) }}"
-                               class="btn btn-sm custom-btn" style="border-radius: 12px; position: absolute; bottom: 10px; right: 10px;">
+                                class="btn btn-sm custom-btn mt-2" style="border-radius: 12px; position: absolute; bottom: 10px; right: 10px;">
                                <style>
                                .custom-btn {
                                 background-color: #81b7d8;
@@ -91,7 +91,7 @@
                 </div>
             </div>
         @empty
-            <p class="text-muted">ไม่มีหมวดหมู่กิจกรรมที่ส่งมา</p>
+            <p class="text-muted fw-light">ไม่มีหมวดหมู่กิจกรรมที่ส่งมา</p>
         @endforelse
     </div>
 </div>

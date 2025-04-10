@@ -326,6 +326,7 @@ class centralController extends Controller
     {
         $user = \App\Models\User::findOrFail($id);
         $category = \App\Models\Category::findOrFail($cat_id);
+        $approval = \App\Models\Approval::all();
 
         $activities = \App\Models\Activity::where('act_submit_by', $user->user_id)
             ->where('act_cat_id', $cat_id)
@@ -333,7 +334,7 @@ class centralController extends Controller
             ->with(['creator', 'category'])
             ->get();
 
-        return view('central.approve_activity_activity', compact('user', 'activities', 'category'));
+        return view('central.approve_activity_activity', compact('user', 'activities', 'category','approval'));
     }
     public function showActivityDetail($id, $cat_id, $act_id)
     {

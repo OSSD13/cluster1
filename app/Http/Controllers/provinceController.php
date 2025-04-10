@@ -191,8 +191,6 @@ class provinceController extends Controller
         $selectedYearId = $request->input('year_id');
 
 
-       
-
 
 
         $categories = \App\Models\Category::where('cat_year_id', $selectedYearId)
@@ -202,6 +200,7 @@ class provinceController extends Controller
             })
             ->get();
         // ดึงหมวดหมู่ที่มีความคิดเห็น
+
 
 
         return view('province.approve_activity_category', compact('user', 'categories', 'selectedYearId','categoriesWithComment'));
