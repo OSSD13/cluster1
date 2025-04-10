@@ -54,4 +54,8 @@ class Activity extends Model
     {
         return $this->hasMany(VarImage::class, 'img_act_id');
     }
+    public function approvals()
+    {
+        return $this->hasMany(\App\Models\Approval::class, 'apv_act_id', 'act_id');
+    }
 }

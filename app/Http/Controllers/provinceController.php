@@ -176,7 +176,8 @@ class provinceController extends Controller
         $user = \App\Models\User::findOrFail($id);
         $selectedYearId = $request->input('year_id');
         
-    
+
+
 
         $categories = \App\Models\Category::where('cat_year_id', $selectedYearId)
             ->whereHas('activities', function ($query) use ($user) {
@@ -184,6 +185,7 @@ class provinceController extends Controller
                       ->where('status', 'Sent');
             })
             ->get();
+       
 
         return view('province.approve_activity_category', compact('user', 'categories', 'selectedYearId'));
     }

@@ -44,6 +44,7 @@
                         <hr>
                         <p class="mb-1 fw-light">รายละเอียด</p>
                         <p class="text-muted fw-light mb-4">{{ $category->description }}</p>
+                        
                         <div class="d-flex justify-content-end mt-2">
                             <a href="{{ route('province.approve.category.activities', ['user_id' => $user->user_id, 'cat_id' => $category->cat_id]) }}"
                                class="btn btn-sm custom-btn mt-2" style="border-radius: 12px; position: absolute; bottom: 10px; right: 10px;">

@@ -35,6 +35,6 @@ class ImageController extends Controller
 
         $categories = Category::where('status', 'published')->get(); // ดึงหมวดหมู่ที่เผยแพร่
         $comment = $approval->apv_comment ?? null; // กรณีไม่มีข้อมูลจะได้ค่า null
-        return view('volunteer.edit_my_activities', compact('activity', 'categories','comment'));
+        return redirect()->route('activities.edit',['id'=>$activity]);
     }
 }
