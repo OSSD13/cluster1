@@ -203,7 +203,7 @@ class provinceController extends Controller
 
 
 
-        return view('province.approve_activity_category', compact('user', 'categories', 'selectedYearId','categoriesWithComment'));
+        return view('province.approve_activity_category', compact('user', 'categories', 'selectedYearId'));
     }
     public function approveActivity(Request $request, $id)
     {

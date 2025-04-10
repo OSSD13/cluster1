@@ -1,5 +1,5 @@
 @extends('layouts.default_with_menu')
-@section('page-title', 'รายละเอียดงาน')
+@section('page-title', 'อนุมัติงาน')
 @section('content')
 
 <a href="javascript:history.back()" class="btn btn-light mb-3">

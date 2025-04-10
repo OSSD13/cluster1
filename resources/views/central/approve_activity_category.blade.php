@@ -1,5 +1,5 @@
     @extends('layouts.default_with_menu')
-
+    @section('page-title', 'อนุมัติงาน')
 @section('content')
 <a href="{{ route('central.province.index', ['pvc_id' => $provinceID]) }}" class="btn btn-light mb-3 ">
     <i class="bi bi-chevron-left"></i>

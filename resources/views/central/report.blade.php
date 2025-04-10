@@ -1,5 +1,5 @@
 @extends('layouts.default_with_menu')
-
+@section('page-title', 'รายงาน')
 @section('css')
     <style>
         table th,

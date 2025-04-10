@@ -1,11 +1,11 @@
 @extends('layouts.default_with_menu')
 @section('page-title', 'อนุมัติงาน')
 @section('content')
-    <div class="container" style="margin-top: -40px;">
+    <div class="container" style="margin-top: -10px;">
         <div class="row mb-3 align-items-end">
             <div class="container mt-4">
                 {{-- 🔍 Search --}}
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <form method="GET" action="{{ route('central.approve.index') }}" class="mb-3">
                         <div class="input-group">
                             <button class="btn " type="submit">

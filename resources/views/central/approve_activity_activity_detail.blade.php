@@ -2,10 +2,10 @@
 @section('page-title', 'อนุมัติงาน')
 @section('content')
 
-<a href="javascript:void(0)" class="btn btn-light mb-3" onclick="goBackAndRefresh()">
+<a href="javascript:history.back()" class="btn btn-light mb-3">
+
     <i class="bi bi-chevron-left"></i>
 </a>
-
 <script>
     function goBackAndRefresh() {
         history.back();  // ย้อนกลับไปหน้าก่อนหน้า

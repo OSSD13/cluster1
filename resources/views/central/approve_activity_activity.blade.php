@@ -1,6 +1,6 @@
 @extends('layouts.default_with_menu')
 
-
+@section('page-title', 'อนุมัติงาน')
 
 @section('content')
     <!-- <a href="{{ route('activities.history') }}" class="btn btn-light mb-3 mt-3">
@@ -45,7 +45,7 @@
                                         @endphp
                                     @endif
                                 @endforeach
-                            </div>      
+                            </div>
 
                             <div class="d-flex justify-content-end mt-2">
                                 <a href="{{ route('central.approve.category.activities.detail', ['user_id' => $user->user_id, 'cat_id' => $category->cat_id, 'act_id'=> $activity->act_id]) }}"
@@ -57,19 +57,19 @@
                                     border: 1px solid #81b7d8;
                                     transition: background-color 0.3s, border-color 0.3s;
                                     }
-    
+
                                     .custom-btn:hover {
                                     background-color: #5d93b3;
                                     border-color: #5d93b3;
                                     color: white;
                                     }
-    
+
                                     .custom-btn:active {
                                     background-color: #4a7d9b !important;
                                     border-color: #4a7d9b !important;
                                     color: white !important;
                                     }
-    
+
                                     </style>
                                     รายละเอียด
                                 </a>

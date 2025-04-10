@@ -1,11 +1,11 @@
 @extends('layouts.default_with_menu')
-
+@section('page-title', 'อนุมัติงาน')
 @section('content')
-    <a href="javascript:history.back()" class="btn btn-light mb-3"> 
-        
+    <a href="javascript:history.back()" class="btn btn-light mb-3">
+
         <i class="bi bi-chevron-left"></i>
     </a>
-       
+
         <div class="row">
             @forelse ($activities as $activity)
                 <div class="col-md-4 mb-4">
@@ -15,7 +15,7 @@
                                 {{ $activity->act_title }}
                             </p>
                             <hr>
-                            
+
                             <p class="mb-1 fw-light">รายละเอียด</p>
                             <!-- <div class="text-muted" style="
                                 display: -webkit-box;
@@ -31,7 +31,7 @@
                                 ...ดูเพิ่มเติม
                             </a>
                             <div class="d-flex justify-content-end">
-                                <a href="{{ route('province.approve.category.activities.detail', ['user_id' => $user->user_id, 'cat_id' => $category->cat_id, 'act_id'=> $activity->act_id]) }}" 
+                                <a href="{{ route('province.approve.category.activities.detail', ['user_id' => $user->user_id, 'cat_id' => $category->cat_id, 'act_id'=> $activity->act_id]) }}"
                                     class="btn btn-sm btn-custom-blue" style="width: 30%; background-color: #81B7D8; color: white; border-radius: 12px;">
                                     รายละเอียด
                                 </a>
@@ -47,7 +47,7 @@
                             ">
                                 {{ $activity->act_description }}
                                 @if (mb_strlen($activity->act_description) >70) <!-- ตรวจสอบว่าคำอธิบายยาวเกินตัวอักษร -->
-                                    <a href="{{ route('province.approve.category.activities.detail', ['user_id' => $user->user_id, 'cat_id' => $category->cat_id, 'act_id'=> $activity->act_id]) }}" 
+                                    <a href="{{ route('province.approve.category.activities.detail', ['user_id' => $user->user_id, 'cat_id' => $category->cat_id, 'act_id'=> $activity->act_id]) }}"
                                         class="text-decoration-none">ดูเพิ่มเติม</a>
                                 @endif
 
@@ -69,8 +69,8 @@
                                         @endphp
                                     @endif
                                 @endforeach
-                            </div>                            
-                            
+                            </div>
+
 
                             <div class="d-flex justify-content-end mt-2">
                                 <a href="{{ route('province.approve.category.activities.detail', ['user_id' => $user->user_id, 'cat_id' => $category->cat_id, 'act_id'=> $activity->act_id]) }}"
@@ -82,19 +82,19 @@
                                     border: 1px solid #81b7d8;
                                     transition: background-color 0.3s, border-color 0.3s;
                                     }
-    
+
                                     .custom-btn:hover {
                                     background-color: #5d93b3;
                                     border-color: #5d93b3;
                                     color: white;
                                     }
-    
+
                                     .custom-btn:active {
                                     background-color: #4a7d9b !important;
                                     border-color: #4a7d9b !important;
                                     color: white !important;
                                     }
-    
+
                                     </style>
                                     รายละเอียด
                                 </a>
@@ -107,5 +107,5 @@
             @endforelse
         </div>
     </div>
-    
+
 @endsection
