@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
         $volunteer = User::create([
             'user_username' => 'volunteer',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'chitdanai',
+            'user_fullname' => 'Chitdanai Rattanathianthong',
             'province' => '1',
             'user_password' => Hash::make('Pass1234'),
             'user_role' => 'Volunteer',
@@ -23,35 +23,35 @@ class UserSeeder extends Seeder
         $volunteer1 = User::create([
             'user_username' => 'volunteer1',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'aphinan',
+            'user_fullname' => 'Aphinan Supapol',
             'province' => '1',
             'user_password' => Hash::make('Pass1234'),
         ]);
         $volunteer2 = User::create([
             'user_username' => 'volunteer2',
-            'user_name_title' => 'Mr.',
-            'user_fullname' => 'narich',
-            'province' => '2',
+            'user_name_title' => 'Miss.',
+            'user_fullname' => 'Tikamporn Boonyawat',
+            'province' => '1',
             'user_password' => Hash::make('Pass1234'),
         ]);
         $volunteer3 = User::create([
             'user_username' => 'volunteer3',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'xxxxx',
+            'user_fullname' => 'Narich Pradit',
             'province' => '2',
             'user_password' => Hash::make('Pass1234'),
         ]);
         $volunteer4 = User::create([
             'user_username' => 'volunteer4',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'yyyyy',
-            'province' => '3',
+            'user_fullname' => 'Thanaphoom Somkhane',
+            'province' => '2',
             'user_password' => Hash::make('Pass1234'),
         ]);
         $volunteer5 = User::create([
             'user_username' => 'volunteer5',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'yyyyy',
+            'user_fullname' => 'Chanon Srisa',
             'province' => '3',
             'user_password' => Hash::make('Pass1234'),
         ]);
@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
         $province = User::create([
             'user_username' => 'province',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'aaa',
+            'user_fullname' => 'Province Officer 1',
             'province' => '1',
             'user_password' => Hash::make('Pass1234'),
             'user_role' => 'Province Officer',
@@ -77,7 +77,7 @@ class UserSeeder extends Seeder
         $province1 = User::create([
             'user_username' => 'province1',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'Aphinan Supapol',
+            'user_fullname' => 'Province Officer 2',
             'province' => '2',
             'user_password' => Hash::make('Pass1234'),
             'user_role' => 'Province Officer',
@@ -85,7 +85,7 @@ class UserSeeder extends Seeder
         $province2 = User::create([
             'user_username' => 'province2',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'Aphinan Supapol',
+            'user_fullname' => 'Province Officer 3',
             'province' => '3',
             'user_password' => Hash::make('Pass1234'),
             'user_role' => 'Province Officer',
@@ -107,7 +107,7 @@ class UserSeeder extends Seeder
         $central = User::create([
             'user_username' => 'central',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'bbb',
+            'user_fullname' => 'Central Officer 1',
             'province' => '1',
             'user_password' => Hash::make('Pass1234'),
             'user_role' => 'Central Officer',
@@ -118,7 +118,7 @@ class UserSeeder extends Seeder
         $central1 = User::create([
             'user_username' => 'central1',
             'user_name_title' => 'Mr.',
-            'user_fullname' => 'Chanon Srisa',
+            'user_fullname' => 'Central Officer 2',
             'province' => '1',
             'user_password' => Hash::make('Pass1234'),
             'user_role' => 'Central Officer',
