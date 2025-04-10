@@ -134,7 +134,12 @@
                                 @endif
 
                                 <td class="text-start">{{ $activity->act_title }}</td>
-                                <td>{{ \Carbon\Carbon::parse($activity->act_date)->format('d/m/Y') }}</td>
+                                @php
+                                \Carbon\Carbon::setLocale('th');
+                                $formatted = \Carbon\Carbon::parse($activity->act_date)->translatedFormat('j M Y');
+                            @endphp
+
+                            <td>{{ $formatted }}</td>
                             </tr>
                         @endforeach
                     @endforeach

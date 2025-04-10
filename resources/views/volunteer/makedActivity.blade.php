@@ -113,7 +113,7 @@
                                             $mandatoryText = ($activity->category->cat_ismandatory ?? false) ? 'บังคับ' : 'ไม่บังคับ';
                                             $mandatoryClass = ($activity->category->cat_ismandatory ?? false)
                                                 ? 'bg-danger-subtle text-danger'
-                                                : 'bg-secondary-subtle text-secondary';
+                                                :'' ;
                                         @endphp
 
                                         <span class="badge badge-status justify-content-center {{ $mandatoryClass }}">

@@ -39,13 +39,13 @@
         <!-- <div class="col-6">
             <input type="text" class="form-control shadow-sm" placeholder="🔍 ค้นหา..." />
         </div> -->
-        
+
         <div class="col-6">
         <div class="position-relative">
             <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
             <input type="text" class="form-control ps-5 shadow-sm" placeholder="ค้นหา..." name="search" value="{{ request('search') }}">
         </div>
-        
+
     </div>
 
     {{-- 📊 Filter & Summary Info --}}
@@ -139,7 +139,12 @@
                                 @endif
 
                                 <td class="text-start">{{ $activity->act_title }}</td>
-                                <td>{{ \Carbon\Carbon::parse($activity->act_date)->format('d/m/Y') }}</td>
+                                @php
+                                \Carbon\Carbon::setLocale('th');
+                                $formatted = \Carbon\Carbon::parse($activity->act_date)->translatedFormat('j M Y');
+                            @endphp
+
+                            <td>{{ $formatted }}</td>
                             </tr>
                         @endforeach
                     @endforeach

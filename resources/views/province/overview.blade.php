@@ -26,13 +26,22 @@
             </div>
         </div>
 
+
         <div class="col-md-3">
             <label class="form-label">กำหนดส่ง</label>
             <div class="card p-4 shadow-sm rounded-3">
                 <table style="width:110%;">
                     <tr>
-                        <td class="text-left">15 มกราคม 2569 </td>
-                        <td class="text-left"> 📅</td>
+
+                            <td class="text-left">
+                                @php
+                                    \Carbon\Carbon::setLocale('th');
+                                @endphp
+
+                                {{ \Carbon\Carbon::parse($category_due_date)->translatedFormat('j F Y') }}
+                            </td>
+                           
+
                     </tr>
                 </table>
             </div>
@@ -165,7 +174,7 @@
     @foreach ($categories as $category)
     <div class="col-sm-6 col-md-4 col-lg-4 mb-3 d-flex">
         <div class="card p-3 shadow-sm rounded-4 h-100 w-100">
-            <h5 class="d-flex align-items-center" 
+            <h5 class="d-flex align-items-center"
                 style="border-bottom: 1px solid #dcdcdc; padding-bottom: 10px; -webkit-line-clamp: 1; -webkit-box-orient: vertical; display: -webkit-box; overflow: hidden; text-overflow: ellipsis; font-weight: 600;">
                 {{ $category->cat_name }}
                 @if ($category->cat_ismandatory)

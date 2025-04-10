@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Activity;
 use Carbon\Carbon;
 use App\Models\Year;
+use PHPUnit\Framework\Constraint\Count;
 
 class HomeController extends Controller
 {
@@ -84,13 +85,18 @@ class HomeController extends Controller
             // 3. นับจำนวนหมวดหมู่ และกิจกรรม
             $categoryCount = $categories->count(); // นับเฉพาะของปีล่าสุด
             $activityCount = Activity::count();
+            $expiration_date = Category::value('expiration_date');
+            $category_due_date = $expiration_date
+                ? Carbon::parse($expiration_date)->subDays(15)->format('Y-m-d')
+                : null;
 
             // 4. ส่งค่าไปที่ view
             return view('province.overview', compact(
                 'categoryCount',
                 'activityCount',
                 'categories',
-                'latestYear' // เพิ่มอันนี้เผื่อใช้ในหน้า blade
+                'latestYear',
+                'category_due_date' // เพิ่มอันนี้เผื่อใช้ในหน้า blade
             ));
         } elseif ($user->hasRole('Volunteer')) {
             // หาปีล่าสุดจากตาราง years โดยดูจาก year_name
@@ -104,20 +110,37 @@ class HomeController extends Controller
                     ->where('cat_year_id', $latestYear->year_id)
                     ->get();
             }
+            $expiration_date = Category::value('expiration_date');
+            $category_due_date = $expiration_date
+            ? Carbon::parse($expiration_date)->subDays(15)->format('Y-m-d')
+            : null;
 
             $categoryCount = $categories->count();
 
-            $completedCategories = Activity::where('act_submit_by', 1)
+            $completedCategories = Activity::where('act_submit_by', Auth::user()->id)
                 ->whereIn('status', ['Saved', 'Edit', 'Sent', 'Approve_by_province', 'Approve_by_central'])
                 ->distinct('act_cat_id')
                 ->count('act_cat_id');
 
-            $completedCategoryIds = Activity::where('act_submit_by', 1)
+            $completedCategoryIds = Activity::where('act_submit_by', Auth::user()->id)
                 ->whereIn('status', ['Saved', 'Sent', 'Approve_by_province', 'Approve_by_central'])
                 ->pluck('act_cat_id')
                 ->toArray();
 
-            return view('volunteer.overview', compact('categoryCount', 'completedCategories', 'completedCategoryIds', 'categories', 'latestYear'));
+
+            $completedActivities = Activity::where('act_submit_by', Auth::user()->id)
+                ->whereIn('status', ['Approve_by_central'])
+                ->distinct('act_cat_id')
+                ->pluck('act_cat_id')
+                ->count();
+
+            $EditActivity = Activity::where('act_submit_by', Auth::user()->id)
+            ->whereIn('status', ['Approve_by_central'])
+            ->distinct('act_cat_id')
+            ->pluck('act_cat_id')
+            ->count();
+
+            return view('volunteer.overview', compact('categoryCount', 'completedCategories', 'completedCategoryIds', 'categories', 'latestYear','category_due_date','completedActivities','EditActivity'));
         } else {
             return view('errors.404');
         }
